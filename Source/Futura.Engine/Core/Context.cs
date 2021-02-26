@@ -14,6 +14,8 @@ namespace Futura.Engine.Core
 
         public T RegisterSubSystem<T>(TickType tick = TickType.Variable) where T : SubSystem
         {
+            if (GetSubSystem<T>() != null) return GetSubSystem<T>();
+
             T system = Activator.CreateInstance<T>();
             system.Register(this, tick);
 
@@ -22,7 +24,16 @@ namespace Futura.Engine.Core
             return system;
         }
 
-        public void Tick(TickType tickType, double deltaTime)
+        public T GetSubSystem<T>() where T : SubSystem
+        {
+            foreach(SubSystem s in subSystems)
+            {
+                if (s.GetType() == typeof(T)) return (T)s;
+            }
+            return null;
+        }
+
+        internal void Tick(TickType tickType, double deltaTime)
         {
             foreach(SubSystem sub in subSystems)
             {

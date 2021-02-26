@@ -1,6 +1,5 @@
 ﻿using Futura.Engine.Core;
 using System;
-using System.Threading;
 
 namespace Futura.Game
 {
@@ -8,25 +7,17 @@ namespace Futura.Game
     {
         static void Main(string[] args)
         {
-            Context context = new Context();
-            Time time = context.RegisterSubSystem<Time>();
+            Runtime runtime = Runtime.Instance;
+            runtime.Init();
 
-            time.SetTargetFPS(Time.Mode.Fixed, 60);
+            Window mainWindow = Window.Instance;
 
-            double timing = 0;
-            while (true)
+            mainWindow.Init(100, 100, 1280, 720, "Futura", WindowState.Normal);
+
+            while (mainWindow.Exists)
             {
-                context.Tick(Context.TickType.Variable, time.DeltaTime);
-
-                ///Thread.Sleep(1);
-
-                timing += time.DeltaTime;
-                if(timing > 5000)
-                {
-                    timing = 0;
-                    Console.WriteLine("Variable: " + 1000 / time.DeltaTime + " Smoothed " + 1000 / time.DeltaTimeSmoothed + " - " + time.DeltaTimeSmoothed);
-                }
-
+                runtime.Tick();
+                mainWindow.PumpEvents();
             }
 
         }
