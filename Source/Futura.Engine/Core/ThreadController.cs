@@ -16,7 +16,7 @@ namespace Futura.Engine.Core
             await Task.Run(action);
             stopwatch.Stop();
 
-            Log.Trace("Task " + name + " took " + stopwatch.ElapsedMilliseconds + " ms");
+            // TODO Capture this data in the profiler
         }
 
         public static void Sleep(int ms)

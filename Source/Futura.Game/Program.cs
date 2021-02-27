@@ -18,7 +18,6 @@ namespace Futura.Game
             while (mainWindow.Exists)
             {
                 runtime.Tick();
-                mainWindow.PumpEvents();
             }
 
         }

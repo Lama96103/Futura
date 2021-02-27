@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Futura.Engine.UserInterface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Futura.Engine.Core
 {
+    /// <summary>
+    /// The runtime handles the current context of the engine, its subsystem and basic setup of user interface and other configuration
+    /// </summary>
     public sealed class Runtime : Singleton<Runtime>
     {
         public Context Context { get; init; }
@@ -22,12 +26,16 @@ namespace Futura.Engine.Core
         {
             timeSys = Context.RegisterSubSystem<TimeSystem>();
             Context.RegisterSubSystem<LogSystem>();
+            Context.RegisterSubSystem<InputSystem>();
             Context.RegisterSubSystem<WorldSystem>();
             Context.RegisterSubSystem<RenderSystem>();
 
-
-
             Context.Init();
+
+
+            // Init some UI elements
+            UIController.Instance.Register(new MainMenuView());
+            UIController.Instance.Register(new LogView());
         }
 
         public void Tick()

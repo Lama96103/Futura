@@ -11,7 +11,8 @@ namespace Futura.Engine.Core
     partial class RenderSystem : SubSystem
     {
         private RenderAPI renderAPI;
-        private CommandList commandList;
+        internal RenderAPI API { get => renderAPI;}
+
         private DeviceResourceCache deviceResourceCache;
 
         private int resolutionWidth;
@@ -21,6 +22,7 @@ namespace Futura.Engine.Core
         private ECS.EcsFilter cameraFilter;
 
         private CommandList diffuseCommandList;
+        private CommandList uiCommandList;
 
         internal override void Init()
         {
@@ -28,7 +30,6 @@ namespace Futura.Engine.Core
             resolutionWidth = Window.Instance.Width;
             resolutionHeight = Window.Instance.Height;
 
-            commandList = renderAPI.GenerateCommandList();
             deviceResourceCache = new DeviceResourceCache(renderAPI.Factory);
 
             ECS.EcsWorld world = Context.GetSubSystem<WorldSystem>().World;
@@ -36,15 +37,38 @@ namespace Futura.Engine.Core
             cameraFilter = new ECS.EcsFilter(world, new ECS.IComponent[] { new Components.Transform(), new Components.Camera() });
 
             diffuseCommandList = renderAPI.GenerateCommandList();
+            uiCommandList = renderAPI.GenerateCommandList();
 
             Load();
+
+            ImGuiController.Instance.Init(renderAPI, resolutionWidth, resolutionHeight);
 
         }
 
         internal override void Tick(double deltaTime)
         {
             MainPass();
+            ImGuiPass(deltaTime);
             renderAPI.SwapBuffers();
+        }
+
+        private void ImGuiPass(double deltaTime)
+        {
+            if (deltaTime <= 0) deltaTime = 16;
+            ImGuiController.Instance.Update((float)(deltaTime / 1000), Context.GetSubSystem<InputSystem>().Snapshot);
+
+            UserInterface.UIController.Instance.Tick();
+
+
+            uiCommandList.PushDebugGroup("Pass_ImGui");
+            uiCommandList.Begin();
+            uiCommandList.SetFramebuffer(renderAPI.GraphicAPI.SwapchainFramebuffer);
+            uiCommandList.ClearColorTarget(0, RgbaFloat.Black);
+            ImGuiController.Instance.Render(uiCommandList);
+            uiCommandList.End();
+            renderAPI.SubmitCommands(uiCommandList);
+            uiCommandList.PopDebugGroup();
+
         }
     }
 }

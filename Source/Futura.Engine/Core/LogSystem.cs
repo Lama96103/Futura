@@ -8,13 +8,22 @@ using System.Threading;
 
 namespace Futura.Engine.Core
 {
+    /// <summary>
+    /// The level of the log message
+    /// </summary>
     public enum LogLevel
     {
-        Debug, Trace, Info, Warning, Error
+        Debug, Info, Warning, Error
     }
 
+    /// <summary>
+    /// Log system is for archiving and logging of log messages
+    /// Every second the system will write the logs to the futura.log file
+    /// </summary>
     public sealed class LogSystem : SubSystem
     {
+        internal static event EventHandler<LogEventArgs> OnLogReceived;
+
         private const string FilePath = "Futura.log";
 
         private readonly object ThreadLock = new object();
@@ -48,6 +57,7 @@ namespace Futura.Engine.Core
             {
                 logMessages.Add(message);
             }
+            OnLogReceived?.Invoke(this, new LogEventArgs(message));
         }
 
         private void WriteLogMessagesToFile()
@@ -89,14 +99,25 @@ namespace Futura.Engine.Core
         private static LogSystem logger;
         public static LogLevel Level { get; set; } = LogLevel.Debug;
 
+        
+
         internal static void Init(LogSystem logger)
         {
             Log.logger = logger;
         }
 
+        /// <summary>
+        /// Log a debug message
+        /// You only need to add a message
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="path"></param>
+        /// <param name="lineNumber"></param>
+        /// <param name="memberName"></param>
         public static void Debug(object message, [CallerFilePath] string path = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
         {
             if (Level <= LogLevel.Debug)
+            {
                 logger.AddMessage(new LogSystem.LogMessage
                 {
                     Message = message.ToString(),
@@ -106,22 +127,18 @@ namespace Futura.Engine.Core
                     Level = LogLevel.Debug,
                     Timestamp = DateTime.Now
                 });
+            }
+                
         }
 
-        public static void Trace(object message, [CallerFilePath] string path = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
-        {
-            if (Level <= LogLevel.Trace)
-                logger.AddMessage(new LogSystem.LogMessage
-                {
-                    Message = message.ToString(),
-                    File = path,
-                    Line = lineNumber,
-                    Method = memberName,
-                    Level = LogLevel.Trace,
-                    Timestamp = DateTime.Now
-                });
-        }
-
+        /// <summary>
+        /// Log a info message
+        /// You only need to add a message
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="path"></param>
+        /// <param name="lineNumber"></param>
+        /// <param name="memberName"></param>
         public static void Info(object message, [CallerFilePath] string path = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
         {
             if (Level <= LogLevel.Info)
@@ -136,6 +153,14 @@ namespace Futura.Engine.Core
                 });
         }
 
+        /// <summary>
+        /// Log a warning message
+        /// You only need to add a message
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="path"></param>
+        /// <param name="lineNumber"></param>
+        /// <param name="memberName"></param>
         public static void Warn(object message, [CallerFilePath] string path = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
         {
             if (Level <= LogLevel.Warning)
@@ -150,6 +175,14 @@ namespace Futura.Engine.Core
                 });
         }
 
+        /// <summary>
+        /// Log an error message
+        /// You only need to add a message
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="path"></param>
+        /// <param name="lineNumber"></param>
+        /// <param name="memberName"></param>
         public static void Error(object message, [CallerFilePath] string path = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
         {
             if (Level <= LogLevel.Error)
@@ -164,6 +197,15 @@ namespace Futura.Engine.Core
                 });
         }
 
+        /// <summary>
+        /// Log an error message
+        /// You only need to add a message and the exception you want to log
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="e"></param>
+        /// <param name="path"></param>
+        /// <param name="lineNumber"></param>
+        /// <param name="memberName"></param>
         public static void Error(object message, Exception e, [CallerFilePath] string path = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
         {
             if (Level <= LogLevel.Error)
@@ -177,6 +219,17 @@ namespace Futura.Engine.Core
                     Timestamp = DateTime.Now,
                     Exception = e
                 });
+        }
+    }
+
+
+    internal class LogEventArgs : EventArgs
+    {
+        public LogSystem.LogMessage LogMsg { get; set; }
+
+        internal LogEventArgs(LogSystem.LogMessage message)
+        {
+            LogMsg = message;
         }
     }
 }
