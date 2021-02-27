@@ -10,7 +10,7 @@ namespace Futura.Engine.Core
     {
         public Context Context { get; init; }
 
-        private Time time;
+        private TimeSystem timeSys;
 
         public Runtime()
         {
@@ -20,14 +20,20 @@ namespace Futura.Engine.Core
 
         public void Init()
         {
-            time = Context.RegisterSubSystem<Time>();
-            Context.RegisterSubSystem<Logger>();
+            timeSys = Context.RegisterSubSystem<TimeSystem>();
+            Context.RegisterSubSystem<LogSystem>();
+            Context.RegisterSubSystem<WorldSystem>();
+            Context.RegisterSubSystem<RenderSystem>();
+
+
+
+            Context.Init();
         }
 
         public void Tick()
         {
-            Context.Tick(Context.TickType.Variable, time.DeltaTime);
-            Context.Tick(Context.TickType.Smoothed, time.DeltaTimeSmoothed);
+            Context.Tick(Context.TickType.Variable, timeSys.DeltaTime);
+            Context.Tick(Context.TickType.Smoothed, timeSys.DeltaTimeSmoothed);
         }
     }
 }

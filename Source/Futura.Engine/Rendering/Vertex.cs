@@ -1,0 +1,40 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Text;
+using System.Threading.Tasks;
+using Veldrid;
+
+namespace Futura.Engine.Rendering
+{
+    [Serializable]
+    public struct Vertex
+    {
+        public Vector3 Position;
+        public Vector3 Normal;
+        public float index;
+        public float ambientOcculssion;
+
+        public const uint Size = 32;
+
+
+        public Vertex(float x, float y, float z, float index, float ao, Vector3 normal)
+        {
+            Position = new Vector3(x, y, z);
+            this.index = index;
+            this.ambientOcculssion = ao;
+            this.Normal = normal;
+        }
+
+        public static VertexLayoutDescription GetLayoutDescription()
+        {
+            VertexLayoutDescription vertexLayout = new VertexLayoutDescription(
+                new VertexElementDescription("vertexPosition", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float3),
+                   new VertexElementDescription("normalVector", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float3),
+                new VertexElementDescription("vertexIndex", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float1),
+                new VertexElementDescription("vertexAmbientOcclusion", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float1));
+            return vertexLayout;
+        }
+    }
+}

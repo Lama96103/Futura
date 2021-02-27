@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Futura
+namespace Futura.Engine
 {
     public class Singleton<T> where T : class
     {

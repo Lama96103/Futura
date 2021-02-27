@@ -18,6 +18,7 @@ namespace Futura.Engine.Core
         }
 
        
+        internal virtual void Init() { }
         internal abstract void Tick(double deltaTime);
     }
 }

@@ -11,11 +11,37 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Rendering\Resources\DebugShader\DebugShader.frag.spv" />
+    <None Remove="Rendering\Resources\DebugShader\DebugShader.vert.spv" />
+    <None Remove="Rendering\Resources\Diffuse\Diffuse.frag.spv" />
+    <None Remove="Rendering\Resources\Diffuse\Diffuse.vert.spv" />
+    <None Remove="Rendering\Resources\ImGui\ImGui.frag.spv" />
+    <None Remove="Rendering\Resources\ImGui\ImGui.vert.spv" />
+    <None Remove="Rendering\Resources\Selection\Selection.frag.spv" />
+    <None Remove="Rendering\Resources\Selection\Selection.vert.spv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Rendering\Resources\DebugShader\DebugShader.frag.spv" />
+    <EmbeddedResource Include="Rendering\Resources\DebugShader\DebugShader.vert.spv" />
+    <EmbeddedResource Include="Rendering\Resources\Diffuse\Diffuse.frag.spv" />
+    <EmbeddedResource Include="Rendering\Resources\Diffuse\Diffuse.vert.spv" />
+    <EmbeddedResource Include="Rendering\Resources\ImGui\ImGui.frag.spv" />
+    <EmbeddedResource Include="Rendering\Resources\ImGui\ImGui.vert.spv" />
+    <EmbeddedResource Include="Rendering\Resources\Selection\Selection.frag.spv" />
+    <EmbeddedResource Include="Rendering\Resources\Selection\Selection.vert.spv" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ImGui.NET.Docking" Version="1.75.0" />
     <PackageReference Include="Veldrid" Version="4.8.0" />
     <PackageReference Include="Veldrid.ImageSharp" Version="4.8.0" />
     <PackageReference Include="Veldrid.SPIRV" Version="1.0.14" />
     <PackageReference Include="Veldrid.StartupUtilities" Version="4.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Futura.ECS\Futura.ECS.csproj" />
   </ItemGroup>
 
 </Project>

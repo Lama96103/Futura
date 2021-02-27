@@ -13,7 +13,7 @@ namespace Futura.Engine.Core
         Debug, Trace, Info, Warning, Error
     }
 
-    public sealed class Logger : SubSystem
+    public sealed class LogSystem : SubSystem
     {
         private const string FilePath = "Futura.log";
 
@@ -24,7 +24,7 @@ namespace Futura.Engine.Core
 
 
 
-        public Logger()
+        public LogSystem()
         {
             Log.Init(this);
             if (File.Exists(FilePath)) File.Delete(FilePath);
@@ -86,10 +86,10 @@ namespace Futura.Engine.Core
 
     public static class Log
     {
-        private static Logger logger;
+        private static LogSystem logger;
         public static LogLevel Level { get; set; } = LogLevel.Debug;
 
-        internal static void Init(Logger logger)
+        internal static void Init(LogSystem logger)
         {
             Log.logger = logger;
         }
@@ -97,7 +97,7 @@ namespace Futura.Engine.Core
         public static void Debug(object message, [CallerFilePath] string path = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
         {
             if (Level <= LogLevel.Debug)
-                logger.AddMessage(new Logger.LogMessage
+                logger.AddMessage(new LogSystem.LogMessage
                 {
                     Message = message.ToString(),
                     File = path,
@@ -111,7 +111,7 @@ namespace Futura.Engine.Core
         public static void Trace(object message, [CallerFilePath] string path = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
         {
             if (Level <= LogLevel.Trace)
-                logger.AddMessage(new Logger.LogMessage
+                logger.AddMessage(new LogSystem.LogMessage
                 {
                     Message = message.ToString(),
                     File = path,
@@ -125,7 +125,7 @@ namespace Futura.Engine.Core
         public static void Info(object message, [CallerFilePath] string path = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
         {
             if (Level <= LogLevel.Info)
-                logger.AddMessage(new Logger.LogMessage
+                logger.AddMessage(new LogSystem.LogMessage
                 {
                     Message = message.ToString(),
                     File = path,
@@ -139,7 +139,7 @@ namespace Futura.Engine.Core
         public static void Warn(object message, [CallerFilePath] string path = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
         {
             if (Level <= LogLevel.Warning)
-                logger.AddMessage(new Logger.LogMessage
+                logger.AddMessage(new LogSystem.LogMessage
                 {
                     Message = message.ToString(),
                     File = path,
@@ -153,7 +153,7 @@ namespace Futura.Engine.Core
         public static void Error(object message, [CallerFilePath] string path = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
         {
             if (Level <= LogLevel.Error)
-                logger.AddMessage(new Logger.LogMessage
+                logger.AddMessage(new LogSystem.LogMessage
                 {
                     Message = message.ToString(),
                     File = path,
@@ -167,7 +167,7 @@ namespace Futura.Engine.Core
         public static void Error(object message, Exception e, [CallerFilePath] string path = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
         {
             if (Level <= LogLevel.Error)
-                logger.AddMessage(new Logger.LogMessage
+                logger.AddMessage(new LogSystem.LogMessage
                 {
                     Message = message.ToString(),
                     File = path,

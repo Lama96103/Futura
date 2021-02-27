@@ -42,7 +42,13 @@ namespace Futura.Engine.Core
             }
         }
 
-        private GraphicsDevice GraphicsDevice;
+        public float AspectRatio
+        {
+            get
+            {
+                return (float)Handle.Width / (float)Handle.Height;
+            }
+        }
 
         public void Init(int x, int y, int width, int height, string title, WindowState state)
         {
@@ -57,13 +63,10 @@ namespace Futura.Engine.Core
             };
 
             Handle = VeldridStartup.CreateWindow(ref createInfo);
-
-            GraphicsDevice = VeldridStartup.CreateDefaultD3D11GraphicsDevice(new GraphicsDeviceOptions(), Handle);
         }
 
         public InputSnapshot PumpEvents()
         {
-            GraphicsDevice.SwapBuffers();
             return Handle.PumpEvents();
         }
     }

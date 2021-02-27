@@ -33,6 +33,14 @@ namespace Futura.Engine.Core
             return null;
         }
 
+        internal void Init()
+        {
+            foreach (SubSystem sub in subSystems)
+            {
+                sub.Init();
+            }
+        }
+
         internal void Tick(TickType tickType, double deltaTime)
         {
             foreach(SubSystem sub in subSystems)
