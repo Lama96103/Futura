@@ -1,6 +1,7 @@
 ﻿using Futura.Engine.UserInterface;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace Futura.Engine.Core
         public Context Context { get; init; }
 
         private TimeSystem timeSys;
+
+        public DirectoryInfo AssetDir { get; set; } = new DirectoryInfo(@"..\..\..\..\.\..\Assets");
 
         public Runtime()
         {
@@ -36,6 +39,10 @@ namespace Futura.Engine.Core
             // Init some UI elements
             UIController.Instance.Register(new MainMenuView());
             UIController.Instance.Register(new LogView());
+
+
+            // Init singleton systems
+            Resources.ResourceManager.Instance.Init(AssetDir);
         }
 
         public void Tick()

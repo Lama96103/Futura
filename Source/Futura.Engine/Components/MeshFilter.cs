@@ -10,6 +10,10 @@ namespace Futura.Engine.Components
 {
     public class MeshFilter : IComponent
     {
+        private Guid MaterialGuid;
+        private Guid MeshGuid;
+
+
         public Renderable Mesh;
         public Material Material;
     }
