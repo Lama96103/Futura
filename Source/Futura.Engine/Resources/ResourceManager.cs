@@ -12,6 +12,8 @@ namespace Futura.Engine.Resources
         private const string MetaFileExtension = ".fMeta";
         private DirectoryInfo rootDir;
 
+        private Dictionary<Guid, Asset> loadedAssets = new Dictionary<Guid, Asset>();
+
         internal void Init(DirectoryInfo rootDirectory)
         {
             this.rootDir = rootDirectory;
@@ -28,6 +30,11 @@ namespace Futura.Engine.Resources
             {
                 if (file.Extension == MetaFileExtension) continue;
             }
+        }
+
+        private void LoadAsset(FileInfo file)
+        {
+
         }
     }
 }

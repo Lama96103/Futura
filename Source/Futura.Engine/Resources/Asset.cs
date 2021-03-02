@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Futura.Engine.Utility;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Futura.Engine.Resources
     }
 
 
-    public class Asset
+    public abstract class Asset : ISerialize
     {
         public Guid Identifier { get; init; }
         public AssetType AssetType { get; init; }
@@ -24,8 +25,14 @@ namespace Futura.Engine.Resources
 
         internal Asset(Guid identifier, AssetType type, FileInfo path)
         {
-
+            Identifier = identifier;
+            AssetType = type;
+            Path = path;
         }
+
+        public abstract void Write(BinaryWriter writer);
+        public abstract void Read(BinaryReader reader);
+
 
     }
 }

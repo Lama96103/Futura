@@ -47,8 +47,10 @@ namespace Futura.Engine.Core
 
         public void Tick()
         {
+            Profiler.StartFrame();
             Context.Tick(Context.TickType.Variable, timeSys.DeltaTime);
             Context.Tick(Context.TickType.Smoothed, timeSys.DeltaTimeSmoothed);
+            Profiler.EndFrame();
         }
     }
 }

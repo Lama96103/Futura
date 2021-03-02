@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Futura.Engine.Utility;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -9,7 +11,7 @@ using Veldrid;
 namespace Futura.Engine.Rendering
 {
     [Serializable]
-    public struct Vertex
+    public struct Vertex : ISerialize
     {
         public Vector3 Position;
         public Vector3 Normal;
@@ -27,6 +29,18 @@ namespace Futura.Engine.Rendering
             this.Normal = normal;
         }
 
+        public Vertex(BinaryReader reader)
+        {
+            Position = new Vector3();
+            Position.Read(reader);
+
+            Normal = new Vector3();
+            Normal.Read(reader);
+
+            index = reader.ReadSingle();
+            ambientOcculssion = reader.ReadSingle();
+        }
+
         public static VertexLayoutDescription GetLayoutDescription()
         {
             VertexLayoutDescription vertexLayout = new VertexLayoutDescription(
@@ -35,6 +49,28 @@ namespace Futura.Engine.Rendering
                 new VertexElementDescription("vertexIndex", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float1),
                 new VertexElementDescription("vertexAmbientOcclusion", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float1));
             return vertexLayout;
+        }
+
+        public void Write(BinaryWriter writer)
+        {
+            Position.Write(writer);
+
+            Normal.Write(writer);
+
+            writer.Write(index);
+            writer.Write(ambientOcculssion);
+        }
+
+        public void Read(BinaryReader reader)
+        {
+            Position = new Vector3();
+            Position.Read(reader);
+
+            Normal = new Vector3();
+            Normal.Read(reader);
+
+            index = reader.ReadSingle();
+            ambientOcculssion = reader.ReadSingle();
         }
     }
 }
