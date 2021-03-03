@@ -24,7 +24,7 @@ namespace Futura.Engine.UserInterface
 
         private List<LogMessage> messages = new List<LogMessage>();
 
-        public override void Init()
+        public LogView()
         {
             Core.LogSystem.OnLogReceived += Logger_OnLogReceived;
         }

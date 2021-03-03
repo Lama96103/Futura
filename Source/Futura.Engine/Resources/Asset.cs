@@ -22,6 +22,7 @@ namespace Futura.Engine.Resources
         public Guid Identifier { get; init; }
         public AssetType AssetType { get; init; }
         public FileInfo Path { get; init; }
+        public abstract bool IsLoaded { get; }
 
         internal Asset(Guid identifier, AssetType type, FileInfo path)
         {
@@ -33,6 +34,7 @@ namespace Futura.Engine.Resources
         public abstract void Write(BinaryWriter writer);
         public abstract void Read(BinaryReader reader);
 
-
+        public abstract void Load();
+        public abstract void Unload();
     }
 }

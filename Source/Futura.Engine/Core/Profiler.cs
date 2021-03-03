@@ -12,7 +12,6 @@ namespace Futura.Engine.Core
         [Conditional("PROFILE")]
         internal static void StartFrame()
         {
-            Log.Info("Start Frame");
         }
 
         [Conditional("PROFILE")]
@@ -24,7 +23,7 @@ namespace Futura.Engine.Core
         [Conditional("PROFILE")]
         public static void Report(string eventName, string eventParams = "")
         {
-
+            Log.Debug($"Event: {eventName}>{eventParams}");
         }
     }
 }

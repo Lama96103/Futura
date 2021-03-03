@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Futura.Engine.Core;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -93,13 +94,16 @@ namespace Futura.Engine.Core
             public Exception Exception { get; set; }
         }
     }
+}
 
+namespace Futura
+{
     public static class Log
     {
         private static LogSystem logger;
         public static LogLevel Level { get; set; } = LogLevel.Debug;
 
-        
+
 
         internal static void Init(LogSystem logger)
         {
@@ -128,7 +132,7 @@ namespace Futura.Engine.Core
                     Timestamp = DateTime.Now
                 });
             }
-                
+
         }
 
         /// <summary>

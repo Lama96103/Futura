@@ -10,6 +10,10 @@ namespace Futura
 {
     public static class VectorExtension
     {
+        public static Vector3 Forward { get { return new Vector3(1.0f, 0.0f, 0.0f); } }
+        public static Vector3 Right { get { return new Vector3(0.0f, 0.0f, 1.0f); } }
+        public static Vector3 Up { get { return new Vector3(0.0f, 1.0f, 0.0f); } }
+
 
         /// <summary>
         ///  Writes the object to the binary writer
@@ -23,17 +27,19 @@ namespace Futura
             writer.Write(v.Z);
         }
 
+
         /// <summary>
         /// Reads the reader and sets the values
         /// </summary>
         /// <param name="v"></param>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public static void Read(this Vector3 v, BinaryReader reader)
+        public static Vector3 Read(BinaryReader reader)
         {
-            v.X = reader.ReadSingle();
-            v.Y = reader.ReadSingle();
-            v.Z = reader.ReadSingle();
+            float x = reader.ReadSingle();
+            float y = reader.ReadSingle();
+            float z = reader.ReadSingle();
+            return new Vector3(x, y, z);
         }
     }
 }

@@ -19,9 +19,12 @@ namespace Futura.Engine.Core
 
         public DirectoryInfo AssetDir { get; set; } = new DirectoryInfo(@"..\..\..\..\.\..\Assets");
 
+        public SettingsController Settings { get; init; }
+
         public Runtime()
         {
             Context = new Context();
+            Settings = new SettingsController(new DirectoryInfo(@"..\..\..\..\.\..\Settings"), "Futura.Engine.Settings");
         }
 
 
@@ -39,6 +42,7 @@ namespace Futura.Engine.Core
             // Init some UI elements
             UIController.Instance.Register(new MainMenuView());
             UIController.Instance.Register(new LogView());
+            UIController.Instance.Register(new SettingView(Settings, "Engine"));
 
 
             // Init singleton systems

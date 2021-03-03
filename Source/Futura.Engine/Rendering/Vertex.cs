@@ -29,14 +29,18 @@ namespace Futura.Engine.Rendering
             this.Normal = normal;
         }
 
+        public Vertex(Vector3 position, Vector3 normal)
+        {
+            this.Position = position;
+            this.Normal = normal;
+            this.ambientOcculssion = 0;
+            this.index = 0;
+        }
+
         public Vertex(BinaryReader reader)
         {
-            Position = new Vector3();
-            Position.Read(reader);
-
-            Normal = new Vector3();
-            Normal.Read(reader);
-
+            Position = VectorExtension.Read(reader);
+            Normal = VectorExtension.Read(reader);
             index = reader.ReadSingle();
             ambientOcculssion = reader.ReadSingle();
         }
@@ -54,7 +58,6 @@ namespace Futura.Engine.Rendering
         public void Write(BinaryWriter writer)
         {
             Position.Write(writer);
-
             Normal.Write(writer);
 
             writer.Write(index);
@@ -63,12 +66,8 @@ namespace Futura.Engine.Rendering
 
         public void Read(BinaryReader reader)
         {
-            Position = new Vector3();
-            Position.Read(reader);
-
-            Normal = new Vector3();
-            Normal.Read(reader);
-
+            Position = VectorExtension.Read(reader);
+            Normal = VectorExtension.Read(reader);
             index = reader.ReadSingle();
             ambientOcculssion = reader.ReadSingle();
         }

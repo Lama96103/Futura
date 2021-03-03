@@ -48,28 +48,22 @@ namespace Futura.Engine
         }
     }
 
-    public static class VectorExtensions
-    {
-        public static Vector3 Forward { get { return new Vector3(1.0f, 0.0f, 0.0f); } }
-        public static Vector3 Right { get { return new Vector3(0.0f, 0.0f, 1.0f); } }
-        public static Vector3 Up { get { return new Vector3(0.0f, 1.0f, 0.0f); } }
-    }
 
     public static class QuaternionExtension
     {
         public static Vector3 Forward(this Quaternion val)
         {
-            return Vector3.Transform(VectorExtensions.Forward, val);
+            return Vector3.Transform(VectorExtension.Forward, val);
         }
 
         public static Vector3 Right(this Quaternion val)
         {
-            return Vector3.Transform(VectorExtensions.Right, val);
+            return Vector3.Transform(VectorExtension.Right, val);
         }
 
         public static Vector3 Up(this Quaternion val)
         {
-            return Vector3.Transform(VectorExtensions.Up, val);
+            return Vector3.Transform(VectorExtension.Up, val);
         }
 
         public static bool Smaller(this Vector3 v1, Vector3 v2)

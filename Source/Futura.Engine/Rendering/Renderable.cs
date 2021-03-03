@@ -47,6 +47,14 @@ namespace Futura.Engine.Rendering
             IsLoaded = true;
         }
 
+        public void Unload()
+        {
+            vertexBuffer.Dispose();
+            indexBuffer.Dispose();
+
+            IsLoaded = false;
+        }
+
         /// <summary>
         /// Draws Mesh
         /// </summary>
