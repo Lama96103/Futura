@@ -71,6 +71,9 @@ namespace Futura.Engine.Rendering
                 vertexOffset: 0,
                 instanceStart: 0);
 
+            Profiler.Report(Profiler.StatisticIndicator.DrawCall);
+            Profiler.Report(Profiler.StatisticIndicator.Vertex, (int)vertexCount);
+
         }
     }
 }

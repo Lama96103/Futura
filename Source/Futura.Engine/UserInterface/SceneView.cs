@@ -55,14 +55,16 @@ namespace Futura.Engine.UserInterface
         {
             ImGui.SetCursorPos(ImGui.GetCursorStartPos() + new Vector2(5));
 
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(.5f, .5f, .5f, 0.9f));
-            ImGui.BeginChild("performanceoverlay", new Vector2(150, 100), false, ImGuiWindowFlags.NoDecoration);
+            ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(1, 1, 1, 0.5f));
+            ImGui.BeginChild("performanceoverlay", new Vector2(260, 130), false, ImGuiWindowFlags.NoDecoration);
 
 
             ImGui.LabelText("API", renderSystem.API.CurrentAPI);
             ImGui.LabelText("FPS", timeSystem.FPS.ToString("0.00"));
             ImGui.LabelText("Delta", timeSystem.DeltaTime.ToString("0.00"));
             ImGui.LabelText("Res", renderSystem.DiffuseFrameBuffer.Width + "x" + renderSystem.DiffuseFrameBuffer.Height);
+            ImGui.LabelText("Draw Calls", Profiler.GetIndicator(Profiler.StatisticIndicator.DrawCall).ToString());
+            ImGui.LabelText("Vertices", Profiler.GetIndicator(Profiler.StatisticIndicator.Vertex).ToString());
 
 
             ImGui.EndChild();
