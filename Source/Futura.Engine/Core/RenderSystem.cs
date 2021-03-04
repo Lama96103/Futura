@@ -67,6 +67,13 @@ namespace Futura.Engine.Core
                 ImGuiController.Instance.WindowResized((int)newWindowWidth, (int)newWindowHeight);
             }
 
+            if(entityFilter.IsDead || cameraFilter.IsDead)
+            {
+                EcsWorld world = Context.GetSubSystem<WorldSystem>().World;
+                entityFilter = world.CreateFilter<Components.Transform, Components.MeshFilter>();
+                cameraFilter = world.CreateFilter<Components.Transform, Components.Camera>();
+            }
+
             MainPass();
             ImGuiPass(deltaTime);
             renderAPI.SwapBuffers();

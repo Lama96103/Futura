@@ -1,6 +1,8 @@
-﻿using ImGuiNET;
+﻿using Futura.Engine.Core;
+using ImGuiNET;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -16,8 +18,14 @@ namespace Futura.Engine.UserInterface
             {
                 if (ImGui.BeginMenu("File"))
                 {
-                    if (ImGui.MenuItem("New Project")) { }
-                    if (ImGui.MenuItem("Open Project")) {  }
+                    if (ImGui.MenuItem("Save")) 
+                    {
+                        Runtime.Instance.Context.GetSubSystem<WorldSystem>().Save(new FileInfo(Path.Combine(Runtime.Instance.SceneDir.FullName, "main.scene")));
+                    }
+                    if (ImGui.MenuItem("Load")) 
+                    {
+                        Runtime.Instance.LoadScene(new FileInfo(Path.Combine(Runtime.Instance.SceneDir.FullName, "main.scene")));
+                    }
                     ImGui.Separator();
                   
                     

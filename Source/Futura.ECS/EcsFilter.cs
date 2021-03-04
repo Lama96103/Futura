@@ -14,6 +14,8 @@ namespace Futura.ECS
 
         private List<EntityReference> entityReferences = new List<EntityReference>();
 
+        public bool IsDead { get; internal set; } = false;
+
         public IEnumerable<EntityReference> Entities
         {
             get => entityReferences.Where(e => e.IsComplete);

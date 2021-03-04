@@ -18,8 +18,12 @@ namespace Futura.Engine.Core
         private TimeSystem timeSys;
 
         public DirectoryInfo AssetDir { get; set; } = new DirectoryInfo(@"..\..\..\..\.\..\Assets");
+        public DirectoryInfo SceneDir { get; set; } = new DirectoryInfo(@"..\..\..\..\.\..\Scenes");
 
         public SettingsController Settings { get; init; }
+
+        private bool shouldLoadScene = false;
+        private FileInfo sceneFile;
 
         public Runtime()
         {
@@ -57,9 +61,23 @@ namespace Futura.Engine.Core
         public void Tick()
         {
             Profiler.StartFrame();
+
+            if (shouldLoadScene)
+            {
+                shouldLoadScene = true;
+                Context.GetSubSystem<WorldSystem>().Load(sceneFile);
+            }
+
+
             Context.Tick(Context.TickType.Variable, timeSys.DeltaTime);
             Context.Tick(Context.TickType.Smoothed, timeSys.DeltaTimeSmoothed);
             Profiler.EndFrame();
+        }
+
+        public void LoadScene(FileInfo file)
+        {
+            sceneFile = file;
+            shouldLoadScene = true;
         }
     }
 }

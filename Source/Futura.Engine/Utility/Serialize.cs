@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Futura.Engine.Utility.CustomSerializer;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,7 +37,7 @@ namespace Futura.Engine.Utility
                 TypeNameHandling = TypeNameHandling.All,
                 Converters = new JsonConverter[] 
                 { 
-
+                    new AssetSerializer<Resources.Mesh>()
                 },
                 CheckAdditionalContent = true
             };

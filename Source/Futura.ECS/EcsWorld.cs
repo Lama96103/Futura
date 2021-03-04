@@ -28,6 +28,7 @@ namespace Futura.ECS
 
         [JsonIgnore] private readonly object @lock = new object();
 
+
         public EcsWorld() { }
 
         #region Entity Handling
@@ -63,7 +64,7 @@ namespace Futura.ECS
         /// <summary>
         /// Sets for all entities this world
         /// </summary>
-        private void RefreshReferences()
+        public void RefreshReferences()
         {
             foreach(var entity in Entities)
             {
@@ -291,6 +292,11 @@ namespace Futura.ECS
             EcsFilter newFilter = new EcsFilter(this, components);
             cachedFilters.Add(newFilter);
             return newFilter;
+        }
+
+        public void Destroy()
+        {
+            foreach (EcsFilter filter in cachedFilters) filter.IsDead = true;
         }
     }
 }

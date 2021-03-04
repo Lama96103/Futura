@@ -112,5 +112,14 @@ namespace Futura.Engine.Resources
                 }
             }   
         }
+
+        public T GetAsset<T>(Guid guid) where T : Asset
+        {
+            if (loadedAssets.ContainsKey(guid))
+            {
+                return loadedAssets[guid] as T;
+            }
+            else return null;
+        }
     }
 }
