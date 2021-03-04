@@ -36,7 +36,11 @@ namespace Futura.Engine.Rendering
                 var desc = new TextureDescription(width, height, 1, 1, arraySize, format, flags | TextureUsage.Sampled | TextureUsage.RenderTarget, TextureType.Texture2D);
                 return new Texture2D(factory, desc, name);
             }
-            
+        }
+
+        public void Unload()
+        {
+            Handle.Dispose();
         }
     }
 }

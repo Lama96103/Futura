@@ -11,6 +11,7 @@ namespace Futura.Engine.Rendering
 {
     public class RenderAPI
     {
+        public static RenderAPI Instance { get; private set; }
         public Context Context { get; init; }
 
         internal GraphicsDevice GraphicAPI { get; init; }
@@ -18,7 +19,7 @@ namespace Futura.Engine.Rendering
         /// <summary>
         /// Gets a value indicating whether this device's depth values range from 0 to 1. If false, depth values instead range from -1 to 1.
         /// </summary>
-        public static bool IsDepthRangeZeroToOne { get; private set; }
+        public bool IsDepthRangeZeroToOne { get; private set; }
         public string CurrentAPI { get { return GraphicAPI.BackendType.ToString(); } }
 
         internal ResourceFactory Factory { get => GraphicAPI.ResourceFactory; }
@@ -26,8 +27,8 @@ namespace Futura.Engine.Rendering
 
         internal RenderAPI(Context context, Window window)
         {
+            Instance = this;
             this.Context = context;
-
 
             GraphicsDeviceOptions options = new GraphicsDeviceOptions()
             {

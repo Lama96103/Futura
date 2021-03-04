@@ -29,9 +29,9 @@ namespace Futura.Engine.Core
             Camera camera = cameraEntity.GetComponent<Camera>();
 
             WorldBuffer world = new WorldBuffer();
-            world.Projection = camera.GetProjection(transform);
+            world.Projection = camera.GetProjection(transform, sceneWidth, sceneHeight);
             world.View = camera.GetView(transform);
-            world.ProjectionView = camera.GetViewProjectionMatrix(transform);
+            world.ProjectionView = camera.GetViewProjectionMatrix(transform, sceneWidth, sceneHeight);
             world.CameraPosition = transform.Position;
 
             renderAPI.GraphicAPI.UpdateBuffer(worldBuffer, 0, world);
@@ -43,12 +43,12 @@ namespace Futura.Engine.Core
             commandList.PushDebugGroup("Pass_Diffuse");
 
             commandList.SetPipeline(diffusePipline);
-            commandList.SetFramebuffer(renderAPI.GraphicAPI.SwapchainFramebuffer);
+            commandList.SetFramebuffer(diffuseFramebuffer.Handle);
             commandList.SetGraphicsResourceSet(0, worldSet);
             commandList.SetGraphicsResourceSet(1, modelSet);
 
             commandList.ClearColorTarget(0, RgbaFloat.Black);
-            commandList.ClearDepthStencil(RenderAPI.IsDepthRangeZeroToOne ? 1 : -1, 0);
+            commandList.ClearDepthStencil(RenderAPI.Instance.IsDepthRangeZeroToOne ? 1 : -1, 0);
 
 
             foreach (var reference in entityFilter.Entities)

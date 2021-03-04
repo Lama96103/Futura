@@ -32,6 +32,9 @@ namespace Futura.Engine.Core
         {
             timeSys = Context.RegisterSubSystem<TimeSystem>();
             Context.RegisterSubSystem<LogSystem>();
+            LogView logView = new LogView();
+
+
             Context.RegisterSubSystem<InputSystem>();
             Context.RegisterSubSystem<WorldSystem>();
             Context.RegisterSubSystem<RenderSystem>();
@@ -41,7 +44,8 @@ namespace Futura.Engine.Core
 
             // Init some UI elements
             UIController.Instance.Register(new MainMenuView());
-            UIController.Instance.Register(new LogView());
+            UIController.Instance.Register(logView);
+            UIController.Instance.Register(new SceneView());
 
 
             // Init singleton systems

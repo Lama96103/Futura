@@ -21,6 +21,7 @@ namespace Futura.Engine.Core
 
         public double DeltaTime { get => deltaTime; }
         public double DeltaTimeSmoothed { get => deltaTimeSmoothed; }
+        public double FPS { get => 1000.0 / DeltaTime; }
         public TimeSpan TotalTime { get => totalTime.Elapsed; }
 
         // The delta times are in ms

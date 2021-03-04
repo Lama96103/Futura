@@ -35,21 +35,21 @@ namespace Futura.Engine.Components
             return Matrix4x4.CreateLookAt(position, lookAt, up);
         }
 
-        public Matrix4x4 GetProjection(Transform transform)
+        public Matrix4x4 GetProjection(Transform transform, uint width, uint height)
         {
             if(Projection == ProjectionType.Perspective)
             {
-                return Matrix4x4.CreatePerspectiveFieldOfView(FieldOfView.ToRadians(), Core.Window.Instance.AspectRatio, nearPlane, farPlane);
+                return Matrix4x4.CreatePerspectiveFieldOfView(FieldOfView.ToRadians(), (float)width / (float)height, nearPlane, farPlane);
             }
             else
             {
-                return Matrix4x4.CreateOrthographic(Core.Window.Instance.Width, Core.Window.Instance.Height, nearPlane, farPlane);
+                return Matrix4x4.CreateOrthographic((float)width, (float)height, nearPlane, farPlane);
             }
         }
 
-        public Matrix4x4 GetViewProjectionMatrix(Transform transform)
+        public Matrix4x4 GetViewProjectionMatrix(Transform transform, uint width, uint height)
         {
-            return GetView(transform) * GetProjection(transform);
+            return GetView(transform) * GetProjection(transform, width, height);
         }
     }
 }

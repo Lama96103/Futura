@@ -22,6 +22,7 @@ namespace Futura.Engine.Core
     public sealed class Window : Singleton<Window>
     {
         internal Sdl2Window Handle { get; private set; } = null;
+        public event EventHandler<WindowResizedEventArgs> WindowResized;
 
         /// <summary>
         /// Gets the Width of the window
@@ -63,11 +64,29 @@ namespace Futura.Engine.Core
             };
 
             Handle = VeldridStartup.CreateWindow(ref createInfo);
+            Handle.Resized += Handle_Resized;
+        }
+
+        private void Handle_Resized()
+        {
+            WindowResized?.Invoke(this, new WindowResizedEventArgs((uint)Handle.Width, (uint)Handle.Height));
         }
 
         public InputSnapshot PumpEvents()
         {
             return Handle.PumpEvents();
+        }
+    }
+
+    public class WindowResizedEventArgs : EventArgs
+    {
+        public uint Width { get; init; }
+        public uint Height { get; init; }
+
+        public WindowResizedEventArgs(uint width, uint height)
+        {
+            this.Width = width;
+            this.Height = height;
         }
     }
 }

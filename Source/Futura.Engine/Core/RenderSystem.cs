@@ -25,11 +25,16 @@ namespace Futura.Engine.Core
         private CommandList diffuseCommandList;
         private CommandList uiCommandList;
 
+        bool isWindowResized = false;
+        uint newWindowWidth = 0;
+        uint newWindowHeight = 0;
+
         internal override void Init()
         {
             renderAPI = new RenderAPI(this.Context, Window.Instance);
             resolutionWidth = Window.Instance.Width;
             resolutionHeight = Window.Instance.Height;
+            Window.Instance.WindowResized += WindowResized;
 
             deviceResourceCache = new DeviceResourceCache(renderAPI.Factory);
 
@@ -46,8 +51,22 @@ namespace Futura.Engine.Core
 
         }
 
+        private void WindowResized(object sender, WindowResizedEventArgs e)
+        {
+            isWindowResized = true;
+            newWindowHeight = e.Height;
+            newWindowWidth = e.Width;
+        }
+
         internal override void Tick(double deltaTime)
         {
+            if (isWindowResized)
+            {
+                isWindowResized = false;
+                renderAPI.GraphicAPI.ResizeMainWindow(newWindowWidth, newWindowHeight);
+                ImGuiController.Instance.WindowResized((int)newWindowWidth, (int)newWindowHeight);
+            }
+
             MainPass();
             ImGuiPass(deltaTime);
             renderAPI.SwapBuffers();
@@ -59,7 +78,6 @@ namespace Futura.Engine.Core
             ImGuiController.Instance.Update((float)(deltaTime / 1000), Context.GetSubSystem<InputSystem>().Snapshot);
 
             UserInterface.UIController.Instance.Tick();
-
 
             uiCommandList.PushDebugGroup("Pass_ImGui");
             uiCommandList.Begin();
