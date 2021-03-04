@@ -6,23 +6,18 @@ namespace Futura.ECS
 {
     public abstract class EcsSystem
     {
-        public uint ExecutionOrder { get; set; } = 100;
+        public uint ExecutionOrder { get; private set; } = 100;
         protected EcsWorld World { get; private set; } = null;
 
-        internal void Setup(EcsWorld world)
+        internal void Setup(EcsWorld world, uint execOrder)
         {
             this.World = world;
+            this.ExecutionOrder = execOrder;
             OnSetup();
         }
-        internal void PreInit() { OnPreInit(); }
-        internal void Init() { OnInit(); }
-        internal void Update() { OnUpdate(); }
-        internal void Draw() { OnDraw(); }
 
-        protected virtual void OnSetup() { }
-        protected virtual void OnPreInit() { }
-        protected virtual void OnInit() { }
-        protected virtual void OnUpdate() { }
-        protected virtual void OnDraw() { }
+        public virtual void OnSetup() { }
+        public virtual void OnInit() { }
+        public virtual void OnTick(double deltaTime) { }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Futura.Engine.Settings
 {
+    [Name("Asset Handling")]
     public class AssetSettings
     {
         [Name("Automaticall reimport assets")]

@@ -63,5 +63,26 @@ namespace Futura.Engine
                 return md5Hash.ComputeHash(data);
             }
         }
+
+        public static string UpperCaseSpace(string input)
+        {
+            StringBuilder builder = new StringBuilder(input.Length);
+            char[] chars = input.ToCharArray();
+            for (int i = 0; i < chars.Length; i++)
+            {
+                if(i == 0)
+                {
+                    builder.Append(chars[i]);
+                    continue;
+                }
+
+                if (char.IsUpper(chars[i]))
+                {
+                    builder.Append(' ');
+                }
+                builder.Append(chars[i]);
+            }
+            return builder.ToString();
+        }
     }
 }

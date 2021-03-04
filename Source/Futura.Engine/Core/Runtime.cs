@@ -42,7 +42,6 @@ namespace Futura.Engine.Core
             // Init some UI elements
             UIController.Instance.Register(new MainMenuView());
             UIController.Instance.Register(new LogView());
-            UIController.Instance.Register(new SettingView(Settings, "Engine"));
 
 
             // Init singleton systems

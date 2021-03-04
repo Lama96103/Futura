@@ -12,6 +12,11 @@ namespace Futura.Engine.UserInterface
 {
     public sealed class LogView : View
     {
+        private string txt_WindowName;
+        private string txt_LogChild;
+        private string txt_ClearButton;
+        
+
         private static readonly Vector4 DebugColor = new Vector4(0.8f);
         private static readonly Vector4 InfoColor = new Vector4(1);
         private static readonly Vector4 WarningColor = new Vector4(1, 1, 0, 1);
@@ -29,10 +34,17 @@ namespace Futura.Engine.UserInterface
             Core.LogSystem.OnLogReceived += Logger_OnLogReceived;
         }
 
+        public override void Init()
+        {
+            txt_WindowName = $"Log View##{ID}";
+            txt_LogChild = $"LogView_Messages##{ID}";
+            txt_ClearButton = $"Clear##{ID}";
+        }
+
         public override void Tick()
         {
-            ImGui.SetWindowSize(new Vector2(200, 50));
-            ImGui.Begin("Log View##" + ID);
+            SetInitalWindowSize(200, 100);
+            ImGui.Begin(txt_WindowName, ref isOpen);
 
             if (ImGui.Checkbox("Error", ref ShowError)) { }
             ImGui.SameLine();
@@ -42,12 +54,12 @@ namespace Futura.Engine.UserInterface
             ImGui.SameLine();
             if (ImGui.Checkbox("Debug", ref ShowDebug)) { }
             ImGui.SameLine();
-            if (ImGui.Button("Clear"))
+            if (ImGui.Button(txt_ClearButton))
             {
                 messages.Clear();
             }
 
-            ImGui.BeginChild("LogView_Messages", new Vector2(0.1f, 0.1f), true);
+            ImGui.BeginChild(txt_LogChild, new Vector2(0.1f, 0.1f), true);
 
             foreach (var m in messages)
             {
@@ -81,6 +93,11 @@ namespace Futura.Engine.UserInterface
             ImGui.EndChild();
 
             ImGui.End();
+        }
+
+        public override void OnDestroy()
+        {
+            Core.LogSystem.OnLogReceived -= Logger_OnLogReceived;
         }
 
         private void Logger_OnLogReceived(object sender, LogEventArgs e)

@@ -25,8 +25,8 @@ namespace Futura.Engine.Core
         private void UpdateWorldBuffer()
         {
             var cameraEntity = cameraFilter.Entities.ElementAt(0);
-            Transform transform = cameraEntity.Components[0] as Transform;
-            Camera camera = cameraEntity.Components[1] as Camera;
+            Transform transform = cameraEntity.GetComponent<Transform>();
+            Camera camera = cameraEntity.GetComponent<Camera>();
 
             WorldBuffer world = new WorldBuffer();
             world.Projection = camera.GetProjection(transform);

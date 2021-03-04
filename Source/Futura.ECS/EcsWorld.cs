@@ -10,7 +10,6 @@ namespace Futura.ECS
 {
     public class EcsWorld
     {
-
         [JsonProperty] private int entityIndex = 0;
 
         [JsonIgnore] private int EntityIndex
@@ -24,14 +23,18 @@ namespace Futura.ECS
 
         [JsonProperty] public List<Entity> Entities { get; } = new List<Entity>();
         [JsonProperty] private List<IComponentManager> ComponentManagers = new List<IComponentManager>();
-
         [JsonIgnore] private List<EcsSystem> EcsSystems = new List<EcsSystem>();
+        [JsonIgnore] private List<EcsFilter> cachedFilters = new List<EcsFilter>();
 
         [JsonIgnore] private readonly object @lock = new object();
 
         public EcsWorld() { }
 
         #region Entity Handling
+        /// <summary>
+        /// Creates a new empty entity
+        /// </summary>
+        /// <returns></returns>
         public Entity CreateEntity()
         {
             lock (@lock)
@@ -41,6 +44,10 @@ namespace Futura.ECS
                 return entity;
             }
         }
+        /// <summary>
+        /// Destorys the entity and delete all its components
+        /// </summary>
+        /// <param name="entity"></param>
         public void DestroyEntity(Entity entity)
         {
             if (entity == null || !entity.IsValid) throw new EntityNotValidException();
@@ -53,7 +60,10 @@ namespace Futura.ECS
                 Entities.Remove(entity);
             }
         }
-        public void RefreshReferences()
+        /// <summary>
+        /// Sets for all entities this world
+        /// </summary>
+        private void RefreshReferences()
         {
             foreach(var entity in Entities)
             {
@@ -115,6 +125,11 @@ namespace Futura.ECS
         #endregion
 
         #region EcsSystem Handling
+        /// <summary>
+        /// Gets the system
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public T GetSystem<T>() where T : EcsSystem
         {
             foreach (EcsSystem system in EcsSystems)
@@ -122,31 +137,160 @@ namespace Futura.ECS
             return null;
         }
 
-        public void RegisterSystem(EcsSystem system)
+        /// <summary>
+        /// Registers a new system
+        /// </summary>
+        /// <param name="system"></param>
+        public void RegisterSystem(EcsSystem system, int executionOrder)
         {
-            EcsSystems.Add(system);
-            system.Setup(this);
+            int index = 0;
+            for(int i = 0; i < EcsSystems.Count; i++)
+            {
+                if (executionOrder < EcsSystems[i].ExecutionOrder) index = i;
+                else break;
+            }
+
+            EcsSystems.Insert(index, system);
+            system.Setup(this, (uint)index);
         }
 
         public void Init()
         {
-            foreach (EcsSystem system in EcsSystems.OrderBy(i => i.ExecutionOrder))
-                system.PreInit();
-            foreach (EcsSystem system in EcsSystems.OrderBy(i => i.ExecutionOrder))
-                system.Init();
+            foreach (EcsSystem system in EcsSystems)
+                system.OnInit();
         }
 
-        public void Update()
+        public void Tick(double deltaTime)
         {
-            foreach (EcsSystem system in EcsSystems.OrderBy(i => i.ExecutionOrder))
-                system.Update();
-        }
-
-        public void Draw()
-        {
-            foreach (EcsSystem system in EcsSystems.OrderBy(i => i.ExecutionOrder))
-                system.Draw();
+            foreach (EcsSystem system in EcsSystems)
+                system.OnTick(deltaTime);
         }
         #endregion
+
+        public EcsFilter CreateFilter<T1>() where T1 : IComponent
+        {
+            Type[] components = new Type[] { typeof(T1) };
+
+            // Check if the filter already Exists
+            foreach(EcsFilter filter in cachedFilters)
+            {
+                Type[] filterComp = filter.Components;
+                if (components.Length != filterComp.Length) continue;
+                bool areEqual = true;
+                for (int i = 0; i < components.Length; i++)
+                {
+                    if (!filterComp.Contains(components[i]))
+                    {
+                        areEqual = false;
+                        break; ;
+                    }
+                }
+
+                if (areEqual)
+                {
+                    return filter;
+                }
+            }
+
+            EcsFilter newFilter = new EcsFilter(this, components);
+            cachedFilters.Add(newFilter);
+            return newFilter;
+        }
+
+        public EcsFilter CreateFilter<T1, T2>() where T1 : IComponent where T2 : IComponent
+        {
+            Type[] components = new Type[] { typeof(T1), typeof(T2) };
+
+            // Check if the filter already Exists
+            foreach (EcsFilter filter in cachedFilters)
+            {
+                Type[] filterComp = filter.Components;
+                if (components.Length != filterComp.Length) continue;
+                bool areEqual = true;
+                for (int i = 0; i < components.Length; i++)
+                {
+                    if (!filterComp.Contains(components[i]))
+                    {
+                        areEqual = false;
+                        break; ;
+                    }
+                }
+
+                if (areEqual)
+                {
+                    return filter;
+                }
+            }
+
+            EcsFilter newFilter = new EcsFilter(this, components);
+            cachedFilters.Add(newFilter);
+            return newFilter;
+        }
+
+        public EcsFilter CreateFilter<T1, T2, T3>() where T1 : IComponent where T2 : IComponent where T3 : IComponent
+        {
+            Type[] components = new Type[] { typeof(T1), typeof(T2), typeof(T3) };
+
+            // Check if the filter already Exists
+            foreach (EcsFilter filter in cachedFilters)
+            {
+                Type[] filterComp = filter.Components;
+                if (components.Length != filterComp.Length) continue;
+                bool areEqual = true;
+                for (int i = 0; i < components.Length; i++)
+                {
+                    if (!filterComp.Contains(components[i]))
+                    {
+                        areEqual = false;
+                        break;
+                    }
+                }
+
+                if (areEqual)
+                {
+                    return filter;
+                }
+            }
+
+            EcsFilter newFilter = new EcsFilter(this, components);
+            cachedFilters.Add(newFilter);
+            return newFilter;
+        }
+
+        public EcsFilter CreateFilter(Type[] components) 
+        {
+            foreach(Type c in components)
+            {
+                if(c.GetInterface("IComponent") == null)
+                {
+                    throw new Exception("No Component TSype");
+                }
+            }
+
+            // Check if the filter already Exists
+            foreach (EcsFilter filter in cachedFilters)
+            {
+                Type[] filterComp = filter.Components;
+                if (components.Length != filterComp.Length) continue;
+                bool areEqual = true;
+                for (int i = 0; i < components.Length; i++)
+                {
+                    if (!filterComp.Contains(components[i]))
+                    {
+                        areEqual = false;
+                        break;
+                    }
+                }
+
+                if (areEqual)
+                {
+                    return filter;
+                }
+            }
+
+            EcsFilter newFilter = new EcsFilter(this, components);
+            cachedFilters.Add(newFilter);
+            return newFilter;
+        }
     }
 }

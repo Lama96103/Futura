@@ -21,30 +21,28 @@ namespace Futura.Engine.UserInterface
                     ImGui.Separator();
                   
                     
-                    if (ImGui.MenuItem("Editor Settings"))
-                    {
-                        // UIController.Instance.Register(new SettingView(EditorApp.Instance.SettingsController, "Editor"));
-                    }
+                    
                     ImGui.EndMenu();
                 }
 
-            
-
-              
-
-                if (ImGui.BeginMenu("Debug"))
+                if (ImGui.BeginMenu("Options"))
                 {
-                    if (ImGui.MenuItem("Log Assemblies"))
+                    if (ImGui.MenuItem("Engine Settings"))
                     {
-                        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-                        {
-                            Console.WriteLine(assembly.FullName);
-                        }
+                        UIController.Instance.Register(new SettingView(Core.Runtime.Instance.Settings, "Engine"));
                     }
+
                     ImGui.EndMenu();
                 }
 
-            
+                if (ImGui.BeginMenu("Window"))
+                {
+                    if (ImGui.MenuItem("Logs")) UIController.Instance.Register(new LogView());
+
+                    ImGui.EndMenu();
+                }
+
+
 
                 ImGui.EndMainMenuBar();
             }

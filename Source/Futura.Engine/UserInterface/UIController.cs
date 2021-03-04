@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,7 +19,10 @@ namespace Futura.Engine.UserInterface
         internal void Tick()
         {
             foreach (View view in toRemove)
+            {
+                view.OnDestroy();
                 views.Remove(view);
+            }
             toRemove.Clear();
 
             foreach (View view in toAdd)
@@ -29,7 +33,12 @@ namespace Futura.Engine.UserInterface
             toAdd.Clear();
 
             foreach (View view in views)
-                view.Tick();
+            {
+                if (view.IsOpen)
+                    view.Tick();
+                else
+                    toRemove.Add(view);
+            }
         }
 
   
@@ -57,8 +66,17 @@ namespace Futura.Engine.UserInterface
     {
         public string ID { get; set; } = "empty";
 
+        protected bool isOpen = true;
+        public bool IsOpen { get => isOpen; set => isOpen = value; }
+
         public virtual void Init() { }
 
         public abstract void Tick();
+        public virtual void OnDestroy() { }
+
+        protected void SetInitalWindowSize(float width, float height)
+        {
+            ImGuiNET.ImGui.SetNextWindowSize(new Vector2(width, height), ImGuiNET.ImGuiCond.Once);
+        }
     }
 }

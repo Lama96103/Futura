@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Futura.ECS
@@ -17,29 +18,27 @@ namespace Futura.ECS
         {
             get => entityReferences.Where(e => e.IsComplete);
         }
+        public Type[] Components
+        {
+            get => components;
+        }
 
-        public EcsFilter(EcsWorld world, IComponent[] components)
+        internal EcsFilter(EcsWorld world, Type[] components)
         {
             this.world = world;
 
-            List<Type> types = new List<Type>();
-
-            foreach(var com in components)
-            {
-                if (!types.Contains(com.GetType())) types.Add(com.GetType());
-            }
-            this.components = types.ToArray();
+            this.components = components;
 
 
             foreach(Type t in this.components)
             {
-                var attachEventHandlerMethod = typeof(EcsFilter).GetMethod("AttachEventHandler");
-                var attachEventHandler = attachEventHandlerMethod.MakeGenericMethod(t);
+                MethodInfo attachEventHandlerMethod = typeof(EcsFilter).GetMethod("AttachEventHandler", BindingFlags.Instance | BindingFlags.NonPublic);
+                MethodInfo attachEventHandler = attachEventHandlerMethod.MakeGenericMethod(t);
                 attachEventHandler.Invoke(this, null);
             }
         }
 
-        public void AttachEventHandler<T>() where T : class, IComponent
+        private void AttachEventHandler<T>() where T : class, IComponent
         {
             ComponentManager<T> pool = world.GetPool<T>();
             pool.ComponentCreated += (object sender, ComponentEventArgs<T> e) => 
@@ -167,7 +166,7 @@ namespace Futura.ECS
             }
         }
 
-        private int GetComponentIndex(Type type)
+        public int GetComponentIndex(Type type)
         {
             int index = -1;
             for (int i = 0; i < components.Length; i++)

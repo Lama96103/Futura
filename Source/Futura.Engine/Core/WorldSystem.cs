@@ -1,4 +1,5 @@
-﻿using Futura.Engine.Components;
+﻿using Futura.ECS;
+using Futura.Engine.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace Futura.Engine.Core
 {
     public class WorldSystem : SubSystem
     {
-        public ECS.EcsWorld World { get; private set; }
+        public EcsWorld World { get; private set; }
 
         internal override void Init()
         {
-            World = new ECS.EcsWorld();
+            World = new EcsWorld();
 
             var entity = World.CreateEntity();
             entity.GetComponent<Transform>();
@@ -29,7 +30,7 @@ namespace Futura.Engine.Core
 
         internal override void Tick(double deltaTime)
         {
-            World.Update();
+            World.Tick(deltaTime);
         }
     }
 }

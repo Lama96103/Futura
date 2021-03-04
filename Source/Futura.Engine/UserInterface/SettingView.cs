@@ -10,10 +10,17 @@ namespace Futura.Engine.UserInterface
 {
     class SettingView : View
     {
+        private string txt_WindowName;
+        private string txt_ChildSelector;
+        private string txt_ChildSettings;
+        private string txt_CloseButton;
+        private string txt_SaveButton;
+
         private SettingsController settingsController;
         private string name;
 
         private bool didChanges = false;
+        object selected = null;
 
         public SettingView(SettingsController settingsController, string name)
         {
@@ -21,37 +28,44 @@ namespace Futura.Engine.UserInterface
             this.name = name;
         }
 
-        object selected = null;
+        public override void Init()
+        {
+            txt_WindowName = $"{name} Settings##{ID}";
+            txt_ChildSelector = $"Selector##{ID}";
+            txt_ChildSettings = $"Setting##{ID}";
+            txt_CloseButton = $"Close##{ID}";
+            txt_SaveButton = $"Save##{ID}";
+        }
 
-      
         public override void Tick()
         {
             ImGuiWindowFlags flags = ImGuiWindowFlags.None;
             if (didChanges)
-            {
                 flags = ImGuiWindowFlags.UnsavedDocument;
-            }
-            ImGui.Begin(name + " Settings", flags);
+
+            SetInitalWindowSize(350, 200);
+            ImGui.Begin(txt_WindowName, ref isOpen, flags);
             List<object> settingCategories = settingsController.GetAll();
 
             ImGui.Columns(2);
             ImGui.SetColumnWidth(0, 200);
-            ImGui.BeginChild("selector");
+            ImGui.BeginChild(txt_ChildSelector);
             foreach (var obj in settingCategories)
             {
-                if (ImGui.Selectable(obj.GetType().Name, obj == selected))
+                string name = Helper.UpperCaseSpace(obj.GetType().Name.Replace("Settings", ""));
+                if (ImGui.Selectable(name, obj == selected))
                 {
                     selected = obj;
                 }
             }
-            if (ImGui.Button("Close##SettingView"))
+            if (ImGui.Button(txt_CloseButton))
             {
                 UIController.Instance.Unregister(this);
             }
             ImGui.EndChild();
 
             ImGui.NextColumn();
-            ImGui.BeginChild("settingsdetails");
+            ImGui.BeginChild(txt_ChildSettings);
 
             if (selected != null)
             {
@@ -70,7 +84,7 @@ namespace Futura.Engine.UserInterface
                     }
                 }
 
-                if (ImGui.Button("Save##SettingView"))
+                if (ImGui.Button(txt_SaveButton))
                 {
                     settingsController.Save(selected);
                     didChanges = false;

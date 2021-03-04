@@ -1,4 +1,5 @@
-﻿using Futura.Engine.Rendering;
+﻿using Futura.ECS;
+using Futura.Engine.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +19,8 @@ namespace Futura.Engine.Core
         private int resolutionWidth;
         private int resolutionHeight;
 
-        private ECS.EcsFilter entityFilter;
-        private ECS.EcsFilter cameraFilter;
+        private EcsFilter entityFilter;
+        private EcsFilter cameraFilter;
 
         private CommandList diffuseCommandList;
         private CommandList uiCommandList;
@@ -32,9 +33,9 @@ namespace Futura.Engine.Core
 
             deviceResourceCache = new DeviceResourceCache(renderAPI.Factory);
 
-            ECS.EcsWorld world = Context.GetSubSystem<WorldSystem>().World;
-            entityFilter = new ECS.EcsFilter(world, new ECS.IComponent[] { new Components.Transform(), new Components.MeshFilter() });
-            cameraFilter = new ECS.EcsFilter(world, new ECS.IComponent[] { new Components.Transform(), new Components.Camera() });
+            EcsWorld world = Context.GetSubSystem<WorldSystem>().World;
+            entityFilter = world.CreateFilter<Components.Transform, Components.MeshFilter>();
+            cameraFilter = world.CreateFilter<Components.Transform, Components.Camera>();
 
             diffuseCommandList = renderAPI.GenerateCommandList();
             uiCommandList = renderAPI.GenerateCommandList();
