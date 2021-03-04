@@ -1,4 +1,5 @@
-﻿using ImGuiNET;
+﻿using Futura.Engine.Resources;
+using ImGuiNET;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
@@ -17,7 +18,7 @@ namespace Futura.Engine.UserInterface.Properties
             { typeof(Vector2),  new Vector2Serializer()},
             { typeof(Vector3),  new Vector3Serializer()},
             { typeof(Quaternion),  new QuaternionSerializer()},
-            //{ typeof(Guid), new GuidSerializer() },
+            { typeof(Mesh), new AssetSerializer<Mesh>() },
             { typeof(string), new StringSerializer() } //,
             // { typeof(Color), new ColorSerializer() }
         };

@@ -11,6 +11,10 @@ namespace Futura.Engine.UserInterface
 {
     public class SceneView : View
     {
+        private string txt_WindowName;
+        private string txt_SceneChild;
+        private string txt_OverlayChild;
+
         private IntPtr colorImagePointer = IntPtr.Zero;
 
         private Vector2 imageSize = Vector2.Zero;
@@ -23,6 +27,11 @@ namespace Futura.Engine.UserInterface
             renderSystem = Runtime.Instance.Context.GetSubSystem<RenderSystem>();
             timeSystem = Runtime.Instance.Context.GetSubSystem<TimeSystem>();
             colorImagePointer = ImGuiController.Instance.GetOrCreateImGuiBinding(renderSystem.DiffuseFrameBuffer.ColorTexture.Handle);
+
+            txt_WindowName = $"Scene##{ID}";
+            txt_SceneChild = $"GameRender##{ID}";
+            txt_OverlayChild = $"PerformanceOverlay##{ID}";
+
         }
 
         public override void Tick()
@@ -31,10 +40,10 @@ namespace Futura.Engine.UserInterface
             ImGuiWindowFlags flags = ImGuiWindowFlags.AlwaysUseWindowPadding | ImGuiWindowFlags.MenuBar;
 
 
-            ImGui.Begin("Scene##" + ID, flags);
+            ImGui.Begin(txt_WindowName, flags);
             ImGui.PopStyleVar();
 
-            ImGui.BeginChild("GameRender");
+            ImGui.BeginChild(txt_SceneChild);
 
             if (imageSize != ImGui.GetWindowSize())
             {
@@ -56,7 +65,7 @@ namespace Futura.Engine.UserInterface
             ImGui.SetCursorPos(ImGui.GetCursorStartPos() + new Vector2(5));
 
             ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(1, 1, 1, 0.5f));
-            ImGui.BeginChild("performanceoverlay", new Vector2(260, 130), false, ImGuiWindowFlags.NoDecoration);
+            ImGui.BeginChild(txt_OverlayChild, new Vector2(260, 130), false, ImGuiWindowFlags.NoDecoration);
 
 
             ImGui.LabelText("API", renderSystem.API.CurrentAPI);

@@ -14,6 +14,7 @@ namespace Futura.Engine.Rendering
 
         public uint Width { get => Handle.Width; }
         public uint Height { get => Handle.Height; }
+        public PixelFormat Format { get => Handle.Format; }
 
 
         private Texture2D(ResourceFactory factory, TextureDescription desc, string name)

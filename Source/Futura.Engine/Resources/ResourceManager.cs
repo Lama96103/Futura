@@ -14,6 +14,7 @@ namespace Futura.Engine.Resources
         private DirectoryInfo rootDir;
 
         private Dictionary<Guid, Asset> loadedAssets = new Dictionary<Guid, Asset>();
+        public Dictionary<Guid, Asset>.ValueCollection LoadedAssets { get => loadedAssets.Values; }
 
         private List<Importer> importers = new List<Importer>();
 

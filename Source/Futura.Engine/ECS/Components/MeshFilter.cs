@@ -11,24 +11,7 @@ namespace Futura.Engine.Components
 {
     public class MeshFilter : IComponent
     {
-        [Asset(AssetType.Material)]
-        private Guid MaterialGuid;
-
-        [Asset(AssetType.Mesh)]
-        private Guid MeshGuid;
-
-
-        public Renderable Mesh;
-        public Material Material;
-    }
-
-    public class AssetAttribute : Attribute
-    {
-        public AssetType Asset { get; init; }
-
-        public AssetAttribute(AssetType assetType)
-        {
-            Asset = assetType;
-        }
+        public Mesh Mesh;
+        public Material Material = new Material();
     }
 }

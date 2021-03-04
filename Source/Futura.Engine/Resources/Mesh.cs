@@ -19,6 +19,12 @@ namespace Futura.Engine.Resources
 
         public override bool IsLoaded => renderable != null;
 
+        public int VertexCount { get => vertices.Length; }
+        public int IndexCount { get => indices.Length; }
+        public Bounds Bounds { get => bounds; }
+        public Renderable Renderable { get => renderable; }
+
+
         internal Mesh(Guid identifier, FileInfo path) : base(identifier, AssetType.Mesh, path)
         {
         }

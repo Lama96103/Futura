@@ -26,8 +26,9 @@ namespace Futura.Engine.Resources.Import
             }
 
             AssimpContext importer = new AssimpContext();
-            importer.SetConfig(new NormalSmoothingAngleConfig(66.0f));
-            Scene scene = importer.ImportFile(file.FullName);
+            //importer.SetConfig(new NormalSmoothingAngleConfig(66.0f));
+            //importer.SetConfig(new Assimp.Configs.)
+            Scene scene = importer.ImportFile(file.FullName, PostProcessSteps.Triangulate);
 
             if (!scene.HasMeshes)
             {

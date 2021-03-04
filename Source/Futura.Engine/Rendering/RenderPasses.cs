@@ -56,6 +56,8 @@ namespace Futura.Engine.Core
                 Transform transform = reference.GetComponent<Transform>();
                 MeshFilter filter = reference.GetComponent<MeshFilter>();
 
+                if (filter.Mesh == null || filter.Material == null) continue;
+                if (filter.Mesh.IsLoaded == false) continue;
 
                 ModelBuffer model = new ModelBuffer()
                 {
@@ -63,7 +65,7 @@ namespace Futura.Engine.Core
                     Color = new System.Numerics.Vector4(1.0f)
                 };
                 commandList.UpdateBuffer(modelBuffer, 0, model);
-                testRenderAble.Draw(commandList);
+                filter.Mesh.Renderable.Draw(commandList);
             }
 
 
