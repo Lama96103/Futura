@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,6 +47,11 @@ namespace Futura
         public static float ToDegree(this float val)
         {
             return ((float)(180 / System.Math.PI)) * val;
+        }
+
+        public static int GetIndex(Vector3 bounds, int x, int y, int z)
+        {
+            return (int)(x + (y * bounds.X) + (z * bounds.X * bounds.Y));
         }
     }
 }

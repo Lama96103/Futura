@@ -75,7 +75,6 @@ namespace Futura.Engine.UserInterface
             ImGui.LabelText("Draw Calls", Profiler.GetIndicator(Profiler.StatisticIndicator.DrawCall).ToString());
             ImGui.LabelText("Vertices", Profiler.GetIndicator(Profiler.StatisticIndicator.Vertex).ToString());
 
-
             ImGui.EndChild();
 
             ImGui.PopStyleColor();

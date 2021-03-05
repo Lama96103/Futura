@@ -33,7 +33,6 @@
     <None Remove="Rendering\Resources\ImGui\ImGui.vert.spv" />
     <None Remove="Rendering\Resources\Selection\Selection.frag.spv" />
     <None Remove="Rendering\Resources\Selection\Selection.vert.spv" />
-    <None Remove="Rendering\Resources\Textures\Colors.asset" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,7 +44,6 @@
     <EmbeddedResource Include="Rendering\Resources\ImGui\ImGui.vert.spv" />
     <EmbeddedResource Include="Rendering\Resources\Selection\Selection.frag.spv" />
     <EmbeddedResource Include="Rendering\Resources\Selection\Selection.vert.spv" />
-    <EmbeddedResource Include="Rendering\Resources\Textures\Colors.asset" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,6 +61,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Rendering\Resources\Models\" />
+    <Folder Include="Rendering\Resources\Textures\" />
     <Folder Include="UserInterface\Properties\" />
   </ItemGroup>
 

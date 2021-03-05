@@ -11,6 +11,7 @@ namespace Futura.Engine.Resources
     public class ResourceManager : Singleton<ResourceManager>
     {
         private const string MetaFileExtension = ".fMeta";
+        private const string AssetFileExtension = ".fAsset";
         private DirectoryInfo rootDir;
 
         private Dictionary<Guid, Asset> loadedAssets = new Dictionary<Guid, Asset>();
@@ -40,9 +41,17 @@ namespace Futura.Engine.Resources
             {
                 if (file.Extension == MetaFileExtension) continue;
 
-                string metaFilePath = file.FullName + MetaFileExtension;
-                if (File.Exists(metaFilePath)) LoadAsset(file, new FileInfo(metaFilePath), assetSettings.AutomaticCheckForFileChange);
-                else ImportAsset(file);
+                if(file.Extension == AssetFileExtension)
+                {
+                    ReadFuturaAsset(file);
+                }
+                else
+                {
+                    string metaFilePath = file.FullName + MetaFileExtension;
+                    if (File.Exists(metaFilePath)) LoadAsset(file, new FileInfo(metaFilePath), assetSettings.AutomaticCheckForFileChange);
+                    else ImportAsset(file);
+                }
+
             }
         }
 
@@ -75,8 +84,6 @@ namespace Futura.Engine.Resources
                         break;
                     case AssetType.Texture2d:
                         break;
-                    case AssetType.Material:
-                        break;
                     case AssetType.Mesh:
                         currentAsset = new Mesh(guid, asset);
                         break;
@@ -87,7 +94,6 @@ namespace Futura.Engine.Resources
                 currentAsset.Load();
             }
         }
-
         private void ImportAsset(FileInfo file)
         {
             foreach(Importer i in importers)
@@ -113,6 +119,37 @@ namespace Futura.Engine.Resources
             }   
         }
 
+        private void ReadFuturaAsset(FileInfo assetFile)
+        {
+            using (BinaryReader reader = new BinaryReader(assetFile.OpenRead()))
+            {
+                Guid guid = new Guid(reader.ReadBytes(16));
+                AssetType assetType = (AssetType)reader.ReadInt32();
+
+                Asset currentAsset = null;
+                switch (assetType)
+                {
+                    case AssetType.Unkown:
+                        break;
+                    case AssetType.Material:
+                        currentAsset = new Material(assetFile, guid);
+                        break;
+                }
+
+                currentAsset.Read(reader);
+            }
+        }
+
+        private void WriteFuturaAsset(Asset asset)
+        {
+            using (BinaryWriter writer = new BinaryWriter(asset.Path.Open(FileMode.OpenOrCreate)))
+            {
+                writer.Write(asset.Identifier.ToByteArray());
+                writer.Write((int)asset.AssetType);
+                asset.Write(writer);
+            }
+        }
+
         public T GetAsset<T>(Guid guid) where T : Asset
         {
             if (loadedAssets.ContainsKey(guid))
@@ -121,5 +158,24 @@ namespace Futura.Engine.Resources
             }
             else return null;
         }
+
+        public void CreateMaterial()
+        {
+            FileInfo[] files = rootDir.GetFiles();
+            string fileName = "Material" + AssetFileExtension;
+
+            
+
+
+            FileInfo filePath = new FileInfo(rootDir.FullName + fileName);
+
+
+
+            Material material = new Material(filePath, Guid.NewGuid());
+            loadedAssets.Add(material.Identifier, material);
+            WriteFuturaAsset(material);
+        }
+
+
     }
 }

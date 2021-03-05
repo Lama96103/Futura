@@ -39,8 +39,8 @@ namespace Futura.Engine.Rendering
 
         public Vertex(BinaryReader reader)
         {
-            Position = VectorExtension.Read(reader);
-            Normal = VectorExtension.Read(reader);
+            Position = VectorExtension.ReadVector3(reader);
+            Normal = VectorExtension.ReadVector3(reader);
             index = reader.ReadSingle();
             ambientOcculssion = reader.ReadSingle();
         }
@@ -66,8 +66,8 @@ namespace Futura.Engine.Rendering
 
         public void Read(BinaryReader reader)
         {
-            Position = VectorExtension.Read(reader);
-            Normal = VectorExtension.Read(reader);
+            Position = VectorExtension.ReadVector3(reader);
+            Normal = VectorExtension.ReadVector3(reader);
             index = reader.ReadSingle();
             ambientOcculssion = reader.ReadSingle();
         }

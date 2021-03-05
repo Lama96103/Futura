@@ -38,8 +38,8 @@ namespace Futura.Engine.Core
 
         public Bounds(BinaryReader reader)
         {
-            Center = VectorExtension.Read(reader);
-            Extends = VectorExtension.Read(reader);
+            Center = VectorExtension.ReadVector3(reader);
+            Extends = VectorExtension.ReadVector3(reader);
         }
 
 
