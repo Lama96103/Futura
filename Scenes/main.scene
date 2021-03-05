@@ -64,9 +64,7 @@
           "1": {
             "$type": "Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Mesh": "eb2475a1-18b3-4075-8452-db9e097bd46e",
-            "Material": {
-              "$type": "Futura.Engine.Rendering.Material, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-            }
+            "Material": "ab3369fc-7d44-49c9-9d90-a3d1dc3a3b16"
           }
         },
         "Type": "Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"

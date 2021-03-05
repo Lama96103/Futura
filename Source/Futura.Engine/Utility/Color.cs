@@ -13,6 +13,8 @@ namespace Futura
     {
         private Vector4 data;
 
+        public Vector4 RawData { get => data; set => data = value; }
+
         public float R { get => data.X; set => data.X = value; }
         public float G { get => data.Y; set => data.Y = value; }
         public float B { get => data.Z; set => data.Z = value; }

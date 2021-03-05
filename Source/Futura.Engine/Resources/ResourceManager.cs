@@ -137,6 +137,7 @@ namespace Futura.Engine.Resources
                 }
 
                 currentAsset.Read(reader);
+                loadedAssets.Add(currentAsset.Identifier, currentAsset);
             }
         }
 
@@ -163,11 +164,16 @@ namespace Futura.Engine.Resources
         {
             FileInfo[] files = rootDir.GetFiles();
             string fileName = "Material" + AssetFileExtension;
-
+            int index = 0;
+            while(files.Where(f=> f.Name == fileName).Count() > 0)
+            {
+                index++;
+                fileName = $"Material({index}){AssetFileExtension}";
+            }
             
 
 
-            FileInfo filePath = new FileInfo(rootDir.FullName + fileName);
+            FileInfo filePath = new FileInfo(rootDir.FullName + "\\" + fileName);
 
 
 

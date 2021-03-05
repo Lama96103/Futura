@@ -19,6 +19,7 @@ namespace Futura.Engine.UserInterface.Properties
             { typeof(Vector3),  new Vector3Serializer()},
             { typeof(Quaternion),  new QuaternionSerializer()},
             { typeof(Mesh), new AssetSerializer<Mesh>() },
+            { typeof(Material), new AssetSerializer<Material>() },
             { typeof(string), new StringSerializer() } //,
             // { typeof(Color), new ColorSerializer() }
         };

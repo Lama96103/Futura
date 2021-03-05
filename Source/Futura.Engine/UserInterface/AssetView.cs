@@ -26,6 +26,15 @@ namespace Futura.Engine.UserInterface
         public override void Tick()
         {
             ImGui.Begin("Asset View##" + ID, ImGuiWindowFlags.MenuBar);
+            if (ImGui.BeginMenuBar())
+            {
+                if (ImGui.MenuItem("Material"))
+                {
+                    manager.CreateMaterial();
+                }
+
+                ImGui.EndMenuBar();
+            }
 
 
             var allAssets = manager.LoadedAssets;

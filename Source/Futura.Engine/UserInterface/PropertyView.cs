@@ -140,7 +140,6 @@ namespace Futura.Engine.UserInterface
             }
         }
 
-
         private void DisplayAsset()
         {
             // Header
@@ -154,6 +153,7 @@ namespace Futura.Engine.UserInterface
             switch (asset.AssetType)
             {
                 case AssetType.Material:
+                    DisplayMaterial((Material)asset);
                     break;
                 case AssetType.Mesh:
                     DisplayMeshAsset((Mesh)asset);
@@ -220,6 +220,15 @@ namespace Futura.Engine.UserInterface
             float sizeY = (float)texture.Height / sizeX;
 
             ImGui.Image(imageSource, new Vector2((size.X - 10), sizeY));
+        }
+
+        private void DisplayMaterial(Material material)
+        {
+            Vector4 diffuseColor = material.DiffuseColor.RawData;
+            if(ImGui.ColorEdit4("Diffuse", ref diffuseColor, ImGuiColorEditFlags.Float))
+            {
+                material.DiffuseColor.RawData = diffuseColor;
+            }
         }
 
         public override void Tick()

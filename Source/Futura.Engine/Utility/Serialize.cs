@@ -37,7 +37,8 @@ namespace Futura.Engine.Utility
                 TypeNameHandling = TypeNameHandling.All,
                 Converters = new JsonConverter[] 
                 { 
-                    new AssetSerializer<Resources.Mesh>()
+                    new AssetSerializer<Resources.Mesh>(),
+                    new AssetSerializer<Resources.Material>()
                 },
                 CheckAdditionalContent = true
             };
