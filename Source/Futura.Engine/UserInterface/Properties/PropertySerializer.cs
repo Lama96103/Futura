@@ -24,12 +24,20 @@ namespace Futura.Engine.UserInterface.Properties
             // { typeof(Color), new ColorSerializer() }
         };
 
+        private static EnumSerializer enumSerializer = new EnumSerializer();
+
         public static PropertySerializer GetSerializer(Type type)
         {
             if(Serializer.TryGetValue(type, out PropertySerializer serializer))
             {
                 return serializer;
             }
+
+            if(type.BaseType == typeof(Enum))
+            {
+                return enumSerializer;
+            }
+
             return null;
         }
     }

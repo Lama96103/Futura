@@ -19,6 +19,7 @@ namespace Futura.Engine.UserInterface
 
         private Vector2 imageSize = Vector2.Zero;
 
+
         private RenderSystem renderSystem;
         private TimeSystem timeSystem;
 
@@ -48,9 +49,13 @@ namespace Futura.Engine.UserInterface
             if (imageSize != ImGui.GetWindowSize())
             {
                 imageSize = ImGui.GetWindowSize();
-                renderSystem.ResizeSceneRendering((uint)imageSize.X, (uint)imageSize.Y);
-
+                renderSystem.ResizeRenderResolution((uint)imageSize.X, (uint)imageSize.Y);
                 Log.Debug("Scene Size: " + imageSize.X + " " + imageSize.Y);
+            }
+
+            if (ImGuiController.Instance.ClearedCache)
+            {
+                colorImagePointer = ImGuiController.Instance.GetOrCreateImGuiBinding(renderSystem.DiffuseFrameBuffer.ColorTexture.Handle);
             }
 
             ImGui.Image(colorImagePointer, imageSize);
@@ -64,16 +69,26 @@ namespace Futura.Engine.UserInterface
         {
             ImGui.SetCursorPos(ImGui.GetCursorStartPos() + new Vector2(5));
 
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(1, 1, 1, 0.5f));
-            ImGui.BeginChild(txt_OverlayChild, new Vector2(260, 130), false, ImGuiWindowFlags.NoDecoration);
+            ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.5f, 0.5f, 1, 0.5f));
+            ImGui.BeginChild(txt_OverlayChild, new Vector2(200, 100), false, ImGuiWindowFlags.NoDecoration);
 
+            ImGui.Columns(2);
+            ImGui.Text("API");
+            ImGui.Text("FPS");
+            ImGui.Text("Delta");
+            ImGui.Text("Res");
+            ImGui.Text("Draw Calls");
+            ImGui.Text("Vertices");
 
-            ImGui.LabelText("API", renderSystem.API.CurrentAPI);
-            ImGui.LabelText("FPS", timeSystem.FPS.ToString("0.00"));
-            ImGui.LabelText("Delta", timeSystem.DeltaTime.ToString("0.00"));
-            ImGui.LabelText("Res", renderSystem.DiffuseFrameBuffer.Width + "x" + renderSystem.DiffuseFrameBuffer.Height);
-            ImGui.LabelText("Draw Calls", Profiler.GetIndicator(Profiler.StatisticIndicator.DrawCall).ToString());
-            ImGui.LabelText("Vertices", Profiler.GetIndicator(Profiler.StatisticIndicator.Vertex).ToString());
+            ImGui.NextColumn();
+
+            ImGui.Text(renderSystem.API.CurrentAPI);
+            ImGui.Text(timeSystem.FPS.ToString("0.00"));
+            ImGui.Text(timeSystem.DeltaTime.ToString("0.00"));
+            ImGui.Text(renderSystem.DiffuseFrameBuffer.Width + "x" + renderSystem.DiffuseFrameBuffer.Height);
+            ImGui.Text(Profiler.GetIndicator(Profiler.StatisticIndicator.DrawCall).ToString());
+            ImGui.Text(Profiler.GetIndicator(Profiler.StatisticIndicator.Vertex).ToString());
+
 
             ImGui.EndChild();
 

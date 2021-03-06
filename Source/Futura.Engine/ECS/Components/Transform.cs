@@ -1,4 +1,5 @@
 ﻿using Futura.ECS;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,29 +11,91 @@ namespace Futura.Engine.Components
 {
     public class Transform : IComponent
     {
-        public Vector3 Position = Vector3.Zero;
-        public Vector3 Scale = Vector3.One;
-        public Quaternion Rotation = Quaternion.Identity;
+        [JsonProperty] [SerializeField] [Name("Position")]
+        private Vector3 localPosition = Vector3.Zero;
+        [JsonProperty] [SerializeField] [Name("Rotation")]
+        private Quaternion localRotation = Quaternion.Identity;
+        [JsonProperty] [SerializeField] [Name("Scale")]
+        private Vector3 localScale = Vector3.One;
 
-        public Matrix4x4 CalculateModelMatrix()
+        [JsonIgnore] public Matrix4x4 LocalMatrix { get; private set; } = Matrix4x4.Identity;
+
+        [JsonIgnore]
+        public Vector3 Position
         {
-            return CalculateModelMatrix(Position, Rotation, Scale);
+            get
+            {
+                return localPosition;
+            }
+            set
+            {
+                if(localPosition != value)
+                {
+                    localPosition = value;
+                    UpdateTransform();
+                }
+            }
         }
+        [JsonIgnore] 
+        public Quaternion Rotation
+        {
+            get => localRotation;
+            set
+            {
+                if(localRotation != value)
+                {
+                    localRotation = value;
+                    UpdateTransform();
+                }
+            }
+        }
+        [JsonIgnore] 
+        public Vector3 Scale
+        {
+            get => localScale;
+            set
+            {
+                if (localScale != value)
+                {
+                    localScale = value;
+                    UpdateTransform();
+                }
+            }
+        }
+
 
         public Vector3 Forward()
         {
-            return Vector3.Transform(Vector3.UnitX, Rotation);
+            return Vector3.Transform(Vector3.UnitX, localRotation);
         }
 
         public Vector3 Right()
         {
-            return Vector3.Transform(Vector3.UnitZ, Rotation);
+            return Vector3.Transform(Vector3.UnitZ, localRotation);
         }
 
         public Vector3 Up()
         {
-            return Vector3.Transform(Vector3.UnitY, Rotation);
+            return Vector3.Transform(Vector3.UnitY, localRotation);
         }
+
+             
+        internal void UpdateTransform()
+        {
+            LocalMatrix = CalculateModelMatrix(localPosition, localRotation, localScale);
+        }
+
+
+        public void Translate(in Vector3 delta)
+        {
+            Position = localPosition + delta;
+        }
+
+        public void Rotate(in Quaternion delta)
+        {
+            Rotation = Quaternion.Normalize(Quaternion.Multiply(localRotation, delta));
+        }
+
 
 
         #region Static Functions

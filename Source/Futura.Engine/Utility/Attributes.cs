@@ -13,6 +13,15 @@ namespace Futura
     }
 
     /// <summary>
+    /// IF you apply this attribute to a private variable it will still get serialized in the editor
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Field)]
+    public class SerializeField : System.Attribute
+    {
+
+    }
+
+    /// <summary>
     /// Attribute will set the name of the field, property, class in the editor
     /// </summary>
     [AttributeUsage(AttributeTargets.All)]

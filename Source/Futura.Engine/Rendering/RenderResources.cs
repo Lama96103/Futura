@@ -14,8 +14,8 @@ namespace Futura.Engine.Core
 {
     partial class RenderSystem
     {
-        private uint sceneWidth = 1280;
-        private uint sceneHeight = 720;
+        private uint renderResolutionWidth = 1280;
+        private uint renderResolutionHeight = 720;
 
         private DeviceBuffer worldBuffer;
         private DeviceBuffer modelBuffer;
@@ -25,8 +25,6 @@ namespace Futura.Engine.Core
 
         private Pipeline diffusePipline;
 
-        private Renderable testRenderAble;
-
         private Rendering.Framebuffer diffuseFramebuffer;
         public Rendering.Framebuffer DiffuseFrameBuffer { get => diffuseFramebuffer; }
 
@@ -34,10 +32,7 @@ namespace Futura.Engine.Core
         {
             ResourceFactory factory = renderAPI.Factory;
 
-            Window window = Window.Instance;
-
-            diffuseFramebuffer = new Rendering.Framebuffer(1920, 1080);
-            diffuseFramebuffer.Load(factory);
+            RecreateRenderResources(1920, 1080);
 
             worldBuffer = factory.CreateBuffer(new BufferDescription((uint)Unsafe.SizeOf<WorldBuffer>(), BufferUsage.UniformBuffer | BufferUsage.Dynamic));
             modelBuffer = factory.CreateBuffer(new BufferDescription((uint)Unsafe.SizeOf<ModelBuffer>(), BufferUsage.UniformBuffer | BufferUsage.Dynamic));
@@ -67,31 +62,20 @@ namespace Futura.Engine.Core
             );
 
             diffusePipline = deviceResourceCache.GetPipline(ref pipelineDescription);
-
-
-
-            /// -------------- TESTING ONLY
-            /// 
-            testRenderAble = new Renderable();
-            Vertex[] vertices = new Vertex[]
-            {
-                new Vertex(-1, 0, 0, 0, 0, Vector3.UnitZ),
-                new Vertex(-1, 1, 0, 0, 0, Vector3.UnitZ),
-                new Vertex(1, 0, 0, 0, 0, Vector3.UnitZ)
-            };
-            uint[] indices = new uint[]
-            {
-                0, 1, 2
-            };
-
-            testRenderAble.Load(renderAPI, vertices, indices);
         }
 
-        public void ResizeSceneRendering(uint width, uint height)
+        private void RecreateRenderResources(uint width, uint height)
         {
-            // diffuseFramebuffer.Resize(width, height);
-            sceneWidth = width;
-            sceneHeight = height;
+            renderResolutionWidth = width;
+            renderResolutionHeight = height;
+
+
+            diffuseFramebuffer?.Unload();
+
+            ResourceFactory factory = renderAPI.Factory;
+
+            diffuseFramebuffer = new Rendering.Framebuffer(width, height);
+            diffuseFramebuffer.Load(factory);
         }
     }
 }

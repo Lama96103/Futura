@@ -49,8 +49,10 @@ namespace Futura.Engine.Rendering
 
         public void Unload()
         {
-            vertexBuffer.Dispose();
-            indexBuffer.Dispose();
+            RenderAPI.DisposeWhenIdle(vertexBuffer);
+            RenderAPI.DisposeWhenIdle(indexBuffer);
+            vertexBuffer = null;
+            indexBuffer = null;
 
             IsLoaded = false;
         }

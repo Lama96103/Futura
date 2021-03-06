@@ -10,48 +10,48 @@
           "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Futura.Engine.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
           "1": {
             "$type": "Futura.Engine.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Position": {
+            "localPosition": {
               "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
               "X": 0.0,
               "Y": 0.0,
               "Z": 0.0
             },
-            "Scale": {
-              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 1.0,
-              "Y": 1.0,
-              "Z": 1.0
-            },
-            "Rotation": {
+            "localRotation": {
               "$type": "System.Numerics.Quaternion, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
               "X": 0.0,
               "Y": 0.0,
               "Z": 0.0,
               "W": 1.0,
               "IsIdentity": true
+            },
+            "localScale": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 1.0,
+              "Y": 1.0,
+              "Z": 1.0
             }
           },
           "2": {
             "$type": "Futura.Engine.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Position": {
+            "localPosition": {
               "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
               "X": 0.0,
               "Y": 0.0,
               "Z": -5.0
             },
-            "Scale": {
-              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 1.0,
-              "Y": 1.0,
-              "Z": 1.0
-            },
-            "Rotation": {
+            "localRotation": {
               "$type": "System.Numerics.Quaternion, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
               "X": 0.0,
               "Y": 0.0,
               "Z": 0.0,
               "W": 1.0,
               "IsIdentity": true
+            },
+            "localScale": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 1.0,
+              "Y": 1.0,
+              "Z": 1.0
             }
           }
         },
@@ -76,7 +76,9 @@
           "2": {
             "$type": "Futura.Engine.Components.Camera, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Projection": 0,
-            "FieldOfView": 80.0
+            "FieldOfView": 123.0,
+            "NearPlane": 0.3,
+            "FarPlane": 1000.0
           }
         },
         "Type": "Futura.Engine.Components.Camera, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
@@ -93,7 +95,7 @@
           },
           "2": {
             "$type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Name": "Entity",
+            "Name": "Camera",
             "IsEnabled": true,
             "IsSelected": false
           }

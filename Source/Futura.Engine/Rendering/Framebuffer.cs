@@ -37,15 +37,11 @@ namespace Futura.Engine.Rendering
         {
             ColorTexture.Unload();
             DepthTexture.Unload();
-            Handle.Dispose();
-        }
+            RenderAPI.DisposeWhenIdle(Handle);
 
-        internal void Resize(uint width, uint height)
-        {
-            Unload();
-            this.Width = width;
-            this.Height = height;
-            Load(RenderAPI.Instance.Factory);
+            Handle = null;
+            ColorTexture = null;
+            DepthTexture = null;
         }
     }
 }

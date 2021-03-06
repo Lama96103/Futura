@@ -41,7 +41,8 @@ namespace Futura.Engine.Rendering
 
         public void Unload()
         {
-            Handle.Dispose();
+            RenderAPI.DisposeWhenIdle(Handle);
+            Handle = null;
         }
     }
 }

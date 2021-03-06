@@ -50,6 +50,7 @@ namespace Futura.Engine.Rendering
         private readonly List<IDisposable> _ownedResources = new List<IDisposable>();
         private int _lastAssignedID = 100;
 
+        public bool ClearedCache { get; private set; } = true;
 
         /// <summary>
         /// Initialized Imgui.NET
@@ -211,6 +212,8 @@ namespace Futura.Engine.Rendering
             _viewsById.Clear();
             _autoViewsByTexture.Clear();
             _lastAssignedID = 100;
+
+            ClearedCache = true;
         }
 
 
@@ -282,6 +285,7 @@ namespace Futura.Engine.Rendering
                 _frameBegun = false;
                 ImGui.Render();
                 RenderImDrawData(ImGui.GetDrawData(), cl);
+                ClearedCache = false;
             }
         }
 

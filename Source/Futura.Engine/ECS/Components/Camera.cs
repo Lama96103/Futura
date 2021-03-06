@@ -1,4 +1,5 @@
 ﻿using Futura.ECS;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,41 +16,50 @@ namespace Futura.Engine.Components
 
     public class Camera : IComponent
     {
-        // Optimize for only one calculation per frame
-
         public ProjectionType Projection = ProjectionType.Perspective;
         public float FieldOfView = 80f;
 
-        private float nearPlane = 0.3f;
-        private float farPlane = 1000.0f;
+        public float NearPlane = 0.3f;
+        public float FarPlane = 1000.0f;
+
+        bool IsMainRenderCamera = true;
+
+        [JsonIgnore][Ignore]
+        public Matrix4x4 ViewMatrix { get; private set; }
+
+        [JsonIgnore][Ignore]
+        public Matrix4x4 ProjectionMatrix { get; private set; }
+
+        [JsonIgnore][Ignore]
+        public Matrix4x4 ViewProjectionMatrix { get; private set; }
 
 
-        public Matrix4x4 GetView(Transform transform)
+        public void UpdatePosition(Transform transform, float width, float height)
         {
-            var position = transform.Position;
-            var lookAt = Vector3.Transform(Vector3.UnitZ, transform.Rotation);
-            var up = Vector3.Transform(Vector3.UnitY, transform.Rotation);
-
+            Vector3 position = transform.Position;
+            Vector3 lookAt = Vector3.Transform(Vector3.UnitZ, transform.Rotation);
             lookAt += position;
+            Vector3 up = Vector3.Transform(Vector3.UnitY, transform.Rotation);
 
-            return Matrix4x4.CreateLookAt(position, lookAt, up);
-        }
+            ViewMatrix = Matrix4x4.CreateLookAt(position, lookAt, up);
 
-        public Matrix4x4 GetProjection(Transform transform, uint width, uint height)
-        {
-            if(Projection == ProjectionType.Perspective)
+            if (NearPlane <= 0) NearPlane = 0.1f;
+            if (FarPlane <= 0) FarPlane = 0.1f;
+            if (NearPlane >= FarPlane) FarPlane += 0.1f;
+
+            if (Projection == ProjectionType.Perspective)
             {
-                return Matrix4x4.CreatePerspectiveFieldOfView(FieldOfView.ToRadians(), (float)width / (float)height, nearPlane, farPlane);
+                if (FieldOfView.ToRadians() <= 0) FieldOfView = 0.1f.ToDegree();
+                if (FieldOfView.ToRadians() >= Math.PI) FieldOfView = ((float)Math.PI - 0.1f).ToDegree();
+
+                ProjectionMatrix =  Matrix4x4.CreatePerspectiveFieldOfView(FieldOfView.ToRadians(), (float)width / (float)height, NearPlane, FarPlane);
             }
             else
             {
-                return Matrix4x4.CreateOrthographic((float)width, (float)height, nearPlane, farPlane);
+                ProjectionMatrix = Matrix4x4.CreateOrthographic((float)width, (float)height, NearPlane, FarPlane);
             }
-        }
 
-        public Matrix4x4 GetViewProjectionMatrix(Transform transform, uint width, uint height)
-        {
-            return GetView(transform) * GetProjection(transform, width, height);
+            ViewProjectionMatrix = ViewMatrix * ProjectionMatrix;
         }
     }
 }

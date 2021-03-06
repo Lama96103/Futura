@@ -64,8 +64,10 @@ namespace Futura.Engine.Core
 
             if (shouldLoadScene)
             {
-                shouldLoadScene = true;
+                shouldLoadScene = false;
                 Context.GetSubSystem<WorldSystem>().Load(sceneFile);
+                RuntimeHelper.Instance.SelectedAsset = null;
+                RuntimeHelper.Instance.SelectedEntity = null;
             }
 
 

@@ -101,9 +101,9 @@ namespace Futura.Engine.Rendering
         /// Disposes a graphics ressource safly when it not used anymore
         /// </summary>
         /// <param name="disposable"></param>
-        public void DisposeWhenIdle(IDisposable disposable)
+        public static void DisposeWhenIdle(IDisposable disposable)
         {
-            GraphicAPI.DisposeWhenIdle(disposable);
+            Instance.GraphicAPI.DisposeWhenIdle(disposable);
         }
     }
 }

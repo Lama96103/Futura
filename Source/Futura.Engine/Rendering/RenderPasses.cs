@@ -28,10 +28,12 @@ namespace Futura.Engine.Core
             Transform transform = cameraEntity.GetComponent<Transform>();
             Camera camera = cameraEntity.GetComponent<Camera>();
 
+            camera.UpdatePosition(transform, (float)renderResolutionWidth, (float)renderResolutionHeight);
+
             WorldBuffer world = new WorldBuffer();
-            world.Projection = camera.GetProjection(transform, sceneWidth, sceneHeight);
-            world.View = camera.GetView(transform);
-            world.ProjectionView = camera.GetViewProjectionMatrix(transform, sceneWidth, sceneHeight);
+            world.Projection = camera.ProjectionMatrix;
+            world.View = camera.ViewMatrix;
+            world.ProjectionView = camera.ViewProjectionMatrix;
             world.CameraPosition = transform.Position;
 
             renderAPI.GraphicAPI.UpdateBuffer(worldBuffer, 0, world);
@@ -61,7 +63,7 @@ namespace Futura.Engine.Core
 
                 ModelBuffer model = new ModelBuffer()
                 {
-                    Transform = transform.CalculateModelMatrix(),
+                    Transform = transform.LocalMatrix,
                     Color = new System.Numerics.Vector4(1.0f)
                 };
                 commandList.UpdateBuffer(modelBuffer, 0, model);

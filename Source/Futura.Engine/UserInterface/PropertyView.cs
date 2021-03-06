@@ -1,4 +1,5 @@
 ﻿using Futura.ECS;
+using Futura.Engine.Components;
 using Futura.Engine.Core;
 using Futura.Engine.ECS;
 using Futura.Engine.Rendering;
@@ -77,9 +78,10 @@ namespace Futura.Engine.UserInterface
 
                 ImGui.Text(component.GetType().Name);
 
-                var fields = component.GetType().GetFields();
+                var fields = component.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                 foreach (var f in fields)
                 {
+                    if (!f.IsPublic && f.GetCustomAttribute<SerializeField>() == null) continue;
                     if (f.GetCustomAttribute<IgnoreAttribute>() != null) continue;
                     var serializer = PropertySerializerHelper.GetSerializer(f.FieldType);
                     if (serializer == null)
@@ -89,8 +91,14 @@ namespace Futura.Engine.UserInterface
                     else
                     {
                         bool didChange = serializer.Serialize(component, f);
-                        //if (didChange)
+                        if (didChange)
+                        {
                             //EditorApp.Instance.SceneHasChanged = true;
+                            if(component.GetType() == typeof(Transform)){
+                                ((Transform)component).UpdateTransform();
+                            }
+
+                        }
                     }
                 }
 

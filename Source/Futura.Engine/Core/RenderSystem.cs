@@ -25,9 +25,8 @@ namespace Futura.Engine.Core
         private CommandList diffuseCommandList;
         private CommandList uiCommandList;
 
-        bool isWindowResized = false;
-        uint newWindowWidth = 0;
-        uint newWindowHeight = 0;
+        private Tuple<uint, uint> mainWindowResized = null;
+        private Tuple<uint, uint> renderResolutionResized = null;
 
         internal override void Init()
         {
@@ -48,23 +47,33 @@ namespace Futura.Engine.Core
             Load();
 
             ImGuiController.Instance.Init(renderAPI, resolutionWidth, resolutionHeight);
-
         }
 
         private void WindowResized(object sender, WindowResizedEventArgs e)
         {
-            isWindowResized = true;
-            newWindowHeight = e.Height;
-            newWindowWidth = e.Width;
+            mainWindowResized = new Tuple<uint, uint>(e.Width, e.Height);
+        }
+
+        public void ResizeRenderResolution(uint width, uint height)
+        {
+            renderResolutionResized = new Tuple<uint, uint>(width, height);
         }
 
         internal override void Tick(double deltaTime)
         {
-            if (isWindowResized)
+            if (mainWindowResized != null)
             {
-                isWindowResized = false;
-                renderAPI.GraphicAPI.ResizeMainWindow(newWindowWidth, newWindowHeight);
-                ImGuiController.Instance.WindowResized((int)newWindowWidth, (int)newWindowHeight);
+                renderAPI.GraphicAPI.ResizeMainWindow(mainWindowResized.Item1, mainWindowResized.Item2);
+                ImGuiController.Instance.WindowResized((int)mainWindowResized.Item1, (int)mainWindowResized.Item2);
+                ImGuiController.Instance.ClearCachedImageResources();
+                mainWindowResized = null;
+            }
+
+            if(renderResolutionResized != null)
+            {
+                RecreateRenderResources(renderResolutionResized.Item1, renderResolutionResized.Item2);
+                ImGuiController.Instance.ClearCachedImageResources();
+                renderResolutionResized = null;
             }
 
             if(entityFilter.IsDead || cameraFilter.IsDead)
@@ -76,6 +85,8 @@ namespace Futura.Engine.Core
 
             MainPass();
             ImGuiPass(deltaTime);
+
+            renderAPI.WaitForIdle();
             renderAPI.SwapBuffers();
         }
 
