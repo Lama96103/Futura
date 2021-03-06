@@ -100,13 +100,17 @@ namespace Futura
 {
     public static class Log
     {
-        private static LogSystem logger;
+        private static LogSystem logger = null;
         public static LogLevel Level { get; set; } = LogLevel.Debug;
 
 
 
         internal static void Init(LogSystem logger)
         {
+            if(Log.logger != null)
+            {
+                throw new Exception("Logger not Initilized");
+            }
             Log.logger = logger;
         }
 

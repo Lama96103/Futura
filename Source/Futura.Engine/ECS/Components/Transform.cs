@@ -11,16 +11,16 @@ namespace Futura.Engine.Components
 {
     public class Transform : IComponent
     {
-        [JsonProperty] [SerializeField] [Name("Position")]
+        [SerializeField] [Name("Position")]
         private Vector3 localPosition = Vector3.Zero;
-        [JsonProperty] [SerializeField] [Name("Rotation")]
+        [SerializeField] [Name("Rotation")]
         private Quaternion localRotation = Quaternion.Identity;
-        [JsonProperty] [SerializeField] [Name("Scale")]
+        [SerializeField] [Name("Scale")]
         private Vector3 localScale = Vector3.One;
 
         [JsonIgnore] public Matrix4x4 LocalMatrix { get; private set; } = Matrix4x4.Identity;
 
-        [JsonIgnore]
+
         public Vector3 Position
         {
             get
@@ -36,7 +36,7 @@ namespace Futura.Engine.Components
                 }
             }
         }
-        [JsonIgnore] 
+
         public Quaternion Rotation
         {
             get => localRotation;
@@ -49,7 +49,7 @@ namespace Futura.Engine.Components
                 }
             }
         }
-        [JsonIgnore] 
+
         public Vector3 Scale
         {
             get => localScale;
@@ -66,12 +66,12 @@ namespace Futura.Engine.Components
 
         public Vector3 Forward()
         {
-            return Vector3.Transform(Vector3.UnitX, localRotation);
+            return Vector3.Transform(Vector3.UnitZ, localRotation);
         }
 
         public Vector3 Right()
         {
-            return Vector3.Transform(Vector3.UnitZ, localRotation);
+            return Vector3.Transform(Vector3.UnitX, localRotation);
         }
 
         public Vector3 Up()

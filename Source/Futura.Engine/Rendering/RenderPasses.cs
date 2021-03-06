@@ -11,22 +11,34 @@ namespace Futura.Engine.Core
 {
     partial class RenderSystem
     {
+        public bool UseEditorCamera { get; set; } = true;
 
 
         private void MainPass()
         {
-            if (cameraFilter.Entities.Count() == 0) return;
-            UpdateWorldBuffer();
+            if (!UpdateWorldBuffer()) return;
 
 
             DiffusePass(diffuseCommandList);
         }
 
-        private void UpdateWorldBuffer()
+        private bool UpdateWorldBuffer()
         {
-            var cameraEntity = cameraFilter.Entities.ElementAt(0);
-            Transform transform = cameraEntity.GetComponent<Transform>();
-            Camera camera = cameraEntity.GetComponent<Camera>();
+            Transform transform = null;
+            Camera camera = null;
+
+            if (UseEditorCamera)
+            {
+                transform = EditorCamera.Instance.Transform;
+                camera = EditorCamera.Instance.Camera;
+            }
+            else
+            {
+                if (cameraFilter.Entities.Count() == 0) return false;
+                var cameraEntity = cameraFilter.Entities.ElementAt(0);
+                transform = cameraEntity.GetComponent<Transform>();
+                camera = cameraEntity.GetComponent<Camera>();
+            }
 
             camera.UpdatePosition(transform, (float)renderResolutionWidth, (float)renderResolutionHeight);
 
@@ -37,6 +49,8 @@ namespace Futura.Engine.Core
             world.CameraPosition = transform.Position;
 
             renderAPI.GraphicAPI.UpdateBuffer(worldBuffer, 0, world);
+
+            return true;
         }
 
         private void DiffusePass(CommandList commandList)

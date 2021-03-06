@@ -23,6 +23,8 @@ namespace Futura.Engine.UserInterface
         private RenderSystem renderSystem;
         private TimeSystem timeSystem;
 
+        private bool startedOnItem = false;
+
         public override void Init()
         {
             renderSystem = Runtime.Instance.Context.GetSubSystem<RenderSystem>();
@@ -60,7 +62,22 @@ namespace Futura.Engine.UserInterface
 
             ImGui.Image(colorImagePointer, imageSize);
 
+            if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
+            {
+                if (ImGui.IsItemHovered()) startedOnItem = true;
+
+                if(startedOnItem)
+                    EditorCamera.Instance.Tick();
+            }
+            else
+            {
+                startedOnItem = false;
+            }
+
+            if (Input.IsKeyDown(Veldrid.Key.F1)) renderSystem.UseEditorCamera = !renderSystem.UseEditorCamera;
+
             ImGui.EndChild();
+
             ShowRenderPerformance();
             ImGui.End();
         }

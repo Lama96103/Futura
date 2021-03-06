@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Threading;
+using Futura.Engine.Core;
 
 namespace Futura.Engine.Core
 {
@@ -34,6 +35,7 @@ namespace Futura.Engine.Core
         {
             totalTime = Stopwatch.StartNew();
             frameTime = Stopwatch.StartNew();
+            Time.Init(this);
         }
 
 
@@ -91,5 +93,33 @@ namespace Futura.Engine.Core
         {
             Unlocked, Fixed, FixedMonitor
         }
+    }
+}
+
+namespace Futura
+{
+    public static class Time
+    {
+        private static TimeSystem timeSys;
+
+        internal static void Init(TimeSystem timeSys)
+        {
+            Time.timeSys = timeSys;
+        }
+
+        /// <summary>
+        /// DeltaTime in ms
+        /// </summary>
+        public static float DeltaTime { get => (float)timeSys.DeltaTime; }
+
+        /// <summary>
+        /// DeltaTime in ms
+        /// </summary>
+        public static double DeltaTime_d { get => timeSys.DeltaTime; }
+
+        /// <summary>
+        /// DeltaTime in s
+        /// </summary>
+        public static float DeltaSeconds { get => (float)timeSys.DeltaTime/1000.0f; }
     }
 }
