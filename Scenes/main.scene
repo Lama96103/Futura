@@ -86,13 +86,13 @@
           "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
           "2": {
             "$type": "Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Mesh": "eb2475a1-18b3-4075-8452-db9e097bd46e",
-            "Material": "ab3369fc-7d44-49c9-9d90-a3d1dc3a3b16"
+            "Mesh": "925ec5a9-bf80-42c7-b980-accec04f3058",
+            "Material": "64669d6b-c95d-4806-ad07-837369422dc5"
           },
           "3": {
             "$type": "Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Mesh": "eb2475a1-18b3-4075-8452-db9e097bd46e",
-            "Material": "ab3369fc-7d44-49c9-9d90-a3d1dc3a3b16"
+            "Mesh": "925ec5a9-bf80-42c7-b980-accec04f3058",
+            "Material": "64669d6b-c95d-4806-ad07-837369422dc5"
           }
         },
         "Type": "Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"

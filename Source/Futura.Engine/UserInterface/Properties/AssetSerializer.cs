@@ -20,19 +20,16 @@ namespace Futura.Engine.UserInterface.Properties
 
             if (ImGui.BeginDragDropTarget())
             {
-                var payload = ImGui.AcceptDragDropPayload("PAYLOAD_ASSET");
-                unsafe
+                Asset asset = AssetView.DragDropAsset;
+                if(asset != null)
                 {
-                    if (payload.NativePtr != null)
+                    var payload = ImGui.AcceptDragDropPayload("PAYLOAD_ASSET_" + asset.AssetType.ToString());
+                    unsafe
                     {
-                        Asset asset = AssetView.DragDropAsset;
-                        AssetType type = AssetType.Unkown;
-                        if (typeof(T) == typeof(Mesh)) type = AssetType.Mesh;
-                        if (typeof(T) == typeof(Material)) type = AssetType.Material;
-                        if (typeof(T) == typeof(Mesh)) type = AssetType.Mesh;
-                        if (asset.AssetType == type)
+                        if (payload.NativePtr != null && asset.GetType() == typeof(T))
                         {
                             field.SetValue(obj, (T)asset);
+                            AssetView.DragDropAsset = null;
                         }
                     }
                 }

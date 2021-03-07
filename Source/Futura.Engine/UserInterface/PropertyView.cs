@@ -29,6 +29,8 @@ namespace Futura.Engine.UserInterface
 
         private WorldSystem worldSystem;
 
+        private bool didChange = false;
+
         public override void Init()
         {
             worldSystem = Runtime.Instance.Context.GetSubSystem<WorldSystem>();
@@ -43,6 +45,7 @@ namespace Futura.Engine.UserInterface
             entity = null;
             asset = e.Asset;
             imageSource = IntPtr.Zero;
+            didChange = false;
         }
 
         private void EditorApp_EntitySelectionChanged(object sender, EntitySelectionChangedEventArgs e)
@@ -50,6 +53,7 @@ namespace Futura.Engine.UserInterface
             entity = e.Entity;
             asset = null;
             imageSource = IntPtr.Zero;
+            didChange = false;
         }
 
         private void DisplayEntity()
@@ -65,9 +69,9 @@ namespace Futura.Engine.UserInterface
             if (ImGui.InputText("Name##Header", ref name, 100))
             {
                 baseComponent.Name = name;
+                didChange = true;
             }
 
-            //if (ImGui.Checkbox("Selectable##SelectableAsset", ref baseComponent.IsSelectable)) EditorApp.Instance.SceneHasChanged = true;
             ImGui.Separator();
 
 
@@ -90,10 +94,10 @@ namespace Futura.Engine.UserInterface
                     }
                     else
                     {
-                        bool didChange = serializer.Serialize(component, f);
-                        if (didChange)
+                        bool change = serializer.Serialize(component, f);
+                        if (change)
                         {
-                            //EditorApp.Instance.SceneHasChanged = true;
+                            didChange = true;
                             if(component.GetType() == typeof(Transform)){
                                 ((Transform)component).UpdateTransform();
                             }
@@ -167,7 +171,7 @@ namespace Futura.Engine.UserInterface
                     DisplayMeshAsset((Mesh)asset);
                     break;
                 case AssetType.Texture2d:
-                    //DisplayTexture((Texture2D)asset);
+                    DisplayTexture((Texture2D)asset);
                     break;
                 default:
                     break;
@@ -207,6 +211,20 @@ namespace Futura.Engine.UserInterface
 
         private void DisplayTexture(Texture2D texture)
         {
+            bool srgb = texture.IsSRGB;
+            if(ImGui.Checkbox("SRGB", ref srgb))
+            {
+                texture.IsSRGB = srgb;
+                didChange = true;
+            }
+
+            bool mipmap = texture.UseMipMap;
+            if (ImGui.Checkbox("MipMap", ref mipmap))
+            {
+                texture.UseMipMap = mipmap;
+                didChange = true;
+            }
+
             ImGui.TextDisabled("Width: ");
             ImGui.SameLine();
             ImGui.TextDisabled(texture.Width.ToString());
@@ -218,6 +236,8 @@ namespace Futura.Engine.UserInterface
             ImGui.TextDisabled("Format: ");
             ImGui.SameLine();
             ImGui.TextDisabled(texture.Format.ToString());
+
+            
 
             imageSource = ImGuiController.Instance.GetOrCreateImGuiBinding(texture.Handle);
 
@@ -232,16 +252,58 @@ namespace Futura.Engine.UserInterface
 
         private void DisplayMaterial(Material material)
         {
-            Vector4 diffuseColor = material.DiffuseColor.RawData;
-            if(ImGui.ColorEdit4("Diffuse", ref diffuseColor, ImGuiColorEditFlags.Float))
+            var fields = material.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            foreach (var f in fields)
             {
-                material.DiffuseColor.RawData = diffuseColor;
+                if (!f.IsPublic && f.GetCustomAttribute<SerializeField>() == null) continue;
+                if (f.GetCustomAttribute<IgnoreAttribute>() != null) continue;
+                var serializer = PropertySerializerHelper.GetSerializer(f.FieldType);
+                if (serializer == null)
+                {
+                    ImGui.LabelText(f.Name, "TODO - " + f.FieldType.Name);
+                }
+                else
+                {
+                    if (serializer.Serialize(material, f)) didChange = true;
+                }
+            }
+        }
+
+        private void SaveChanges()
+        {
+            if(entity != null)
+            {
+                Runtime.Instance.Context.GetSubSystem<WorldSystem>().Save(new FileInfo(Path.Combine(Runtime.Instance.SceneDir.FullName, "main.scene")));
+                didChange = false;
+            }
+            else if(asset != null)
+            {
+                Resources.ResourceManager.Instance.Save(asset);
+
+                asset.Unload();
+                asset.Load();
+                didChange = false;
             }
         }
 
         public override void Tick()
         {
-            ImGui.Begin(txt_WindowName);
+            ImGuiWindowFlags flags = ImGuiWindowFlags.MenuBar;
+            if (didChange) flags |= ImGuiWindowFlags.UnsavedDocument;
+
+            ImGui.Begin(txt_WindowName, ref isOpen, flags);
+
+            if (didChange)
+            {
+                if (ImGui.BeginMenuBar())
+                {
+                    if (ImGui.MenuItem("Save"))
+                    {
+                        SaveChanges();
+                    }
+                    ImGui.EndMenuBar();
+                }
+            }
 
             if (entity == null && asset == null)
             {

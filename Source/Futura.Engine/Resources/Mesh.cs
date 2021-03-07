@@ -25,7 +25,7 @@ namespace Futura.Engine.Resources
         public Renderable Renderable { get => renderable; }
 
 
-        internal Mesh(Guid identifier, FileInfo path) : base(identifier, AssetType.Mesh, path)
+        internal Mesh(FileInfo path, Guid guid) : base(guid, AssetType.Mesh, path)
         {
         }
         internal Mesh(FileInfo path, Vertex[] vertices, uint[] indices, Bounds bounds) : base(Guid.NewGuid(), AssetType.Mesh, path)

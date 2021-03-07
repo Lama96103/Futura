@@ -54,34 +54,13 @@ namespace Futura.Engine.UserInterface
                     if (ImGui.BeginDragDropSource())
                     {
                         ImGui.TextDisabled(asset.Path.Name);
-                        ImGui.SetDragDropPayload("PAYLOAD_ASSET", IntPtr.Zero, 0);
                         DragDropAsset = asset;
+                        ImGui.SetDragDropPayload("PAYLOAD_ASSET_" + asset.AssetType.ToString(), IntPtr.Zero, 0);
                         ImGui.EndDragDropSource();
                     }
                 }
                 ImGui.TreePop();
             }
-
-            //if (ImGui.TreeNode("Built-In"))
-            //{
-            //    foreach (var asset in editorAssets)
-            //    {
-            //        if (ImGui.Selectable(asset.Name))
-            //        {
-            //            EditorApp.Instance.SelectedAsset = asset;
-            //        }
-
-            //        if (ImGui.BeginDragDropSource())
-            //        {
-            //            ImGui.TextDisabled(asset.Name);
-            //            ImGui.SetDragDropPayload("PAYLOAD_ASSET", IntPtr.Zero, 0);
-            //            DragDropAsset = asset;
-            //            ImGui.EndDragDropSource();
-            //        }
-            //    }
-            //    ImGui.TreePop();
-            //}
-
 
             ImGui.End();
         }

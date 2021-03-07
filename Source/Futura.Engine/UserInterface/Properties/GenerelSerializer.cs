@@ -7,21 +7,22 @@ using System.Text;
 
 namespace Futura.Engine.UserInterface.Properties
 {
-    //class ColorSerializer : PropertySerializer
-    //{
-    //    public override bool Serialize(object obj, FieldInfo field)
-    //    {
-    //        Color color = (Color)field.GetValue(obj);
-    //        Vector4 colorVector = color.ToVector4();
-    //        if (ImGui.ColorEdit4(field.Name, ref colorVector))
-    //        {
-    //            field.SetValue(obj, new Color(colorVector));
-    //            return true;
-    //        }
+    class ColorSerializer : PropertySerializer
+    {
+        public override bool Serialize(object obj, FieldInfo field)
+        {
+            Color color = (Color)field.GetValue(obj);
+            Vector4 data = color.RawData;
+            if (ImGui.ColorEdit4(GetName(field), ref data))
+            {
+                color.RawData = data;
+                field.SetValue(obj, color);
+                return true;
+            }
 
-    //        return false;
-    //    }
-    //}
+            return false;
+        }
+    }
 
     class EnumSerializer : PropertySerializer
     {

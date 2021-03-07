@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Futura.Engine.Rendering;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,7 +18,10 @@ namespace Futura.Engine.Resources
 
         public override bool IsLoaded => isLoaded;
 
+        [Name("Color")]
         public Color DiffuseColor = Color.White;
+        [Name("Diffuse")]
+        public Texture2D DiffuseTexture = null;
 
 
         public override void Load()

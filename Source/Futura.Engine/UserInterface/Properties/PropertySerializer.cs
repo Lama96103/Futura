@@ -1,4 +1,5 @@
-﻿using Futura.Engine.Resources;
+﻿using Futura.Engine.Rendering;
+using Futura.Engine.Resources;
 using ImGuiNET;
 using System;
 using System.Collections.Generic;
@@ -20,8 +21,9 @@ namespace Futura.Engine.UserInterface.Properties
             { typeof(Quaternion),  new QuaternionSerializer()},
             { typeof(Mesh), new AssetSerializer<Mesh>() },
             { typeof(Material), new AssetSerializer<Material>() },
-            { typeof(string), new StringSerializer() } //,
-            // { typeof(Color), new ColorSerializer() }
+            { typeof(Texture2D), new AssetSerializer<Texture2D>() },
+            { typeof(string), new StringSerializer() } ,
+            { typeof(Color), new ColorSerializer() }
         };
 
         private static EnumSerializer enumSerializer = new EnumSerializer();
