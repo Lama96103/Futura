@@ -17,7 +17,7 @@ namespace Futura.Engine.Resources.Import
 
         internal override string[] SupportedExtensions => new string[] { ".fbx", ".obj"};
 
-        internal override Asset ImportAsset(FileInfo file)
+        internal override Asset ImportAsset(FileInfo file, Guid guid)
         {
             if (!file.Exists)
             {
@@ -89,7 +89,7 @@ namespace Futura.Engine.Resources.Import
                 indices[i] = (uint)assimpIndices[i];
             }
 
-            return new Mesh(file, vertices, indices, new Core.Bounds(boundsMin, boundsMax, false));
+            return new Mesh(file, guid, vertices, indices, new Core.Bounds(boundsMin, boundsMax, false));
         }
     }
 }

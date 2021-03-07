@@ -7,13 +7,17 @@ namespace Futura.Game
     {
         static void Main(string[] args)
         {
-
             Window mainWindow = Window.Instance;
-            mainWindow.Init(100, 100, 1280, 720, "Futura", WindowState.Normal);
+            mainWindow.Init(100, 100, 1920 , 1080, "Futura", WindowState.Maximized);
 
 
             Runtime runtime = Runtime.Instance;
             runtime.Init();
+
+            if(args.Length == 1)
+            {
+                runtime.LoadScene(new System.IO.FileInfo(args[0]));
+            }
 
             while (mainWindow.Exists)
             {

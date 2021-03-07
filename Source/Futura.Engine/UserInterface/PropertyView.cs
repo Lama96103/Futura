@@ -273,7 +273,7 @@ namespace Futura.Engine.UserInterface
         {
             if(entity != null)
             {
-                Runtime.Instance.Context.GetSubSystem<WorldSystem>().Save(new FileInfo(Path.Combine(Runtime.Instance.SceneDir.FullName, "main.scene")));
+                Runtime.Instance.Context.GetSubSystem<WorldSystem>().Save(Runtime.Instance.CurrentScene);
                 didChange = false;
             }
             else if(asset != null)

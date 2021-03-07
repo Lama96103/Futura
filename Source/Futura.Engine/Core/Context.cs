@@ -46,7 +46,15 @@ namespace Futura.Engine.Core
             foreach(SubSystem sub in subSystems)
             {
                 if (sub.TickType != tickType) continue;
-                sub.Tick(deltaTime);
+                try
+                {
+                    sub.Tick(deltaTime);
+                }
+                catch(Exception e)
+                {
+                    Log.Error("Could not exceute " + sub.GetType().Name, e);
+                }
+
             }
         }
 

@@ -13,6 +13,6 @@ namespace Futura.Engine.Resources
 
         internal abstract string[] SupportedExtensions { get; }
 
-        internal abstract Asset ImportAsset(FileInfo file);
+        internal abstract Asset ImportAsset(FileInfo file, Guid guid);
     }
 }

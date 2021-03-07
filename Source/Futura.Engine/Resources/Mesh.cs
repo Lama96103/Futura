@@ -28,7 +28,7 @@ namespace Futura.Engine.Resources
         internal Mesh(FileInfo path, Guid guid) : base(guid, AssetType.Mesh, path)
         {
         }
-        internal Mesh(FileInfo path, Vertex[] vertices, uint[] indices, Bounds bounds) : base(Guid.NewGuid(), AssetType.Mesh, path)
+        internal Mesh(FileInfo path, Guid guid, Vertex[] vertices, uint[] indices, Bounds bounds) : base(guid, AssetType.Mesh, path)
         {
             this.vertices = vertices;
             this.indices = indices;

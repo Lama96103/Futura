@@ -14,7 +14,7 @@ namespace Futura.Engine.Resources.Import
 
         internal override string[] SupportedExtensions => new string[] { ".png" };
 
-        internal override Asset ImportAsset(FileInfo file)
+        internal override Asset ImportAsset(FileInfo file, Guid guid)
         {
             if (!file.Exists)
             {
@@ -24,7 +24,7 @@ namespace Futura.Engine.Resources.Import
 
             byte[] data = File.ReadAllBytes(file.FullName);
 
-            return new Texture2D(file, Guid.NewGuid(), data);
+            return new Texture2D(file, guid, data);
         }
     }
 }

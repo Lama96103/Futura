@@ -50,7 +50,7 @@ namespace Futura.Engine.Resources
                 string metaFilePath = file.FullName + MetaFileExtension;
                 if (File.Exists(metaFilePath)) LoadAsset(file, new FileInfo(metaFilePath), assetSettings.AutomaticCheckForFileChange);
                 else if (file.Extension == AssetFileExtension) LoadAsset(file, file, false);
-                else ImportAsset(file);
+                else ImportAsset(file, Guid.NewGuid());
 
             }
         }
@@ -67,7 +67,7 @@ namespace Futura.Engine.Resources
                 {
                     Log.Debug("File hash is not equal, reimporting the asset");
                     metaFile.Delete();
-                    ImportAsset(assetFile);
+                    ImportAsset(assetFile, asset.Identifier);
                     return;
                 }
             }
@@ -76,13 +76,13 @@ namespace Futura.Engine.Resources
             asset.Load();
         }
 
-        private void ImportAsset(FileInfo file)
+        private void ImportAsset(FileInfo file, Guid guid)
         {
             foreach(Importer i in importers)
             {
                 if (i.SupportedExtensions.Contains(file.Extension))
                 {
-                    Asset asset = i.ImportAsset(file);
+                    Asset asset = i.ImportAsset(file, guid);
                     loadedAssets.Add(asset.Identifier, asset);
                     asset.Load();
                     Core.Profiler.Report("Import", file.FullName);

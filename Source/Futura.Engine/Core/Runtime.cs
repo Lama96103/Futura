@@ -17,13 +17,12 @@ namespace Futura.Engine.Core
 
         private TimeSystem timeSys;
 
-        public DirectoryInfo AssetDir { get; set; } = new DirectoryInfo(@"..\..\..\..\.\..\Assets");
-        public DirectoryInfo SceneDir { get; set; } = new DirectoryInfo(@"..\..\..\..\.\..\Scenes");
+        public DirectoryInfo AssetDir { get; set; } = new DirectoryInfo(@"..\..\..\Assets");
+        public FileInfo CurrentScene { get; private set; } = null;
 
         public SettingsController Settings { get; init; }
 
-        private bool shouldLoadScene = false;
-        private FileInfo sceneFile;
+        private FileInfo loadSceneFile = null;
 
         public Runtime()
         {
@@ -62,12 +61,13 @@ namespace Futura.Engine.Core
         {
             Profiler.StartFrame();
 
-            if (shouldLoadScene)
+            if (loadSceneFile != null)
             {
-                shouldLoadScene = false;
-                Context.GetSubSystem<WorldSystem>().Load(sceneFile);
+                CurrentScene = loadSceneFile;
+                Context.GetSubSystem<WorldSystem>().Load(loadSceneFile);
                 RuntimeHelper.Instance.SelectedAsset = null;
                 RuntimeHelper.Instance.SelectedEntity = null;
+                loadSceneFile = null;
             }
 
 
@@ -78,8 +78,7 @@ namespace Futura.Engine.Core
 
         public void LoadScene(FileInfo file)
         {
-            sceneFile = file;
-            shouldLoadScene = true;
+            loadSceneFile = file;
         }
     }
 }

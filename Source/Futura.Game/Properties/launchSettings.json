@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Futura.Game": {
+      "commandName": "Project",
+      "commandLineArgs": "../../../Scenes/main.scene"
+    }
+  }
+}

@@ -20,11 +20,10 @@ namespace Futura.Engine.UserInterface
                 {
                     if (ImGui.MenuItem("Save")) 
                     {
-                        Runtime.Instance.Context.GetSubSystem<WorldSystem>().Save(new FileInfo(Path.Combine(Runtime.Instance.SceneDir.FullName, "main.scene")));
+                        Runtime.Instance.Context.GetSubSystem<WorldSystem>().Save(Runtime.Instance.CurrentScene);
                     }
                     if (ImGui.MenuItem("Load")) 
                     {
-                        Runtime.Instance.LoadScene(new FileInfo(Path.Combine(Runtime.Instance.SceneDir.FullName, "main.scene")));
                     }
                     ImGui.Separator();
                   

@@ -48,11 +48,11 @@ namespace Futura.Engine.UserInterface
                     RuntimeHelper.Instance.SelectedEntity = entity;
                 }
 
-                //if (ImGui.IsItemHovered() && ImGui.IsMouseClicked(ImGuiMouseButton.Right))
-                //{
-                //    toDelete = entity;
-                //    ImGui.OpenPopup("RightClickSceneHierarchy");
-                //}
+                if (ImGui.IsItemHovered() && ImGui.IsMouseClicked(ImGuiMouseButton.Right))
+                {
+                    toDelete = entity;
+                    ImGui.OpenPopup("RightClickSceneHierarchy");
+                }
 
             }
 
@@ -60,9 +60,9 @@ namespace Futura.Engine.UserInterface
             {
                 if (ImGui.MenuItem("Delete"))
                 {
-                    //EditorApp.Instance.SelectedEntity = null;
-                    //Application.Instance.Scene.World.DestroyEntity(toDelete);
-                    //toDelete = null;
+                    RuntimeHelper.Instance.SelectedEntity = null;
+                    worldSystem.World.DestroyEntity(toDelete);
+                    toDelete = null;
                     //EditorApp.Instance.SceneHasChanged = true;
                 }
                 ImGui.EndPopup();
