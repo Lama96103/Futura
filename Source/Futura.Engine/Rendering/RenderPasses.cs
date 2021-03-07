@@ -1,5 +1,7 @@
 ﻿using Futura.Engine.Components;
+using Futura.Engine.ECS;
 using Futura.Engine.Rendering;
+using Futura.Engine.Rendering.Gizmo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +14,12 @@ namespace Futura.Engine.Core
     partial class RenderSystem
     {
         public bool UseEditorCamera { get; set; } = true;
+        public TransformGizmo TransformGizmo { get; init; } = new TransformGizmo();
 
 
         private void MainPass()
         {
             if (!UpdateWorldBuffer()) return;
-
 
             DiffusePass(diffuseCommandList);
         }
@@ -71,17 +73,21 @@ namespace Futura.Engine.Core
             {
                 Transform transform = reference.GetComponent<Transform>();
                 MeshFilter filter = reference.GetComponent<MeshFilter>();
+                RuntimeComponent runtime = reference.Entity.GetComponent<RuntimeComponent>();
 
-                if (filter.Mesh == null || filter.Material == null) continue;
-                if (filter.Mesh.IsLoaded == false) continue;
-
-                ModelBuffer model = new ModelBuffer()
+                if (runtime.IsEnabled)
                 {
-                    Transform = transform.LocalMatrix,
-                    Color = new System.Numerics.Vector4(1.0f)
-                };
-                commandList.UpdateBuffer(modelBuffer, 0, model);
-                filter.Mesh.Renderable.Draw(commandList);
+                    if (filter.Mesh == null || filter.Material == null) continue;
+                    if (filter.Mesh.IsLoaded == false) continue;
+
+                    ModelBuffer model = new ModelBuffer()
+                    {
+                        Transform = transform.LocalMatrix,
+                        Color = new System.Numerics.Vector4(1.0f)
+                    };
+                    commandList.UpdateBuffer(modelBuffer, 0, model);
+                    filter.Mesh.Renderable.Draw(commandList);
+                }
             }
 
 

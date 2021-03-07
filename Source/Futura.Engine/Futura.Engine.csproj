@@ -25,6 +25,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Rendering\Resources\Models\**" />
+    <Compile Remove="Rendering\Resources\Textures\**" />
+    <EmbeddedResource Remove="Rendering\Resources\Models\**" />
+    <EmbeddedResource Remove="Rendering\Resources\Textures\**" />
+    <None Remove="Rendering\Resources\Models\**" />
+    <None Remove="Rendering\Resources\Textures\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Rendering\Resources\DebugShader\DebugShader.frag.spv" />
     <None Remove="Rendering\Resources\DebugShader\DebugShader.vert.spv" />
     <None Remove="Rendering\Resources\Diffuse\Diffuse.frag.spv" />
@@ -61,8 +70,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Rendering\Resources\Models\" />
-    <Folder Include="Rendering\Resources\Textures\" />
     <Folder Include="UserInterface\Properties\" />
   </ItemGroup>
 

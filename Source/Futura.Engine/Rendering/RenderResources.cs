@@ -62,6 +62,8 @@ namespace Futura.Engine.Core
             );
 
             diffusePipline = deviceResourceCache.GetPipline(ref pipelineDescription);
+
+            TransformGizmo.Init(factory);
         }
 
         private void RecreateRenderResources(uint width, uint height)
