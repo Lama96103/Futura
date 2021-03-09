@@ -1,4 +1,5 @@
-﻿using Futura.Engine.Resources;
+﻿using Futura.Engine.Core;
+using Futura.Engine.Resources;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,6 +34,8 @@ namespace Futura.Engine.Rendering
             Handle.Name = name;
 
             if (desc.Usage.HasFlag(TextureUsage.Staging)) IsStaging = true;
+
+            Profiler.Report(Profiler.StatisticIndicator.Load_Texture);
         }
 
         public Texture2D(FileInfo path, Guid guid) : base(guid, AssetType.Texture2d, path) { }
@@ -85,7 +88,7 @@ namespace Futura.Engine.Rendering
                 case PixelFormat.R8_G8_B8_A8_UNorm:
                     int index = (x * 4) + (byteSizeRow * y);
 
-                    float r = rawData[index]/255f;
+                    float r = rawData[index] / 255f;
                     float g = rawData[index+1] / 255f;
                     float b = rawData[index+2] / 255f;
                     float a = rawData[index+3] / 255f;
@@ -124,6 +127,7 @@ namespace Futura.Engine.Rendering
                 ImageSharpTexture imageSharp = new ImageSharpTexture(stream, UseMipMap, IsSRGB);
                 Handle = imageSharp.CreateDeviceTexture(RenderAPI.Instance.GraphicAPI, RenderAPI.Instance.Factory);
                 Handle.Name = Path.Name;
+                Profiler.Report(Profiler.StatisticIndicator.Load_Texture);
             }
         }
 

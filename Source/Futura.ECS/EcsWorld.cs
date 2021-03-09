@@ -164,7 +164,9 @@ namespace Futura.ECS
         public void Tick(double deltaTime)
         {
             foreach (EcsSystem system in EcsSystems)
+            {
                 system.OnTick(deltaTime);
+            }
         }
         #endregion
 

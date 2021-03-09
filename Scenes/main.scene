@@ -95,9 +95,9 @@
             },
             "Scale": {
               "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 100.0,
-              "Y": 0.1,
-              "Z": 100.0
+              "X": 1.0,
+              "Y": 1.0,
+              "Z": 1.0
             }
           }
         },
@@ -119,7 +119,7 @@
           },
           "5": {
             "$type": "Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Mesh": "925ec5a9-bf80-42c7-b980-accec04f3058",
+            "Mesh": "00000000-0000-0000-0000-000000000000",
             "Material": "64669d6b-c95d-4806-ad07-837369422dc5"
           }
         },
@@ -169,6 +169,19 @@
           }
         },
         "Type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "$type": "Futura.ECS.ComponentManager`1[[Futura.Engine.ECS.Components.MeshGenerator, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Futura.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "componentData": {
+          "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Futura.Engine.ECS.Components.MeshGenerator, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+          "5": {
+            "$type": "Futura.Engine.ECS.Components.MeshGenerator, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Width": 40.0,
+            "Depth": 40.0,
+            "GeometryType": 1
+          }
+        },
+        "Type": "Futura.Engine.ECS.Components.MeshGenerator, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       }
     ]
   },
