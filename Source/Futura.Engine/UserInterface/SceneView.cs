@@ -29,7 +29,7 @@ namespace Futura.Engine.UserInterface
         {
             renderSystem = Runtime.Instance.Context.GetSubSystem<RenderSystem>();
             timeSystem = Runtime.Instance.Context.GetSubSystem<TimeSystem>();
-            colorImagePointer = ImGuiController.Instance.GetOrCreateImGuiBinding(renderSystem.DiffuseFrameBuffer.ColorTexture.Handle);
+            colorImagePointer = ImGuiController.Instance.GetOrCreateImGuiBinding(renderSystem.DiffuseFrameBuffer.ColorTextures[1].Handle);
 
             txt_WindowName = $"Scene##{ID}";
             txt_SceneChild = $"GameRender##{ID}";
@@ -57,7 +57,7 @@ namespace Futura.Engine.UserInterface
 
             if (ImGuiController.Instance.ClearedCache)
             {
-                colorImagePointer = ImGuiController.Instance.GetOrCreateImGuiBinding(renderSystem.DiffuseFrameBuffer.ColorTexture.Handle);
+                colorImagePointer = ImGuiController.Instance.GetOrCreateImGuiBinding(renderSystem.DiffuseFrameBuffer.ColorTextures[2].Handle);
             }
 
             ImGui.Image(colorImagePointer, imageSize);

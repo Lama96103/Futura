@@ -5,6 +5,19 @@
 
 #define MAX_POINT_LIGHTS 5
 
+layout(set = 0, binding = 0) uniform WorldBuffer
+{
+    mat4 Projection;
+    mat4 View;
+    mat4 ProjectionView;
+    vec3 CameraPosition;
+};
+
+layout(set = 1, binding = 0) uniform ModelBuffer
+{
+    mat4 Transform;
+    vec4 Color;
+};
 
 struct LightingInfo
 {
@@ -34,6 +47,8 @@ layout(location = 2) in vec3 fragPos;
 layout(location = 3) in vec3 normal;
 
 layout(location = 0) out vec4 FragColor;
+layout(location = 1) out vec4 SelectionColor;
+layout(location = 2) out vec4 DepthColor;
 
 
 layout(set = 0, binding = 1) uniform sampler MainSampler;
@@ -109,5 +124,7 @@ void main()
 	FragColor = (directionalLight + pointLight - ambientOcclusionColor);
 
 	FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+	SelectionColor = Color;
+	DepthColor = vec4(gl_FragCoord.z);
 }
 

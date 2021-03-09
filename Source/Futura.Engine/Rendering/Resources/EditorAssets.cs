@@ -15,9 +15,6 @@ namespace Futura.Rendering.Resources
         public static readonly byte[] DiffuseVertex = Helper.GetEmbeddedRessource("Futura.Engine.Rendering.Resources.Diffuse.Diffuse.vert.spv");
         public static readonly byte[] DiffuseFragment = Helper.GetEmbeddedRessource("Futura.Engine.Rendering.Resources.Diffuse.Diffuse.frag.spv");
 
-        public static readonly byte[] SelectionVertex = Helper.GetEmbeddedRessource("Futura.Engine.Rendering.Resources.Selection.Selection.vert.spv");
-        public static readonly byte[] SelectionFragment = Helper.GetEmbeddedRessource("Futura.Engine.Rendering.Resources.Selection.Selection.frag.spv");
-
         public static readonly byte[] DebugVertex = Helper.GetEmbeddedRessource("Futura.Engine.Rendering.Resources.DebugShader.DebugShader.vert.spv");
         public static readonly byte[] DebugFragment = Helper.GetEmbeddedRessource("Futura.Engine.Rendering.Resources.DebugShader.DebugShader.frag.spv");
         #endregion

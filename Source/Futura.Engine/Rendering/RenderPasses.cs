@@ -66,9 +66,11 @@ namespace Futura.Engine.Core
             commandList.SetGraphicsResourceSet(1, modelSet);
 
             commandList.ClearColorTarget(0, RgbaFloat.Black);
+            commandList.ClearColorTarget(1, RgbaFloat.Black);
+            commandList.ClearColorTarget(2, RgbaFloat.Black);
             commandList.ClearDepthStencil(RenderAPI.Instance.IsDepthRangeZeroToOne ? 1 : -1, 0);
 
-
+            Random random = new Random();
             foreach (var reference in entityFilter.Entities)
             {
                 Transform transform = reference.GetComponent<Transform>();
@@ -80,10 +82,11 @@ namespace Futura.Engine.Core
                     if (filter.Mesh == null || filter.Material == null) continue;
                     if (filter.Mesh.IsLoaded == false) continue;
 
+                    
                     ModelBuffer model = new ModelBuffer()
                     {
                         Transform = transform.LocalMatrix,
-                        Color = new System.Numerics.Vector4(1.0f)
+                        Color = new System.Numerics.Vector4((float)random.NextDouble(), (float)random.NextDouble(), (float)random.NextDouble(), 1.0f)
                     };
                     commandList.UpdateBuffer(modelBuffer, 0, model);
                     filter.Mesh.Renderable.Draw(commandList);
@@ -96,6 +99,7 @@ namespace Futura.Engine.Core
             renderAPI.SubmitCommands(commandList);
         }
 
+   
      
     }
 }

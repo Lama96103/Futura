@@ -23,10 +23,14 @@ namespace Futura.Engine.Core
         private ResourceSet worldSet;
         private ResourceSet modelSet;
 
+        private Pipeline editorPipline;
         private Pipeline diffusePipline;
 
         private Rendering.Framebuffer diffuseFramebuffer;
         public Rendering.Framebuffer DiffuseFrameBuffer { get => diffuseFramebuffer; }
+
+        private Rendering.Framebuffer editorFramebuffer;
+        public Rendering.Framebuffer EditorFramebuffer { get => editorFramebuffer; }
 
         private void Load()
         {
@@ -64,6 +68,7 @@ namespace Futura.Engine.Core
             diffusePipline = deviceResourceCache.GetPipline(ref pipelineDescription);
 
             TransformGizmo.Init(factory);
+
         }
 
         private void RecreateRenderResources(uint width, uint height)
@@ -73,11 +78,17 @@ namespace Futura.Engine.Core
 
 
             diffuseFramebuffer?.Unload();
+            editorFramebuffer?.Unload();
 
             ResourceFactory factory = renderAPI.Factory;
 
+
+            Texture2D diffuseTexture = Texture2D.CreateRenderTarget(factory, width, height, PixelFormat.R8_G8_B8_A8_UNorm, false, 1, TextureUsage.RenderTarget, "Color_RenderTarget");
+            Texture2D selectionTexture = Texture2D.CreateRenderTarget(factory, width, height, PixelFormat.R8_G8_B8_A8_UNorm, false, 1, TextureUsage.RenderTarget, "Color_SelectionTarget");
+            Texture2D depthTexture = Texture2D.CreateRenderTarget(factory, width, height, PixelFormat.R8_G8_B8_A8_UNorm, false, 1, TextureUsage.RenderTarget, "Color_DepthTarget");
+
             diffuseFramebuffer = new Rendering.Framebuffer(width, height);
-            diffuseFramebuffer.Load(factory);
+            diffuseFramebuffer.Load(factory, diffuseTexture, selectionTexture, depthTexture);
         }
     }
 }

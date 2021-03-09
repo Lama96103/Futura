@@ -40,8 +40,6 @@
     <None Remove="Rendering\Resources\Diffuse\Diffuse.vert.spv" />
     <None Remove="Rendering\Resources\ImGui\ImGui.frag.spv" />
     <None Remove="Rendering\Resources\ImGui\ImGui.vert.spv" />
-    <None Remove="Rendering\Resources\Selection\Selection.frag.spv" />
-    <None Remove="Rendering\Resources\Selection\Selection.vert.spv" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,8 +49,6 @@
     <EmbeddedResource Include="Rendering\Resources\Diffuse\Diffuse.vert.spv" />
     <EmbeddedResource Include="Rendering\Resources\ImGui\ImGui.frag.spv" />
     <EmbeddedResource Include="Rendering\Resources\ImGui\ImGui.vert.spv" />
-    <EmbeddedResource Include="Rendering\Resources\Selection\Selection.frag.spv" />
-    <EmbeddedResource Include="Rendering\Resources\Selection\Selection.vert.spv" />
   </ItemGroup>
 
   <ItemGroup>

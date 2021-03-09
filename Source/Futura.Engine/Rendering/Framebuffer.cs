@@ -12,7 +12,7 @@ namespace Futura.Engine.Rendering
         public uint Width { get; private set; }
         public uint Height { get; private set; }
 
-        public Texture2D ColorTexture { get; private set; }
+        public Texture2D[] ColorTextures { get; private set; }
         public Texture2D DepthTexture { get; private set; }
 
         internal Veldrid.Framebuffer Handle { get; private set; } = null;
@@ -27,20 +27,37 @@ namespace Futura.Engine.Rendering
 
         internal void Load(ResourceFactory factory)
         {
-            ColorTexture = Texture2D.CreateRenderTarget(factory, Width, Height, PixelFormat.R8_G8_B8_A8_UNorm, false, 1, TextureUsage.RenderTarget, "Color_RenderTarget");
+            var colorTexture = Texture2D.CreateRenderTarget(factory, Width, Height, PixelFormat.R8_G8_B8_A8_UNorm, false, 1, TextureUsage.RenderTarget, "Color_RenderTarget");
+            ColorTextures = new Texture2D[] { colorTexture };
+
             DepthTexture = Texture2D.CreateRenderTarget(factory, Width, Height, PixelFormat.D32_Float_S8_UInt, true, 1, TextureUsage.DepthStencil, "Depth_RenderTarget");
 
-            Handle = factory.CreateFramebuffer(new FramebufferDescription(DepthTexture.Handle, ColorTexture.Handle));
+            Handle = factory.CreateFramebuffer(new FramebufferDescription(DepthTexture.Handle, colorTexture.Handle));
+        }
+
+        internal void Load(ResourceFactory factory, params Texture2D[] colorTargets)
+        {
+            DepthTexture = Texture2D.CreateRenderTarget(factory, Width, Height, PixelFormat.D32_Float_S8_UInt, true, 1, TextureUsage.DepthStencil, "Depth_RenderTarget");
+            ColorTextures = colorTargets;
+
+            Texture[] handles = new Texture[ColorTextures.Length];
+            for (int i = 0; i < handles.Length; i++)
+            {
+                handles[i] = ColorTextures[i].Handle;
+            }
+
+
+            Handle = factory.CreateFramebuffer(new FramebufferDescription(DepthTexture.Handle, handles));
         }
 
         internal void Unload()
         {
-            ColorTexture.Unload();
+            foreach (Texture2D colorTexture in ColorTextures) colorTexture.Unload();
             DepthTexture.Unload();
             RenderAPI.DisposeWhenIdle(Handle);
 
             Handle = null;
-            ColorTexture = null;
+            ColorTextures = null;
             DepthTexture = null;
         }
     }
