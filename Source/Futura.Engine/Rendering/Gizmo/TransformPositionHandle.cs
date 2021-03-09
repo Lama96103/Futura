@@ -9,7 +9,6 @@ namespace Futura.Engine.Rendering.Gizmo
 {
     class TransformPositionHandle : TransformHandle
     {
-
         public override void Init(ResourceFactory factory)
         {
 

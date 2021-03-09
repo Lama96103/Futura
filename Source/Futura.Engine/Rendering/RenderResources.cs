@@ -23,14 +23,12 @@ namespace Futura.Engine.Core
         private ResourceSet worldSet;
         private ResourceSet modelSet;
 
-        private Pipeline editorPipline;
         private Pipeline diffusePipline;
 
         private Rendering.Framebuffer diffuseFramebuffer;
         public Rendering.Framebuffer DiffuseFrameBuffer { get => diffuseFramebuffer; }
 
-        private Rendering.Framebuffer editorFramebuffer;
-        public Rendering.Framebuffer EditorFramebuffer { get => editorFramebuffer; }
+        public Texture2D SelectionTexture { get; private set; }
 
         private void Load()
         {
@@ -76,9 +74,8 @@ namespace Futura.Engine.Core
             renderResolutionWidth = width;
             renderResolutionHeight = height;
 
-
             diffuseFramebuffer?.Unload();
-            editorFramebuffer?.Unload();
+            SelectionTexture?.Unload();
 
             ResourceFactory factory = renderAPI.Factory;
 
@@ -89,6 +86,8 @@ namespace Futura.Engine.Core
 
             diffuseFramebuffer = new Rendering.Framebuffer(width, height);
             diffuseFramebuffer.Load(factory, diffuseTexture, selectionTexture, depthTexture);
+
+            SelectionTexture = Texture2D.Create(factory, width, height, PixelFormat.R8_G8_B8_A8_UNorm, 1, TextureUsage.Staging, "Editor_Selection");
         }
     }
 }
