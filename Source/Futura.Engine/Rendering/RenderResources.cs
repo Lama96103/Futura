@@ -24,6 +24,7 @@ namespace Futura.Engine.Core
         private ResourceSet modelSet;
 
         private Pipeline diffusePipline;
+        private Pipeline gizmoPipline;
 
         private Rendering.Framebuffer diffuseFramebuffer;
         public Rendering.Framebuffer DiffuseFrameBuffer { get => diffuseFramebuffer; }
@@ -64,6 +65,19 @@ namespace Futura.Engine.Core
             );
 
             diffusePipline = deviceResourceCache.GetPipline(ref pipelineDescription);
+
+            pipelineDescription = new GraphicsPipelineDescription
+            (
+                BlendStateDescription.SingleOverrideBlend,
+                DepthStencilStateDescription.Disabled,
+                new RasterizerStateDescription(FaceCullMode.Back, PolygonFillMode.Solid, FrontFace.CounterClockwise, false, false),
+                PrimitiveTopology.TriangleList,
+                new ShaderSetDescription(new VertexLayoutDescription[] { Vertex.GetLayoutDescription() }, diffuseShader.Handles),
+                new ResourceLayout[] { worldLayout, modelLayout },
+                diffuseFramebuffer.Handle.OutputDescription
+            );
+
+            gizmoPipline = deviceResourceCache.GetPipline(ref pipelineDescription);
 
             TransformGizmo.Init(factory);
 

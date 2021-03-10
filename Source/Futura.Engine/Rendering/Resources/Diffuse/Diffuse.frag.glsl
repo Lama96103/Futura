@@ -19,6 +19,7 @@ layout(set = 1, binding = 0) uniform ModelBuffer
 {
     mat4 Transform;
     vec4 Color;
+	vec4 DiffuseColor;
 };
 
 struct LightingInfo
@@ -121,11 +122,11 @@ void main()
 	vec4 ambientOcclusionColor = vec4(vertextAmbientOcclusion, vertextAmbientOcclusion, vertextAmbientOcclusion, 0.0f);
 	
 
-	vec4 textureColor = texture(sampler2D(MainTexture, MainSampler), vec2((vertexIndex-1)/256.0f, 0));
+	//vec4 textureColor = texture(sampler2D(MainTexture, MainSampler), vec2((vertexIndex-1)/256.0f, 0));
 	//FragColor = textureColor * (directionalLight + pointLight - ambientOcclusionColor);
-	FragColor = (directionalLight + pointLight - ambientOcclusionColor);
+	// FragColor = (directionalLight + pointLight - ambientOcclusionColor);
 
-	FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+	FragColor = DiffuseColor;
 	SelectionColor = Color;
 	DepthColor = vec4(vec3(gl_FragCoord.z), 1.0);
 }

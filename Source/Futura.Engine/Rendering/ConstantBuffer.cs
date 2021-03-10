@@ -23,5 +23,6 @@ namespace Futura.Engine.Rendering
     {
         public Matrix4x4 Transform;
         public Vector4 ColorIdentifier;
+        public Vector4 DiffuseColor;
     }
 }

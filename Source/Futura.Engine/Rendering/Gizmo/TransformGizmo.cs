@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Futura.Engine.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Veldrid;
@@ -19,12 +21,12 @@ namespace Futura.Engine.Rendering.Gizmo
             positionHandle.Init(factory);
         }
 
-        public void Tick(CommandList commandList)
+        public void Tick(CommandList commandList, Transform transform, Veldrid.DeviceBuffer modelBuffer, Vector3 cameraPos)
         {
             switch (currentTransformation)
             {
                 case Transformation.Move:
-                    positionHandle.Tick(commandList);
+                    positionHandle.Tick(commandList, transform, modelBuffer, cameraPos);
                     break;
                 case Transformation.Rotate:
                     break;

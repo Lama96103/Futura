@@ -309,8 +309,8 @@ namespace Futura.Engine.Utility
                 for (uint i = 0; i < slices; i++)
                 {
                     indices.Add(centerIndex);
-                    indices.Add(baseIndex + i + 1);
                     indices.Add(baseIndex + i);
+                    indices.Add(baseIndex + i + 1);
                 }
             }
 

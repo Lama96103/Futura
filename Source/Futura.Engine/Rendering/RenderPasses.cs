@@ -6,6 +6,7 @@ using Futura.Engine.Rendering.Gizmo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Veldrid;
@@ -18,6 +19,8 @@ namespace Futura.Engine.Core
         public TransformGizmo TransformGizmo { get; init; } = new TransformGizmo();
 
         public Dictionary<Color, Entity> EntityColorDictionary { get; private set; } = new Dictionary<Color, Entity>();
+
+        private Vector3 cameraPos;
 
         private void MainPass()
         {
@@ -55,6 +58,8 @@ namespace Futura.Engine.Core
             world.CameraNear = camera.NearPlane;
             world.CameraFar = camera.FarPlane;
 
+            cameraPos = transform.Position;
+
             renderAPI.GraphicAPI.UpdateBuffer(worldBuffer, 0, world);
 
             return true;
@@ -62,6 +67,8 @@ namespace Futura.Engine.Core
 
         private void DiffusePass(CommandList commandList)
         {
+            EcsFilter.EntityReference selectedReference = null;
+
             commandList.Begin();
             commandList.PushDebugGroup("Pass_Diffuse");
 
@@ -91,14 +98,28 @@ namespace Futura.Engine.Core
                     ModelBuffer model = new ModelBuffer()
                     {
                         Transform = transform.LocalMatrix,
-                        ColorIdentifier = new System.Numerics.Vector4(colorData[0]/255f, colorData[1] / 255f, colorData[2] / 255f, 1)
+                        ColorIdentifier = new System.Numerics.Vector4(colorData[0]/255f, colorData[1] / 255f, colorData[2] / 255f, 1),
+                        DiffuseColor = filter.Material.DiffuseColor.RawData
                     };
                     commandList.UpdateBuffer(modelBuffer, 0, model);
                     filter.Mesh.Renderable.Draw(commandList);
 
 
                     EntityColorDictionary.Add(new Color(model.ColorIdentifier), reference.Entity);
+
+                    if (runtime.IsSelected)
+                    {
+                        selectedReference = reference;
+                    }
                 }
+            }
+
+            // Draw gizmo
+            commandList.SetPipeline(gizmoPipline);
+           
+            if(selectedReference != null)
+            {
+                TransformGizmo.Tick(commandList, selectedReference.GetComponent<Transform>(), modelBuffer, cameraPos);
             }
 
             // TODO Do this only if enabled
