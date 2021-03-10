@@ -34,7 +34,7 @@ namespace Futura.Engine.UserInterface
                 {
                     var entity = world.CreateEntity();
                     entity.GetComponent<Transform>();
-
+                    RuntimeHelper.Instance.HasSceneChanged = true;
                 }
                 ImGui.EndMenuBar();
             }
@@ -63,7 +63,7 @@ namespace Futura.Engine.UserInterface
                     RuntimeHelper.Instance.SelectedEntity = null;
                     worldSystem.World.DestroyEntity(toDelete);
                     toDelete = null;
-                    //EditorApp.Instance.SceneHasChanged = true;
+                    RuntimeHelper.Instance.HasSceneChanged = true;
                 }
                 ImGui.EndPopup();
             }

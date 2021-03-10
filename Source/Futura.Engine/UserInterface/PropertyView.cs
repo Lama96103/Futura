@@ -30,8 +30,6 @@ namespace Futura.Engine.UserInterface
 
         private WorldSystem worldSystem;
 
-        private bool didChange = false;
-
         public override void Init()
         {
             worldSystem = Runtime.Instance.Context.GetSubSystem<WorldSystem>();
@@ -46,7 +44,6 @@ namespace Futura.Engine.UserInterface
             entity = null;
             asset = e.Asset;
             imageSource = IntPtr.Zero;
-            didChange = false;
         }
 
         private void EditorApp_EntitySelectionChanged(object sender, EntitySelectionChangedEventArgs e)
@@ -54,7 +51,6 @@ namespace Futura.Engine.UserInterface
             entity = e.Entity;
             asset = null;
             imageSource = IntPtr.Zero;
-            didChange = false;
         }
 
         private void DisplayEntity()
@@ -65,12 +61,12 @@ namespace Futura.Engine.UserInterface
             string name = baseComponent.Name;
             bool enabled = baseComponent.IsEnabled;
 
-            if (ImGui.Checkbox("##EnableAsset", ref baseComponent.IsEnabled)) ;
+            if (ImGui.Checkbox("##EnableAsset", ref baseComponent.IsEnabled)) RuntimeHelper.Instance.HasSceneChanged = true;
             ImGui.SameLine();
             if (ImGui.InputText("Name##Header", ref name, 100))
             {
                 baseComponent.Name = name;
-                didChange = true;
+                RuntimeHelper.Instance.HasSceneChanged = true;
             }
 
             ImGui.Separator();
@@ -79,11 +75,19 @@ namespace Futura.Engine.UserInterface
             // Content
             foreach (IComponent component in entity.GetAllComponents())
             {
-                if (component.GetType().GetCustomAttribute<IgnoreAttribute>() != null) continue;
+                Type componentType = component.GetType();
+                if (componentType.GetCustomAttribute<IgnoreAttribute>() != null) continue;
+                
+                ImGui.Text(componentType.Name);
 
-                ImGui.Text(component.GetType().Name);
+                if(componentType.GetInterface("ICustomUserInterface") != null)
+                {
+                    ICustomUserInterface ui = (ICustomUserInterface)component;
+                    ui.Display();
+                    continue;
+                }
 
-                var fields = component.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                var fields = componentType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                 foreach (var f in fields)
                 {
                     if (!f.IsPublic && f.GetCustomAttribute<SerializeField>() == null) continue;
@@ -98,10 +102,8 @@ namespace Futura.Engine.UserInterface
                         bool change = serializer.Serialize(component, f);
                         if (change)
                         {
-                            didChange = true;
-                            if(component.GetType() == typeof(Transform)) ((Transform)component).UpdateTransform();
-                            if (component.GetType() == typeof(MeshGenerator)) ((MeshGenerator)component).IsDirty = true;
-
+                            RuntimeHelper.Instance.HasSceneChanged = true;
+                            if (component.GetType() == typeof(Transform)) ((Transform)component).UpdateTransform();
                         }
                     }
                 }
@@ -118,14 +120,14 @@ namespace Futura.Engine.UserInterface
             if (ImGui.Button("Destroy"))
             {
                 worldSystem.World.DestroyEntity(entity);
-                //EditorApp.Instance.SelectedEntity = null;
+                RuntimeHelper.Instance.HasSceneChanged = true;
+                RuntimeHelper.Instance.SelectedEntity = null;
             }
 #endif
 
             if (ImGui.BeginPopup("ComponentSelector"))
             {
                 var components = AppDomain.CurrentDomain.GetAssemblies().SelectMany(t => t.GetTypes()).Where(t => t.IsClass && t.GetInterface("Futura.ECS.IComponent") != null);
-
 
 
                 int id = 0;
@@ -142,8 +144,7 @@ namespace Futura.Engine.UserInterface
                 if (selectedComponentType != null && ImGui.Button("Add"))
                 {
                     entity.AddComponent(selectedComponentType);
-                    Log.Debug("Add component " + selectedComponentType.Name);
-                    //EditorApp.Instance.SceneHasChanged = true;
+                    RuntimeHelper.Instance.HasSceneChanged = true;
                     selectedComponentType = null;
                     ImGui.CloseCurrentPopup();
                 }
@@ -156,9 +157,19 @@ namespace Futura.Engine.UserInterface
         {
             // Header
             string name = asset.Path.Name;
-            if (ImGui.InputText("Name##Header", ref name, 100))
+            if (ImGui.InputText("Name##Header", ref name, 100)) {}
+
+            if (asset.HasAssetChanged)
             {
+                ImGui.SameLine();
+                if (ImGui.Button("Save"))
+                {
+                    ResourceManager.Instance.Save(asset);
+                    asset.HasAssetChanged = false;
+                }
             }
+            
+            
             ImGui.Separator();
 
             // Content
@@ -215,14 +226,14 @@ namespace Futura.Engine.UserInterface
             if(ImGui.Checkbox("SRGB", ref srgb))
             {
                 texture.IsSRGB = srgb;
-                didChange = true;
+                texture.HasAssetChanged = true;
             }
 
             bool mipmap = texture.UseMipMap;
             if (ImGui.Checkbox("MipMap", ref mipmap))
             {
                 texture.UseMipMap = mipmap;
-                didChange = true;
+                texture.HasAssetChanged = true;
             }
 
             ImGui.TextDisabled("Width: ");
@@ -264,47 +275,19 @@ namespace Futura.Engine.UserInterface
                 }
                 else
                 {
-                    if (serializer.Serialize(material, f)) didChange = true;
+                    if (serializer.Serialize(material, f)) material.HasAssetChanged = true;
                 }
             }
         }
 
-        private void SaveChanges()
-        {
-            if(entity != null)
-            {
-                Runtime.Instance.Context.GetSubSystem<WorldSystem>().Save(Runtime.Instance.CurrentScene);
-                didChange = false;
-            }
-            else if(asset != null)
-            {
-                Resources.ResourceManager.Instance.Save(asset);
 
-                asset.Unload();
-                asset.Load();
-                didChange = false;
-            }
-        }
 
         public override void Tick()
         {
-            ImGuiWindowFlags flags = ImGuiWindowFlags.MenuBar;
-            if (didChange) flags |= ImGuiWindowFlags.UnsavedDocument;
-
+            ImGuiWindowFlags flags = 0;
             ImGui.Begin(txt_WindowName, ref isOpen, flags);
 
-            if (didChange)
-            {
-                if (ImGui.BeginMenuBar())
-                {
-                    if (ImGui.MenuItem("Save"))
-                    {
-                        SaveChanges();
-                    }
-                    ImGui.EndMenuBar();
-                }
-            }
-
+        
             if (entity == null && asset == null)
             {
                 selectedComponentType = null;

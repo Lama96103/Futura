@@ -12,6 +12,8 @@ namespace Futura.Engine.UserInterface
 {
     public class MainMenuView : View
     {
+        private string windowTitle = "Futura";
+
         public override void Tick()
         {
             if (ImGui.BeginMainMenuBar())
@@ -70,6 +72,14 @@ namespace Futura.Engine.UserInterface
             ImGui.DockSpace(id, new Vector2(0));
             ImGui.End();
 
+            string hasChanged = RuntimeHelper.Instance.HasSceneChanged ? "*" : "";
+            string newWindowTitle = $"Futura - {Runtime.Instance.CurrentScene.Name}{hasChanged}";
+
+            if(newWindowTitle != windowTitle)
+            {
+                Window.Instance.Title = newWindowTitle;
+                windowTitle = newWindowTitle;
+            }
         }
     }
 }

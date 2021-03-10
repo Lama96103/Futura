@@ -51,6 +51,18 @@ namespace Futura.Engine.Core
             }
         }
 
+        public string Title
+        {
+            get
+            {
+                return Handle.Title;
+            }
+            set
+            {
+                Handle.Title = value;
+            }
+        }
+
         public void Init(int x, int y, int width, int height, string title, WindowState state)
         {
             WindowCreateInfo createInfo = new WindowCreateInfo()

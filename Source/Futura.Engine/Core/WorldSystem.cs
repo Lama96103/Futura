@@ -30,7 +30,7 @@ namespace Futura.Engine.Core
         {
             string json = Serialize.ToJson(World);
             File.WriteAllText(file.FullName, json);
-
+            RuntimeHelper.Instance.HasSceneChanged = false;
         }
 
         internal void Load(FileInfo file)

@@ -56,14 +56,25 @@ namespace Futura.Engine.ECS.Systems
                 case MeshGenerator.MeshType.None:
                     break;
                 case MeshGenerator.MeshType.Quad:
-                    Utility.GeometryGenerator.GenerateQuad(ref vertices, ref indices, gen.Width, gen.Depth);
+                    Utility.GeometryGenerator.GenerateQuad(ref vertices, ref indices, gen.X, gen.Y);
                     break;
                 case MeshGenerator.MeshType.Cube:
+                    Utility.GeometryGenerator.GenerateCube(ref vertices, ref indices, gen.X, gen.Y, gen.Z);
+                    break;
+                case MeshGenerator.MeshType.Sphere:
+                    Utility.GeometryGenerator.GenerateSphere(ref vertices, ref indices, gen.Radius, gen.Slices, gen.Stacks);
+                    break;
+                case MeshGenerator.MeshType.Cylinder:
+                    Utility.GeometryGenerator.GenerateCylinder(ref vertices, ref indices, gen.RadiusTop, gen.RadiusBottom, gen.Height, gen.Slices, gen.Stacks);
+                    break;
+                case MeshGenerator.MeshType.Cone:
+                    Utility.GeometryGenerator.GenerateCone(ref vertices, ref indices, gen.Radius, gen.Height);
                     break;
                 default:
                     break;
             }
 
+            gen.IsDirty = false;
             if (vertices.Count == 0) return;
 
             Mesh mesh = new Mesh(new System.IO.FileInfo("Mesh.mesh"), Guid.Empty, vertices.ToArray(), indices.ToArray(), new Core.Bounds());
@@ -71,7 +82,6 @@ namespace Futura.Engine.ECS.Systems
             filter.Mesh = mesh;
             Cache.Add(reference.Entity, mesh);
 
-            gen.IsDirty = false;
             Profiler.Report(Profiler.StatisticIndicator.BuildMesh);
         }
     }

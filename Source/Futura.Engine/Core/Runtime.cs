@@ -33,6 +33,8 @@ namespace Futura.Engine.Core
 
         public void Init()
         {
+            Profiler.StartFrame();
+
             timeSys = Context.RegisterSubSystem<TimeSystem>();
             Context.RegisterSubSystem<LogSystem>();
             LogView logView = new LogView();
@@ -55,6 +57,8 @@ namespace Futura.Engine.Core
 
             // Init singleton systems
             Resources.ResourceManager.Instance.Init(AssetDir);
+
+            Profiler.EndFrame();
         }
 
         public void Tick()

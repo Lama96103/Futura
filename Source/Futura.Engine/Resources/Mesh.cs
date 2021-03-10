@@ -17,7 +17,7 @@ namespace Futura.Engine.Resources
         private Bounds bounds;
         private Renderable renderable = null;
 
-        public override bool IsLoaded => renderable != null;
+        public override bool IsLoaded => renderable != null && Renderable.IsLoaded;
 
         public int VertexCount { get => vertices.Length; }
         public int IndexCount { get => indices.Length; }

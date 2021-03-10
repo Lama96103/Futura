@@ -57,6 +57,15 @@ namespace Futura.Engine.Rendering
             {
                 Transform.Position -= (Transform.Right() * veloctiy);
             }
+
+            if (ImGui.IsKeyDown((int)Key.Q))
+            {
+                Transform.Position -= (Transform.Up() * veloctiy);
+            }
+            if (ImGui.IsKeyDown((int)Key.E))
+            {
+                Transform.Position += (Transform.Up() * veloctiy);
+            }
         }
 
         private void ProcessRotation()

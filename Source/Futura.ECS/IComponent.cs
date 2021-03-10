@@ -7,4 +7,9 @@ namespace Futura.ECS
     public interface IComponent
     {
     }
+
+    public interface ICustomUserInterface
+    {
+        public bool Display();
+    }
 }

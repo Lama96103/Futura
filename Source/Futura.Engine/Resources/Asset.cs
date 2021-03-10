@@ -23,6 +23,7 @@ namespace Futura.Engine.Resources
         public AssetType AssetType { get; init; }
         public FileInfo Path { get; init; }
         public abstract bool IsLoaded { get; }
+        public bool HasAssetChanged { get; set; } = false;
 
         internal Asset(Guid identifier, AssetType type, FileInfo path)
         {

@@ -49,6 +49,11 @@ namespace Futura.Engine.UserInterface.Properties
         public abstract bool Serialize(object obj, FieldInfo field);
 
 
+        public bool Serialize(object obj, string fieldName)
+        {
+            return Serialize(obj, obj.GetType().GetField(fieldName));
+        }
+
         protected string GetName(FieldInfo field)
         {
             NameAttribute nameAttribute = field.GetCustomAttribute<NameAttribute>();
@@ -58,6 +63,8 @@ namespace Futura.Engine.UserInterface.Properties
             }
             return field.Name;
         }
+
+
     }
 
     

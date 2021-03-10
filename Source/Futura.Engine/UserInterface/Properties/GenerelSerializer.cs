@@ -45,6 +45,7 @@ namespace Futura.Engine.UserInterface.Properties
             if(ImGui.Combo(GetName(field), ref currentValue, possibleValuesString, possibleValuesString.Length))
             {
                 field.SetValue(obj, currentValue);
+                return true;
             }
 
             return false;
