@@ -1,5 +1,6 @@
 ﻿using Futura.ECS;
 using Futura.Engine.Components;
+using Futura.Engine.ECS.Systems;
 using Futura.Engine.Utility;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace Futura.Engine.Core
         internal override void Init()
         {
             World = new EcsWorld();
+
         }
 
         internal override void Tick(double deltaTime)
@@ -38,6 +40,9 @@ namespace Futura.Engine.Core
             string json = File.ReadAllText(file.FullName);
             World = Serialize.ToObject<EcsWorld>(json);
             World.RefreshReferences();
+
+
+            World.RegisterSystem(new MeshGeneratorSystem(), 100);
         }
     }
 }

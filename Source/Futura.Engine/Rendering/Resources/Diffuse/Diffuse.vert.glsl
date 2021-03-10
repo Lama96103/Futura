@@ -14,6 +14,8 @@ layout(set = 0, binding = 0) uniform WorldBuffer
     mat4 View;
     mat4 ProjectionView;
     vec3 CameraPosition;
+	float CameraNear;
+	float CameraFar;
 };
 
 layout(set = 1, binding = 0) uniform ModelBuffer

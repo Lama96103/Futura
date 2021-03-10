@@ -67,12 +67,13 @@ namespace Futura.Engine.Resources
             if (IsLoaded) Log.Error("Mesh is already loaded");
             renderable = new Renderable();
             renderable.Load(Runtime.Instance.Context.GetSubSystem<RenderSystem>().API, vertices, indices);
+            Profiler.Report(Profiler.StatisticIndicator.Load_Mesh);
         }
 
         public override void Unload()
         {
             if (!IsLoaded) Log.Error("Mesh is already unloaded");
-            renderable.Unload();
+            renderable?.Unload();
         }
     }
 }

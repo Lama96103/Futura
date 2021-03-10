@@ -51,7 +51,10 @@ namespace Futura.Engine.Core
         public enum StatisticIndicator
         {
             DrawCall,
-            Vertex
+            Vertex,
+            BuildMesh,
+            Load_Mesh,
+            Load_Texture
         }
     }
 }

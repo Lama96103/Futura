@@ -2,6 +2,7 @@
 using Futura.Engine.Components;
 using Futura.Engine.Core;
 using Futura.Engine.ECS;
+using Futura.Engine.ECS.Components;
 using Futura.Engine.Rendering;
 using Futura.Engine.Resources;
 using Futura.Engine.UserInterface.Properties;
@@ -98,9 +99,8 @@ namespace Futura.Engine.UserInterface
                         if (change)
                         {
                             didChange = true;
-                            if(component.GetType() == typeof(Transform)){
-                                ((Transform)component).UpdateTransform();
-                            }
+                            if(component.GetType() == typeof(Transform)) ((Transform)component).UpdateTransform();
+                            if (component.GetType() == typeof(MeshGenerator)) ((MeshGenerator)component).IsDirty = true;
 
                         }
                     }

@@ -11,6 +11,8 @@ layout(set = 0, binding = 0) uniform WorldBuffer
     mat4 View;
     mat4 ProjectionView;
     vec3 CameraPosition;
+	float CameraNear;
+	float CameraFar;
 };
 
 layout(set = 1, binding = 0) uniform ModelBuffer
@@ -125,6 +127,6 @@ void main()
 
 	FragColor = vec4(1.0, 1.0, 1.0, 1.0);
 	SelectionColor = Color;
-	DepthColor = vec4(gl_FragCoord.z);
+	DepthColor = vec4(vec3(gl_FragCoord.z), 1.0);
 }
 

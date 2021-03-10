@@ -14,12 +14,14 @@ namespace Futura.Engine.Rendering
         public Matrix4x4 ProjectionView;
 
         public Vector3 CameraPosition;
-        private float padding0;
+        public float CameraNear;
+        public float CameraFar;
+        private Vector3 padding;
     }
 
     struct ModelBuffer
     {
         public Matrix4x4 Transform;
-        public Vector4 Color;
+        public Vector4 ColorIdentifier;
     }
 }

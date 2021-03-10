@@ -30,6 +30,11 @@ namespace Futura
             data = new Vector4(r, g, b, 1);
         }
 
+        public Color(Vector4 vec)
+        {
+            data = vec;
+        }
+
         public Color(BinaryReader reader)
         {
             data = VectorExtension.ReadVector4(reader);
@@ -49,6 +54,12 @@ namespace Futura
         public void Read(BinaryReader reader)
         {
             data = VectorExtension.ReadVector4(reader);
+        }
+
+
+        public override string ToString()
+        {
+            return $"Color ({R}, {G}, {B}, {A})";
         }
     }
 }

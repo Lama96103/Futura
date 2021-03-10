@@ -11,6 +11,9 @@ namespace Futura.Engine.UserInterface
 {
     public class SceneView : View
     {
+        private enum RenderView { Normal, Selection, Depth }
+
+        private RenderView currentView = RenderView.Normal;
         private string txt_WindowName;
         private string txt_SceneChild;
         private string txt_OverlayChild;
@@ -29,7 +32,7 @@ namespace Futura.Engine.UserInterface
         {
             renderSystem = Runtime.Instance.Context.GetSubSystem<RenderSystem>();
             timeSystem = Runtime.Instance.Context.GetSubSystem<TimeSystem>();
-            colorImagePointer = ImGuiController.Instance.GetOrCreateImGuiBinding(renderSystem.DiffuseFrameBuffer.ColorTextures[1].Handle);
+            colorImagePointer = ImGuiController.Instance.GetOrCreateImGuiBinding(renderSystem.DiffuseFrameBuffer.ColorTextures[(int)currentView].Handle);
 
             txt_WindowName = $"Scene##{ID}";
             txt_SceneChild = $"GameRender##{ID}";
@@ -46,6 +49,8 @@ namespace Futura.Engine.UserInterface
             ImGui.Begin(txt_WindowName, flags);
             ImGui.PopStyleVar();
 
+            DisplayMenu();
+
             ImGui.BeginChild(txt_SceneChild);
 
             if (imageSize != ImGui.GetWindowSize())
@@ -55,12 +60,27 @@ namespace Futura.Engine.UserInterface
                 Log.Debug("Scene Size: " + imageSize.X + " " + imageSize.Y);
             }
 
-            if (ImGuiController.Instance.ClearedCache)
-            {
-                colorImagePointer = ImGuiController.Instance.GetOrCreateImGuiBinding(renderSystem.DiffuseFrameBuffer.ColorTextures[2].Handle);
-            }
-
+            colorImagePointer = ImGuiController.Instance.GetOrCreateImGuiBinding(renderSystem.DiffuseFrameBuffer.ColorTextures[(int)currentView].Handle);
             ImGui.Image(colorImagePointer, imageSize);
+
+
+            if (Input.IsMouseDown(Veldrid.MouseButton.Left) && ImGui.IsWindowHovered())
+            {
+                Vector2 mousePos = Input.MousePosition;
+                Vector2 location = ImGui.GetWindowPos();
+
+                mousePos -= location;
+                if (mousePos.X >= 0 && mousePos.Y >= 0)
+                {
+                    if (mousePos.X < imageSize.X && mousePos.Y < imageSize.Y)
+                    {
+                        Color color = renderSystem.SelectionTexture.GetData((int)mousePos.X, (int)mousePos.Y);
+                        color.A = 1;
+                        if (renderSystem.EntityColorDictionary.TryGetValue(color, out Entity entity))
+                            RuntimeHelper.Instance.SelectedEntity = entity;
+                    }
+                }
+            }
 
             if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
             {
@@ -80,6 +100,23 @@ namespace Futura.Engine.UserInterface
 
             ShowRenderPerformance();
             ImGui.End();
+        }
+
+        private void DisplayMenu()
+        {
+            if (ImGui.BeginMenuBar())
+            {
+                if (ImGui.BeginMenu("View"))
+                {
+                    if (ImGui.MenuItem("Normal", currentView != RenderView.Normal)) currentView = RenderView.Normal;
+                    if (ImGui.MenuItem("Depth", currentView != RenderView.Depth)) currentView = RenderView.Depth;
+                    if (ImGui.MenuItem("Selection", currentView != RenderView.Selection)) currentView = RenderView.Selection;
+                    ImGui.EndMenu();
+                }
+
+
+                ImGui.EndMenuBar();
+            }
         }
 
         private void ShowRenderPerformance()
