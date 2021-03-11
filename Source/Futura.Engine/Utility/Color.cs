@@ -61,5 +61,22 @@ namespace Futura
         {
             return $"Color ({R}, {G}, {B}, {A})";
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != typeof(Color)) return false;
+            Color col = (Color)obj;
+            return data == col.data;
+        }
+
+        public static bool operator ==(Color c1, Color c2)
+        {
+            return c1.Equals(c2);
+        }
+
+        public static bool operator !=(Color c1, Color c2)
+        {
+            return !c1.Equals(c2);
+        }
     }
 }

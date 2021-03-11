@@ -34,7 +34,7 @@ namespace Futura.Engine.Components
         public Matrix4x4 ViewProjectionMatrix { get; private set; }
 
 
-        public void UpdatePosition(Transform transform, float width, float height)
+        internal void UpdatePosition(Transform transform, float width, float height)
         {
             Vector3 position = transform.Position;
             Vector3 lookAt = Vector3.Transform(Vector3.UnitZ, transform.Rotation);
@@ -60,6 +60,30 @@ namespace Futura.Engine.Components
             }
 
             ViewProjectionMatrix = ViewMatrix * ProjectionMatrix;
+        }
+
+        /// <summary>
+        /// Converts from Screen Space x,y to world space
+        /// </summary>
+        /// <param name="screenPos"></param>
+        /// <returns></returns>
+        public Vector3 Unproject(Vector2 screenPos)
+        {
+            Vector3 position_clip = new Vector3();
+            Vector2 viewport = Core.Runtime.Instance.Context.GetSubSystem<Core.RenderSystem>().Viewport;
+
+            position_clip.X = (screenPos.X / viewport.X) * 2.0f - 1.0f;
+            position_clip.Y = (screenPos.Y / viewport.Y) * -2.0f + 1.0f;
+            position_clip.Z = NearPlane;
+
+            // Compute world space position
+            if(Matrix4x4.Invert(ViewProjectionMatrix, out Matrix4x4 viewProjectedInverted))
+            {
+
+                Vector3 worldPos = Vector3.Transform(position_clip, viewProjectedInverted);
+                return worldPos;
+            }
+            return Vector3.Zero;
         }
     }
 }

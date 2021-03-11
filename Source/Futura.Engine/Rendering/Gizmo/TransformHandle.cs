@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Veldrid;
+using Futura.ECS;
 
 namespace Futura.Engine.Rendering.Gizmo
 {
@@ -16,15 +17,21 @@ namespace Futura.Engine.Rendering.Gizmo
 
         public abstract void Init(Veldrid.ResourceFactory factory);
 
-        public void Tick(CommandList commandList, Transform transform, Veldrid.DeviceBuffer modelBuffer, Vector3 cameraPos)
+
+        public void Tick(CommandList commandList, Entity entity, Veldrid.DeviceBuffer modelBuffer, Vector3 cameraPos)
         {
+            Transform transform = entity.GetComponent<Transform>();
+
+
             float distanceToCamera = Vector3.Distance(transform.Position, cameraPos);
 
+            Vector3 scale = new Vector3(distanceToCamera / (1 - 0.015f));
+            scale *= 0.04f;
+
             // X Axis
-            Vector3 position = transform.Position + new Vector3(2.5f * 0.2f, 0, 0);
-            Vector3 scale = new Vector3(0.05f * distanceToCamera);
+            Vector3 position = transform.Position;
             Vector3 rotation = new Vector3(0, 0, -90);
-            Vector4 color = new System.Numerics.Vector4(1, 0, 0, 1);
+            Vector4 color = TransformGizmo.ColorAxisX.RawData;
 
             Matrix4x4 matrix = Transform.CalculateModelMatrix(position, rotation.FromEulerAngles(), scale);
 
@@ -38,9 +45,8 @@ namespace Futura.Engine.Rendering.Gizmo
             renderable.Draw(commandList);
 
             // Y Axis
-            position = transform.Position + new Vector3(0, 2.5f * 0.2f, 0);
             rotation = new Vector3(0, 90, 0);
-            color = new Vector4(0, 1, 0, 1);
+            color = TransformGizmo.ColorAxisY.RawData;
 
             matrix = Transform.CalculateModelMatrix(position, rotation.FromEulerAngles(), scale);
 
@@ -54,9 +60,8 @@ namespace Futura.Engine.Rendering.Gizmo
             renderable.Draw(commandList);
 
             // Z Axis
-            position = transform.Position + new Vector3(0, 0, 2.5f * 0.2f);
             rotation = new Vector3(90, 0, 0);
-            color = new Vector4(0, 0, 1, 1);
+            color = TransformGizmo.ColorAxisZ.RawData;
 
             matrix = Transform.CalculateModelMatrix(position, rotation.FromEulerAngles(), scale);
 
@@ -68,6 +73,9 @@ namespace Futura.Engine.Rendering.Gizmo
             };
             commandList.UpdateBuffer(modelBuffer, 0, model);
             renderable.Draw(commandList);
+
+            Core.Profiler.Report(Core.Profiler.StatisticIndicator.DrawCall, 3);
+            Core.Profiler.Report(Core.Profiler.StatisticIndicator.Vertex, (int)renderable.Vertices * 3);
         }
     }
 }

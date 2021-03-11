@@ -16,11 +16,13 @@ namespace Futura.Engine.Core
     partial class RenderSystem
     {
         public bool UseEditorCamera { get; set; } = true;
-        public TransformGizmo TransformGizmo { get; init; } = new TransformGizmo();
+        private TransformGizmo transformGizmo = TransformGizmo.Instance;
 
         public Dictionary<Color, Entity> EntityColorDictionary { get; private set; } = new Dictionary<Color, Entity>();
 
         private Vector3 cameraPos;
+
+        public Vector2 Viewport { get => new Vector2(RenderResolutionWidth, RenderResolutionHeight); }
 
         private void MainPass()
         {
@@ -48,7 +50,7 @@ namespace Futura.Engine.Core
                 camera = cameraEntity.GetComponent<Camera>();
             }
 
-            camera.UpdatePosition(transform, (float)renderResolutionWidth, (float)renderResolutionHeight);
+            camera.UpdatePosition(transform, (float)RenderResolutionWidth, (float)RenderResolutionHeight);
 
             WorldBuffer world = new WorldBuffer();
             world.Projection = camera.ProjectionMatrix;
@@ -106,21 +108,13 @@ namespace Futura.Engine.Core
 
 
                     EntityColorDictionary.Add(new Color(model.ColorIdentifier), reference.Entity);
-
-                    if (runtime.IsSelected)
-                    {
-                        selectedReference = reference;
-                    }
                 }
             }
 
             // Draw gizmo
             commandList.SetPipeline(gizmoPipline);
-           
-            if(selectedReference != null)
-            {
-                TransformGizmo.Tick(commandList, selectedReference.GetComponent<Transform>(), modelBuffer, cameraPos);
-            }
+            transformGizmo.Tick(commandList, modelBuffer, cameraPos);
+          
 
             // TODO Do this only if enabled
             commandList.CopyTexture(DiffuseFrameBuffer.ColorTextures[1].Handle, SelectionTexture.Handle);

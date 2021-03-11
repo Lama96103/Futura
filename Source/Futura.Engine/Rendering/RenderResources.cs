@@ -14,8 +14,8 @@ namespace Futura.Engine.Core
 {
     partial class RenderSystem
     {
-        private uint renderResolutionWidth = 1280;
-        private uint renderResolutionHeight = 720;
+        public uint RenderResolutionWidth { get; private set; } = 1280;
+        public uint RenderResolutionHeight { get; private set; } = 720;
 
         private DeviceBuffer worldBuffer;
         private DeviceBuffer modelBuffer;
@@ -79,14 +79,14 @@ namespace Futura.Engine.Core
 
             gizmoPipline = deviceResourceCache.GetPipline(ref pipelineDescription);
 
-            TransformGizmo.Init(factory);
+            transformGizmo.Init(factory);
 
         }
 
         private void RecreateRenderResources(uint width, uint height)
         {
-            renderResolutionWidth = width;
-            renderResolutionHeight = height;
+            RenderResolutionWidth = width;
+            RenderResolutionHeight = height;
 
             diffuseFramebuffer?.Unload();
             SelectionTexture?.Unload();

@@ -1,4 +1,5 @@
-﻿using Futura.Engine.Components;
+﻿using Futura.ECS;
+using Futura.Engine.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,19 @@ using Veldrid;
 
 namespace Futura.Engine.Rendering.Gizmo
 {
-    class TransformGizmo
+    class TransformGizmo : Singleton<TransformGizmo>
     {
+        public static readonly Color ColorAxisX = new Color(1, 0, 0, 1);
+        public static readonly Color ColorAxisY = new Color(0, 1, 0, 1);
+        public static readonly Color ColorAxisZ = new Color(0, 0, 1, 1);
+
+
         private Transformation currentTransformation = Transformation.Move;
+
+        private Entity currentSelectedEntity;
+        private Vector3 currentEditAxis = Vector3.Zero;
+        private Vector3 lastPos = Vector3.Zero;
+        private Vector2 viewportOffset = Vector2.Zero;
 
         private TransformPositionHandle positionHandle;
 
@@ -19,14 +30,24 @@ namespace Futura.Engine.Rendering.Gizmo
         {
             positionHandle = new TransformPositionHandle();
             positionHandle.Init(factory);
+
+            Core.RuntimeHelper.Instance.EntitySelectionChanged += Instance_EntitySelectionChanged;
         }
 
-        public void Tick(CommandList commandList, Transform transform, Veldrid.DeviceBuffer modelBuffer, Vector3 cameraPos)
+        private void Instance_EntitySelectionChanged(object sender, Core.EntitySelectionChangedEventArgs e)
         {
+            currentSelectedEntity = e.Entity;
+        }
+
+        public void Tick(CommandList commandList, Veldrid.DeviceBuffer modelBuffer, Vector3 cameraPos)
+        {
+            if (currentSelectedEntity == null) return;
+
             switch (currentTransformation)
             {
                 case Transformation.Move:
-                    positionHandle.Tick(commandList, transform, modelBuffer, cameraPos);
+                    if (currentEditAxis != Vector3.Zero) ApplyTransform();
+                    positionHandle.Tick(commandList, currentSelectedEntity, modelBuffer, cameraPos);
                     break;
                 case Transformation.Rotate:
                     break;
@@ -35,6 +56,40 @@ namespace Futura.Engine.Rendering.Gizmo
                 default:
                     break;
             }
+        }
+
+        private void ApplyTransform()
+        {
+            float speed = 12;
+
+            Vector2 mousePos = Input.MousePosition- viewportOffset;
+
+            Vector3 currentPos = EditorCamera.Instance.Camera.Unproject(mousePos);
+
+            Vector3 delta = currentPos - lastPos;
+            float deltaXYZ = delta.Length();
+
+            float deltaX = deltaXYZ * Math.Sign(delta.X) * speed;
+            float deltaY = deltaXYZ * Math.Sign(delta.Y) * speed;
+            float deltaZ = deltaXYZ * Math.Sign(delta.Z) * speed;
+
+
+            currentSelectedEntity.GetComponent<Components.Transform>().Translate(new Vector3(deltaX, deltaY, deltaZ) * currentEditAxis);
+
+            lastPos = currentPos;
+        }
+
+        public void StartEditing(Vector3 axis, Vector2 mousePos, Vector2 viewportSize)
+        {
+            currentEditAxis = axis;
+
+            lastPos = EditorCamera.Instance.Camera.Unproject(mousePos) * currentEditAxis;
+            this.viewportOffset = viewportSize;
+        }
+
+        public void EndEditing()
+        {
+            currentEditAxis = Vector3.Zero;
         }
 
 

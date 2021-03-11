@@ -13,24 +13,24 @@ namespace Futura.Engine.Rendering.Gizmo
         {
             List<Vertex> vertices = new List<Vertex>();
             List<uint> indices = new List<uint>();
-            Utility.GeometryGenerator.GenerateCylinder(ref vertices, ref indices, 0.25f, 0.25f, 5f);
+            Utility.GeometryGenerator.GenerateCylinder(ref vertices, ref indices, 0.2f, 0.2f, 5f, 5, 5);
 
             for (int i = 0; i < vertices.Count; i++)
             {
                 Vertex v = vertices[i];
-                v.Position += new System.Numerics.Vector3(0, 1.0f, 0);
+                v.Position += new System.Numerics.Vector3(0, 3.5f, 0);
 
                 vertices[i] = v;
             }
 
             List<Vertex> coneVertices = new List<Vertex>();
             List<uint> coneIndices = new List<uint>();
-            Utility.GeometryGenerator.GenerateCone(ref coneVertices, ref coneIndices, 0.5f, 1);
+            Utility.GeometryGenerator.GenerateCone(ref coneVertices, ref coneIndices, 0.4f, 1, 5, 5);
 
             for (int i = 0; i < coneVertices.Count; i++)
             {
                 Vertex v = coneVertices[i];
-                v.Position += new System.Numerics.Vector3(0, 3.5f, 0);
+                v.Position += new System.Numerics.Vector3(0, 6.0f, 0);
 
                 coneVertices[i] = v;
             }

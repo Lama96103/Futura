@@ -316,9 +316,9 @@ namespace Futura.Engine.Utility
 
         }
 
-        public static void GenerateCone(ref List<Vertex> vertices, ref List<uint> indices, float radius = 1.0f, float height = 2.0f)
+        public static void GenerateCone(ref List<Vertex> vertices, ref List<uint> indices, float radius = 1.0f, float height = 2.0f, int slices = 15, int stacks = 15)
         {
-            GenerateCylinder(ref vertices, ref indices, 0.0f, radius, height);
+            GenerateCylinder(ref vertices, ref indices, 0.0f, radius, height, slices, stacks);
         }
     }
 }

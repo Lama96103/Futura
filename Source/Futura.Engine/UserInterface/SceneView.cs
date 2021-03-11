@@ -1,6 +1,7 @@
 ﻿using Futura.ECS;
 using Futura.Engine.Core;
 using Futura.Engine.Rendering;
+using Futura.Engine.Rendering.Gizmo;
 using ImGuiNET;
 using System;
 using System.Collections.Generic;
@@ -76,11 +77,25 @@ namespace Futura.Engine.UserInterface
                     {
                         Color color = renderSystem.SelectionTexture.GetData((int)mousePos.X, (int)mousePos.Y);
                         color.A = 1;
+
                         if (renderSystem.EntityColorDictionary.TryGetValue(color, out Entity entity))
                             RuntimeHelper.Instance.SelectedEntity = entity;
+                        else
+                        {
+                            Vector3 axis = Vector3.Zero;
+                            if (color == TransformGizmo.ColorAxisX) axis = Vector3.UnitX;
+                            if (color == TransformGizmo.ColorAxisY) axis = Vector3.UnitY;
+                            if (color == TransformGizmo.ColorAxisZ) axis = Vector3.UnitZ;
+
+                            if (axis != Vector3.Zero) TransformGizmo.Instance.StartEditing(axis, mousePos, location);
+                        }
                     }
                 }
             }
+
+
+            if(Input.IsMouseUp(Veldrid.MouseButton.Left)) TransformGizmo.Instance.EndEditing();
+        
 
             if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
             {
