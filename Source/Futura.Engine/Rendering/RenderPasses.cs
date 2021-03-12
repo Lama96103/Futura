@@ -69,8 +69,6 @@ namespace Futura.Engine.Core
 
         private void DiffusePass(CommandList commandList)
         {
-            EcsFilter.EntityReference selectedReference = null;
-
             commandList.Begin();
             commandList.PushDebugGroup("Pass_Diffuse");
 
@@ -101,7 +99,7 @@ namespace Futura.Engine.Core
                     {
                         Transform = transform.LocalMatrix,
                         ColorIdentifier = new System.Numerics.Vector4(colorData[0]/255f, colorData[1] / 255f, colorData[2] / 255f, 1),
-                        DiffuseColor = filter.Material.DiffuseColor.RawData
+                        DiffuseColor = filter.UseModelColor ? filter.ModelDiffuseColor.RawData : filter.Material.DiffuseColor.RawData
                     };
                     commandList.UpdateBuffer(modelBuffer, 0, model);
                     filter.Mesh.Renderable.Draw(commandList);

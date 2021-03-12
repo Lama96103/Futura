@@ -11,6 +11,7 @@ namespace Futura.Engine.Core
     {
         private static readonly Dictionary<StatisticIndicator, int> indicatorValues = new Dictionary<StatisticIndicator, int>();
         private static Dictionary<StatisticIndicator, int> lastFrame = new Dictionary<StatisticIndicator, int>();
+        private static Dictionary<string, Stopwatch> measuredTimes = new Dictionary<string, Stopwatch>();
 
         [Conditional("PROFILE")]
         internal static void StartFrame()
@@ -28,6 +29,15 @@ namespace Futura.Engine.Core
             lastFrame = indicatorValues;
         }
 
+        internal static int GetIndicator(StatisticIndicator indicator)
+        {
+            if (lastFrame.ContainsKey(indicator))
+                return lastFrame[indicator];
+            else return 0;
+        }
+
+        internal static Dictionary<string, Stopwatch> MeasuredTime { get => measuredTimes; }
+
         [Conditional("PROFILE")]
         public static void Report(string eventName, string eventParams = "")
         {
@@ -40,13 +50,27 @@ namespace Futura.Engine.Core
             indicatorValues[indicator] += count;
         }
 
-        public static int GetIndicator(StatisticIndicator indicator)
+        [Conditional("PROFILE")]
+        public static void StartTimeMeasure(string key)
         {
-            if (lastFrame.ContainsKey(indicator))
-                return lastFrame[indicator];
-            else return 0;
+            if (measuredTimes.ContainsKey(key))
+            {
+                measuredTimes[key].Restart();
+            }
+            else
+            {
+                measuredTimes.Add(key, Stopwatch.StartNew());
+            }
         }
 
+        [Conditional("PROFILE")]
+        public static void StopTimeMeasure(string key)
+        {
+            if (measuredTimes.ContainsKey(key))
+            {
+                measuredTimes[key].Stop();
+            }
+        }
 
         public enum StatisticIndicator
         {

@@ -47,6 +47,7 @@ namespace Futura.Engine.UserInterface
                 if (ImGui.BeginMenu("Window"))
                 {
                     if (ImGui.MenuItem("Logs")) UIController.Instance.Register(new LogView());
+                    if (ImGui.MenuItem("Performance")) UIController.Instance.Register(new PerformanceView());
 
                     ImGui.EndMenu();
                 }

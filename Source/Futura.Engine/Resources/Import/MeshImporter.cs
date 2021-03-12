@@ -55,17 +55,15 @@ namespace Futura.Engine.Resources.Import
 
             Vector3[] vertexPositions = new Vector3[assimpMesh.VertexCount];
             Vector3[] vertexNormals = new Vector3[assimpMesh.VertexCount];
+            Vector2[] vertexUVs = new Vector2[assimpMesh.VertexCount];
 
             for (int i = 0; i < assimpMesh.VertexCount; i++)
             {
                 var v = assimpMesh.Vertices[i];
                 vertexPositions[i] = new Vector3(v.X, v.Y, v.Z);
-
                 boundsMin = Vector3.Min(boundsMin, vertexPositions[i]);
                 boundsMax = Vector3.Max(boundsMax, vertexPositions[i]);
-
             }
-
 
             if (assimpMesh.HasNormals)
                 for (int i = 0; i < assimpMesh.VertexCount; i++)
@@ -76,11 +74,20 @@ namespace Futura.Engine.Resources.Import
             else
                 Log.Warn("Assimp: Mesh does not have normals");
 
+            if (assimpMesh.HasTextureCoords(0))
+                for (int i = 0; i < assimpMesh.VertexCount; i++)
+                {
+                    var v = assimpMesh.TextureCoordinateChannels[0][i];
+                    vertexUVs[i] = new Vector2(v.X, v.Y);
+                }
+            else
+                Log.Warn("Assimp: Mesh does not have texture coordinates");
+
 
 
             for (int i = 0; i < assimpMesh.VertexCount; i++)
             {
-                Vertex v = new Vertex(vertexPositions[i], vertexNormals[i]);
+                Vertex v = new Vertex(vertexPositions[i], vertexNormals[i], vertexUVs[i]);
                 vertices[i] = v;
             }
 

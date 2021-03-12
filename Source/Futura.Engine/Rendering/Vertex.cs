@@ -15,43 +15,31 @@ namespace Futura.Engine.Rendering
     {
         public Vector3 Position;
         public Vector3 Normal;
-        public float index;
-        public float ambientOcculssion;
+        public Vector2 UV;
 
         public const uint Size = 32;
 
 
-        public Vertex(float x, float y, float z, float index, float ao, Vector3 normal)
-        {
-            Position = new Vector3(x, y, z);
-            this.index = index;
-            this.ambientOcculssion = ao;
-            this.Normal = normal;
-        }
-
-        public Vertex(Vector3 position, Vector3 normal)
+        public Vertex(Vector3 position, Vector3 normal, Vector2 uv)
         {
             this.Position = position;
             this.Normal = normal;
-            this.ambientOcculssion = 0;
-            this.index = 0;
+            this.UV = uv;
         }
 
         public Vertex(BinaryReader reader)
         {
             Position = VectorExtension.ReadVector3(reader);
             Normal = VectorExtension.ReadVector3(reader);
-            index = reader.ReadSingle();
-            ambientOcculssion = reader.ReadSingle();
+            UV = VectorExtension.ReadVector2(reader);
         }
 
         public static VertexLayoutDescription GetLayoutDescription()
         {
             VertexLayoutDescription vertexLayout = new VertexLayoutDescription(
                 new VertexElementDescription("vertexPosition", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float3),
-                   new VertexElementDescription("normalVector", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float3),
-                new VertexElementDescription("vertexIndex", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float1),
-                new VertexElementDescription("vertexAmbientOcclusion", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float1));
+                   new VertexElementDescription("vertexNormal", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float3),
+                new VertexElementDescription("vertexUV", VertexElementSemantic.TextureCoordinate, VertexElementFormat.Float2));
             return vertexLayout;
         }
 
@@ -59,17 +47,14 @@ namespace Futura.Engine.Rendering
         {
             Position.Write(writer);
             Normal.Write(writer);
-
-            writer.Write(index);
-            writer.Write(ambientOcculssion);
+            UV.Write(writer);
         }
 
         public void Read(BinaryReader reader)
         {
             Position = VectorExtension.ReadVector3(reader);
             Normal = VectorExtension.ReadVector3(reader);
-            index = reader.ReadSingle();
-            ambientOcculssion = reader.ReadSingle();
+            UV = VectorExtension.ReadVector2(reader);
         }
     }
 }

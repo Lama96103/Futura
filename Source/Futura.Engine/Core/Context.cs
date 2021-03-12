@@ -46,9 +46,13 @@ namespace Futura.Engine.Core
             foreach(SubSystem sub in subSystems)
             {
                 if (sub.TickType != tickType) continue;
+
                 try
                 {
+                    string identifier = sub.GetType().FullName;
+                    Profiler.StartTimeMeasure(identifier);
                     sub.Tick(deltaTime);
+                    Profiler.StopTimeMeasure(identifier);
                 }
                 catch(Exception e)
                 {

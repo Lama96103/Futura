@@ -12,6 +12,10 @@ namespace Futura.Engine.Components
     public class MeshFilter : IComponent
     {
         public Mesh Mesh;
-        public Material Material = new Material(new System.IO.FileInfo("C:\\"), Guid.NewGuid());
+        public Material Material;
+
+        public bool UseModelColor = false;
+        public Color ModelDiffuseColor = Color.Black;
+
     }
 }

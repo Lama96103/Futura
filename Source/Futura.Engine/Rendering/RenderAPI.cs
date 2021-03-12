@@ -16,6 +16,8 @@ namespace Futura.Engine.Rendering
 
         internal GraphicsDevice GraphicAPI { get; init; }
 
+        private Dictionary<MappableResource, MappedResource> mappedResourceCache = new Dictionary<MappableResource, MappedResource>();
+
         /// <summary>
         /// Gets a value indicating whether this device's depth values range from 0 to 1. If false, depth values instead range from -1 to 1.
         /// </summary>
@@ -104,6 +106,26 @@ namespace Futura.Engine.Rendering
         public static void DisposeWhenIdle(IDisposable disposable)
         {
             Instance.GraphicAPI.DisposeWhenIdle(disposable);
+        }
+
+        public MappedResource Map(MappableResource ressource, MapMode mode = MapMode.Read)
+        {
+            if (!mappedResourceCache.ContainsKey(ressource))
+            {
+                MappedResource mapped = GraphicAPI.Map(ressource, mode);
+                mappedResourceCache.Add(ressource, mapped);
+                return mapped;
+            }
+            return mappedResourceCache[ressource];
+        }
+
+        public void Unmap(MappableResource resource)
+        {
+            if (mappedResourceCache.ContainsKey(resource))
+            {
+                GraphicAPI.Unmap(resource);
+                mappedResourceCache.Remove(resource);
+            }
         }
     }
 }

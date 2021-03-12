@@ -65,6 +65,8 @@ namespace Futura.Engine.Rendering
             return new Texture2D(factory, desc, name);
         }
 
+
+
         public Color GetData(int x, int y)
         {
             if (!IsStaging)
@@ -73,25 +75,22 @@ namespace Futura.Engine.Rendering
                 return Color.Black;
             }
 
-            MappedResource ressource = RenderAPI.Instance.GraphicAPI.Map(Handle, MapMode.Read);
+            MappedResource mappedResource = RenderAPI.Instance.Map(Handle);
 
-            int byteSize = (int)ressource.SizeInBytes;
-            int byteSizeRow = (int)ressource.RowPitch;
+            int byteSize = (int)mappedResource.SizeInBytes;
+            int byteSizeRow = (int)mappedResource.RowPitch;
 
-            byte[] rawData = new byte[byteSize];
-            Marshal.Copy(ressource.Data, rawData, 0, (int)byteSize);
-
-
+           
             Color color = Color.Black;
             switch (Handle.Format)
             {
                 case PixelFormat.R8_G8_B8_A8_UNorm:
                     int index = (x * 4) + (byteSizeRow * y);
 
-                    float r = rawData[index] / 255f;
-                    float g = rawData[index+1] / 255f;
-                    float b = rawData[index+2] / 255f;
-                    float a = rawData[index+3] / 255f;
+                    float r = Marshal.ReadByte(mappedResource.Data, index) / 255f;
+                    float g = Marshal.ReadByte(mappedResource.Data, index+1) / 255f;
+                    float b = Marshal.ReadByte(mappedResource.Data, index+2) / 255f;
+                    float a = Marshal.ReadByte(mappedResource.Data, index+3) / 255f;
 
                     color = new Color(r, g, b, a);
                     break;
@@ -99,8 +98,6 @@ namespace Futura.Engine.Rendering
                     Log.Error("Unsupported Pixel Format for sampling");
                     break;
             }
-
-            RenderAPI.Instance.GraphicAPI.Unmap(Handle);
             return color;
         }
 

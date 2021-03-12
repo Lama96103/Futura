@@ -15,6 +15,11 @@ namespace Futura.Engine.Rendering.Gizmo
         public static readonly Color ColorAxisX = new Color(1, 0, 0, 1);
         public static readonly Color ColorAxisY = new Color(0, 1, 0, 1);
         public static readonly Color ColorAxisZ = new Color(0, 0, 1, 1);
+        public static readonly Color ColorAxisHoover = new Color(0.75f, 0.75f, 0.75f, 1);
+
+        public static readonly Color ColorAxisXId = new Color(1, 0, 0, 0);
+        public static readonly Color ColorAxisYId = new Color(0, 1, 0, 0);
+        public static readonly Color ColorAxisZId = new Color(0, 0, 1, 0);
 
 
         private Transformation currentTransformation = Transformation.Move;
@@ -25,6 +30,8 @@ namespace Futura.Engine.Rendering.Gizmo
         private Vector2 viewportOffset = Vector2.Zero;
 
         private TransformPositionHandle positionHandle;
+
+        private Vector3 currentHoverAxis = Vector3.Zero;
 
         public void Init(ResourceFactory factory)
         {
@@ -47,7 +54,7 @@ namespace Futura.Engine.Rendering.Gizmo
             {
                 case Transformation.Move:
                     if (currentEditAxis != Vector3.Zero) ApplyTransform();
-                    positionHandle.Tick(commandList, currentSelectedEntity, modelBuffer, cameraPos);
+                    positionHandle.Tick(commandList, currentSelectedEntity, modelBuffer, cameraPos, currentHoverAxis);
                     break;
                 case Transformation.Rotate:
                     break;
@@ -90,6 +97,11 @@ namespace Futura.Engine.Rendering.Gizmo
         public void EndEditing()
         {
             currentEditAxis = Vector3.Zero;
+        }
+
+        public void SetHooverAxis(Vector3 axis)
+        {
+            currentHoverAxis = axis;
         }
 
 

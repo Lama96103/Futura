@@ -22,7 +22,7 @@ namespace Futura.Engine.Core
 
         public double DeltaTime { get => deltaTime; }
         public double DeltaTimeSmoothed { get => deltaTimeSmoothed; }
-        public double FPS { get => 1000.0 / DeltaTime; }
+        public double FPS { get; private set; }
         public TimeSpan TotalTime { get => totalTime.Elapsed; }
 
         // The delta times are in ms
@@ -30,6 +30,8 @@ namespace Futura.Engine.Core
         private double deltaTimeSmoothed = 0.0f;
 
         double sleepOverhead = 0.0f;
+
+        private double secondsTick = 0;
 
         public TimeSystem()
         {
@@ -65,6 +67,14 @@ namespace Futura.Engine.Core
             double deltaMax = 1000.0 / MinFPS;
             double deltaClamped = deltaTime > deltaMax ? deltaMax : deltaTime;
             this.deltaTimeSmoothed = deltaTimeSmoothed * (1.0 - deltaFeedback) + deltaClamped * deltaFeedback;
+
+
+            secondsTick += deltaTime;
+            if(secondsTick >= 500)
+            {
+                secondsTick = 0;
+                FPS = 1000.0 / DeltaTime;
+            }
         }
 
         public void SetTargetFPS(Mode mode, double fps = 0)

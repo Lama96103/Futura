@@ -72,18 +72,18 @@
             },
             "Scale": {
               "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 0.1,
-              "Y": 0.1,
-              "Z": 0.1
+              "X": 1.0,
+              "Y": 1.0,
+              "Z": 1.0
             }
           },
           "5": {
             "$type": "Futura.Engine.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Position": {
               "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 0.0,
+              "X": 3.541194,
               "Y": 0.0,
-              "Z": 0.0
+              "Z": -4.540734
             },
             "Rotation": {
               "$type": "System.Numerics.Quaternion, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
@@ -109,18 +109,63 @@
           "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
           "3": {
             "$type": "Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Mesh": "925ec5a9-bf80-42c7-b980-accec04f3058",
-            "Material": "64669d6b-c95d-4806-ad07-837369422dc5"
+            "Mesh": "3ec14962-f67c-4bcf-9875-2f02017eda9c",
+            "Material": "64669d6b-c95d-4806-ad07-837369422dc5",
+            "UseModelColor": false,
+            "ModelDiffuseColor": {
+              "$type": "Futura.Color, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+              "RawData": {
+                "$type": "System.Numerics.Vector4, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+                "X": 0.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0
+              },
+              "R": 0.0,
+              "G": 0.0,
+              "B": 0.0,
+              "A": 1.0
+            }
           },
           "4": {
             "$type": "Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Mesh": "44ebb726-b92a-42e3-a1af-516c7e0b8163",
-            "Material": "64669d6b-c95d-4806-ad07-837369422dc5"
+            "Mesh": "04d6ef08-5a8c-43a4-8101-a46183147834",
+            "Material": "64669d6b-c95d-4806-ad07-837369422dc5",
+            "UseModelColor": true,
+            "ModelDiffuseColor": {
+              "$type": "Futura.Color, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+              "RawData": {
+                "$type": "System.Numerics.Vector4, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+                "X": 1.0,
+                "Y": 0.0,
+                "Z": 0.0,
+                "W": 1.0
+              },
+              "R": 1.0,
+              "G": 0.0,
+              "B": 0.0,
+              "A": 1.0
+            }
           },
           "5": {
             "$type": "Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Mesh": "00000000-0000-0000-0000-000000000000",
-            "Material": "64669d6b-c95d-4806-ad07-837369422dc5"
+            "Material": "64669d6b-c95d-4806-ad07-837369422dc5",
+            "UseModelColor": true,
+            "ModelDiffuseColor": {
+              "$type": "Futura.Color, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+              "RawData": {
+                "$type": "System.Numerics.Vector4, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+                "X": 0.0,
+                "Y": 0.6666666,
+                "Z": 0.39215675,
+                "W": 1.0
+              },
+              "R": 0.0,
+              "G": 0.6666666,
+              "B": 0.39215675,
+              "A": 1.0
+            }
           }
         },
         "Type": "Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
@@ -153,19 +198,19 @@
             "$type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Name": "Entity",
             "IsEnabled": true,
-            "IsSelected": false
+            "IsSelected": true
           },
           "4": {
             "$type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Name": "Monkey",
             "IsEnabled": true,
-            "IsSelected": true
+            "IsSelected": false
           },
           "5": {
             "$type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Name": "Floor",
             "IsEnabled": true,
-            "IsSelected": true
+            "IsSelected": false
           }
         },
         "Type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
@@ -182,6 +227,9 @@
             "Radius": 1.0,
             "Slices": 20,
             "Stacks": 20,
+            "RadiusTop": 1.0,
+            "RadiusBottom": 1.0,
+            "Height": 1.0,
             "GeometryType": 2
           }
         },

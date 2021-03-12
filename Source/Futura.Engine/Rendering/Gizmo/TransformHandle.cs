@@ -18,7 +18,7 @@ namespace Futura.Engine.Rendering.Gizmo
         public abstract void Init(Veldrid.ResourceFactory factory);
 
 
-        public void Tick(CommandList commandList, Entity entity, Veldrid.DeviceBuffer modelBuffer, Vector3 cameraPos)
+        public void Tick(CommandList commandList, Entity entity, Veldrid.DeviceBuffer modelBuffer, Vector3 cameraPos, Vector3 hooverAxis)
         {
             Transform transform = entity.GetComponent<Transform>();
 
@@ -31,45 +31,42 @@ namespace Futura.Engine.Rendering.Gizmo
             // X Axis
             Vector3 position = transform.Position;
             Vector3 rotation = new Vector3(0, 0, -90);
-            Vector4 color = TransformGizmo.ColorAxisX.RawData;
 
             Matrix4x4 matrix = Transform.CalculateModelMatrix(position, rotation.FromEulerAngles(), scale);
 
             ModelBuffer model = new ModelBuffer()
             {
                 Transform = matrix,
-                ColorIdentifier = color,
-                DiffuseColor = color
+                ColorIdentifier = TransformGizmo.ColorAxisXId.RawData,
+                DiffuseColor = hooverAxis == Vector3.UnitX ? TransformGizmo.ColorAxisHoover.RawData : TransformGizmo.ColorAxisX.RawData
             };
             commandList.UpdateBuffer(modelBuffer, 0, model);
             renderable.Draw(commandList);
 
             // Y Axis
             rotation = new Vector3(0, 90, 0);
-            color = TransformGizmo.ColorAxisY.RawData;
 
             matrix = Transform.CalculateModelMatrix(position, rotation.FromEulerAngles(), scale);
 
             model = new ModelBuffer()
             {
                 Transform = matrix,
-                ColorIdentifier = color,
-                DiffuseColor = color
+                ColorIdentifier = TransformGizmo.ColorAxisYId.RawData,
+                DiffuseColor = hooverAxis == Vector3.UnitY? TransformGizmo.ColorAxisHoover.RawData : TransformGizmo.ColorAxisY.RawData
             };
             commandList.UpdateBuffer(modelBuffer, 0, model);
             renderable.Draw(commandList);
 
             // Z Axis
             rotation = new Vector3(90, 0, 0);
-            color = TransformGizmo.ColorAxisZ.RawData;
 
             matrix = Transform.CalculateModelMatrix(position, rotation.FromEulerAngles(), scale);
 
             model = new ModelBuffer()
             {
                 Transform = matrix,
-                ColorIdentifier = color,
-                DiffuseColor = color
+                ColorIdentifier = TransformGizmo.ColorAxisZId.RawData,
+                DiffuseColor = hooverAxis == Vector3.UnitZ ? TransformGizmo.ColorAxisHoover.RawData : TransformGizmo.ColorAxisZ.RawData
             };
             commandList.UpdateBuffer(modelBuffer, 0, model);
             renderable.Draw(commandList);

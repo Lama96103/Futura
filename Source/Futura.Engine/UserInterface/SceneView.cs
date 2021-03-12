@@ -65,33 +65,51 @@ namespace Futura.Engine.UserInterface
             ImGui.Image(colorImagePointer, imageSize);
 
 
-            if (Input.IsMouseDown(Veldrid.MouseButton.Left) && ImGui.IsWindowHovered())
+            if (ImGui.IsWindowHovered())
             {
-                Vector2 mousePos = Input.MousePosition;
-                Vector2 location = ImGui.GetWindowPos();
+                Vector2 windowPos = ImGui.GetWindowPos();
+                Vector2 mousePos = Input.MousePosition - windowPos;
+                Profiler.StartTimeMeasure("GetSelectedObject");
+                Color color = renderSystem.SelectionTexture.GetData((int)mousePos.X, (int)mousePos.Y);
+                Profiler.StopTimeMeasure("GetSelectedObject");
 
-                mousePos -= location;
-                if (mousePos.X >= 0 && mousePos.Y >= 0)
+                if (Input.IsMouseDown(Veldrid.MouseButton.Left))
                 {
-                    if (mousePos.X < imageSize.X && mousePos.Y < imageSize.Y)
+                    if (mousePos.X >= 0 && mousePos.Y >= 0)
                     {
-                        Color color = renderSystem.SelectionTexture.GetData((int)mousePos.X, (int)mousePos.Y);
-                        color.A = 1;
-
-                        if (renderSystem.EntityColorDictionary.TryGetValue(color, out Entity entity))
-                            RuntimeHelper.Instance.SelectedEntity = entity;
-                        else
+                        if (mousePos.X < imageSize.X && mousePos.Y < imageSize.Y)
                         {
-                            Vector3 axis = Vector3.Zero;
-                            if (color == TransformGizmo.ColorAxisX) axis = Vector3.UnitX;
-                            if (color == TransformGizmo.ColorAxisY) axis = Vector3.UnitY;
-                            if (color == TransformGizmo.ColorAxisZ) axis = Vector3.UnitZ;
+                            Color entityColor = color;
+                            entityColor.A = 1;
 
-                            if (axis != Vector3.Zero) TransformGizmo.Instance.StartEditing(axis, mousePos, location);
+                            if (renderSystem.EntityColorDictionary.TryGetValue(entityColor, out Entity entity))
+                                RuntimeHelper.Instance.SelectedEntity = entity;
+                            else
+                            {
+                                Vector3 axis = Vector3.Zero;
+                                if (color == TransformGizmo.ColorAxisXId) axis = Vector3.UnitX;
+                                if (color == TransformGizmo.ColorAxisYId) axis = Vector3.UnitY;
+                                if (color == TransformGizmo.ColorAxisZId) axis = Vector3.UnitZ;
+
+                                if (axis != Vector3.Zero) TransformGizmo.Instance.StartEditing(axis, mousePos, windowPos);
+                            }
                         }
                     }
                 }
+
+
+                // Check if mouse is hovering gizmo
+                {
+                    Vector3 axis = Vector3.Zero;
+                    if (color == TransformGizmo.ColorAxisXId) axis = Vector3.UnitX;
+                    if (color == TransformGizmo.ColorAxisYId) axis = Vector3.UnitY;
+                    if (color == TransformGizmo.ColorAxisZId) axis = Vector3.UnitZ;
+                    TransformGizmo.Instance.SetHooverAxis(axis);
+                }
             }
+
+
+           
 
 
             if(Input.IsMouseUp(Veldrid.MouseButton.Left)) TransformGizmo.Instance.EndEditing();

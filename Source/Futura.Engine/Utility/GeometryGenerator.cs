@@ -14,12 +14,14 @@ namespace Futura.Engine.Utility
         {
             uint index = (uint)vertices.Count;
 
+            Vector2 uv = new Vector2();
+
             // Top
             Vector3 normal = Vector3.UnitY;
-            vertices.Add(new Vertex(new Vector3(-x, y, -z), normal));
-            vertices.Add(new Vertex(new Vector3(-x, y, z), normal));
-            vertices.Add(new Vertex(new Vector3(x, y, z), normal));
-            vertices.Add(new Vertex(new Vector3(x, y, -z), normal));
+            vertices.Add(new Vertex(new Vector3(-x, y, -z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(-x, y, z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(x, y, z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(x, y, -z), normal, uv));
 
             indices.Add(index + 0);
             indices.Add(index + 1);
@@ -33,10 +35,10 @@ namespace Futura.Engine.Utility
 
             // Bottom
             normal = -Vector3.UnitY;
-            vertices.Add(new Vertex(new Vector3(-x, -y, -z), normal));
-            vertices.Add(new Vertex(new Vector3(-x, -y, z), normal));
-            vertices.Add(new Vertex(new Vector3(x, -y, z), normal));
-            vertices.Add(new Vertex(new Vector3(x, -y, -z), normal));
+            vertices.Add(new Vertex(new Vector3(-x, -y, -z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(-x, -y, z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(x, -y, z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(x, -y, -z), normal, uv));
 
             indices.Add(index + 0);
             indices.Add(index + 2);
@@ -50,10 +52,10 @@ namespace Futura.Engine.Utility
 
             // Right
             normal = -Vector3.UnitX;
-            vertices.Add(new Vertex(new Vector3(-x, -y, -z), normal));
-            vertices.Add(new Vertex(new Vector3(-x, -y, z), normal));
-            vertices.Add(new Vertex(new Vector3(-x, y, z), normal));
-            vertices.Add(new Vertex(new Vector3(-x, y, -z), normal));
+            vertices.Add(new Vertex(new Vector3(-x, -y, -z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(-x, -y, z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(-x, y, z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(-x, y, -z), normal, uv));
 
             indices.Add(index + 0);
             indices.Add(index + 1);
@@ -66,10 +68,10 @@ namespace Futura.Engine.Utility
 
             // Left
             normal = Vector3.UnitX;
-            vertices.Add(new Vertex(new Vector3(x, -y, -z), normal));
-            vertices.Add(new Vertex(new Vector3(x, -y, z), normal));
-            vertices.Add(new Vertex(new Vector3(x, y, z), normal));
-            vertices.Add(new Vertex(new Vector3(x, y, -z), normal));
+            vertices.Add(new Vertex(new Vector3(x, -y, -z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(x, -y, z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(x, y, z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(x, y, -z), normal, uv));
 
             indices.Add(index + 0);
             indices.Add(index + 2);
@@ -82,10 +84,10 @@ namespace Futura.Engine.Utility
 
             // Back
             normal = -Vector3.UnitZ;
-            vertices.Add(new Vertex(new Vector3(-x, -y, -z), normal));
-            vertices.Add(new Vertex(new Vector3(x, -y, -z), normal));
-            vertices.Add(new Vertex(new Vector3(x, y, -z), normal));
-            vertices.Add(new Vertex(new Vector3(-x, y, -z), normal));
+            vertices.Add(new Vertex(new Vector3(-x, -y, -z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(x, -y, -z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(x, y, -z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(-x, y, -z), normal, uv));
 
             indices.Add(index + 0);
             indices.Add(index + 2);
@@ -98,10 +100,10 @@ namespace Futura.Engine.Utility
 
             // Front
             normal = Vector3.UnitZ;
-            vertices.Add(new Vertex(new Vector3(-x, -y, z), normal));
-            vertices.Add(new Vertex(new Vector3(x, -y, z), normal));
-            vertices.Add(new Vertex(new Vector3(x, y, z), normal));
-            vertices.Add(new Vertex(new Vector3(-x, y, z), normal));
+            vertices.Add(new Vertex(new Vector3(-x, -y, z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(x, -y, z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(x, y, z), normal, uv));
+            vertices.Add(new Vertex(new Vector3(-x, y, z), normal, uv));
 
             indices.Add(index + 0);
             indices.Add(index + 1);
@@ -117,10 +119,10 @@ namespace Futura.Engine.Utility
             uint index = (uint)vertices.Count;
             Vector3 normal = Vector3.UnitY;
 
-            vertices.Add(new Vertex(new Vector3(-x, 0, -z), normal));
-            vertices.Add(new Vertex(new Vector3(-x, 0, z), normal));
-            vertices.Add(new Vertex(new Vector3(x, 0, z), normal));
-            vertices.Add(new Vertex(new Vector3(x, 0, -z), normal));
+            vertices.Add(new Vertex(new Vector3(-x, 0, -z), normal, new Vector2(0, 0)));
+            vertices.Add(new Vertex(new Vector3(-x, 0, z), normal, new Vector2(0, 1)));
+            vertices.Add(new Vertex(new Vector3(x, 0, z), normal, new Vector2(1, 1)));
+            vertices.Add(new Vertex(new Vector3(x, 0, -z), normal, new Vector2(1, 0)));
 
             indices.Add(index + 0);
             indices.Add(index + 1);
@@ -147,7 +149,7 @@ namespace Futura.Engine.Utility
             Vector3 normal = new Vector3(0, 1, 0);
             Vector3 tangent = new Vector3(1, 0, 0);
 
-            vertices.Add(new Vertex(new Vector3(0, radius, 0), normal));
+            vertices.Add(new Vertex(new Vector3(0, radius, 0), normal, new Vector2()));
 
             float phiStep = (float)(Math.PI / (double)stacks);
             float thetaStep = (float)(2.0 * Math.PI / (double)slices);
@@ -168,13 +170,13 @@ namespace Futura.Engine.Utility
                     t = Vector3.Normalize(t);
                     Vector3 n = Vector3.Normalize(p);
                     Vector2 uv = new Vector2(theta / ((float)Math.PI * 2), phi / (float)Math.PI);
-                    vertices.Add(new Vertex(p, n));
+                    vertices.Add(new Vertex(p, n, uv));
                 }
             }
 
             normal = new Vector3(0, -1, 0);
             tangent = new Vector3(1, 0, 0);
-            vertices.Add(new Vertex(new Vector3(0, -radius, 0), normal));
+            vertices.Add(new Vertex(new Vector3(0, -radius, 0), normal, new Vector2(1)));
 
             for (uint i = 1; i <= slices; i++)
             {
@@ -238,7 +240,7 @@ namespace Futura.Engine.Utility
 
                     Vector3 n = Vector3.Cross(t, bitangent);
                     n = Vector3.Normalize(n);
-                    vertices.Add(new Vertex(v, n));
+                    vertices.Add(new Vertex(v, n, uv));
                 }
             }
 
@@ -273,10 +275,10 @@ namespace Futura.Engine.Utility
                     float u = x / height + 0.5f;
                     float v = z / height + 0.5f;
 
-                    vertices.Add(new Vertex(new Vector3(x, y, z), normal));
+                    vertices.Add(new Vertex(new Vector3(x, y, z), normal, new Vector2(u, v)));
                 }
 
-                vertices.Add(new Vertex(new Vector3(0, y, 0), normal));
+                vertices.Add(new Vertex(new Vector3(0, y, 0), normal, new Vector2()));
 
                 uint centerIndex = (uint)vertices.Count - 1;
                 for (uint i = 0; i < slices; i++)
@@ -300,10 +302,10 @@ namespace Futura.Engine.Utility
                     float u = x / height + 0.5f;
                     float v = z / height + 0.5f;
 
-                    vertices.Add(new Vertex(new Vector3(x, y, z), normal));
+                    vertices.Add(new Vertex(new Vector3(x, y, z), normal, new Vector2(u, v)));
                 }
 
-                vertices.Add(new Vertex(new Vector3(0, y, 0), normal));
+                vertices.Add(new Vertex(new Vector3(0, y, 0), normal, new Vector2()));
 
                 centerIndex = (uint)vertices.Count - 1;
                 for (uint i = 0; i < slices; i++)
