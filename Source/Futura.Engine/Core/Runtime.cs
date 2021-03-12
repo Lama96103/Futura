@@ -54,6 +54,7 @@ namespace Futura.Engine.Core
             UIController.Instance.Register(new SceneHierarchyView());
             UIController.Instance.Register(new PropertyView());
             UIController.Instance.Register(new AssetView());
+            UIController.Instance.Register(new PerformanceView());
 
             // Init singleton systems
             Resources.ResourceManager.Instance.Init(AssetDir);
