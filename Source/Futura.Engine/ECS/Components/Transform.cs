@@ -71,7 +71,7 @@ namespace Futura.Engine.Components
 
         public Vector3 Right()
         {
-            return Vector3.Transform(Vector3.UnitX, localRotation);
+            return Vector3.Transform(-Vector3.UnitX, localRotation);
         }
 
         public Vector3 Up()

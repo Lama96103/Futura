@@ -18,6 +18,17 @@ namespace Futura.ECS
 
         public virtual void OnSetup() { }
         public virtual void OnInit() { }
-        public virtual void OnTick(double deltaTime) { }
+
+        /// <summary>
+        /// DeltaTime in seconds
+        /// </summary>
+        /// <param name="deltaTime"></param>
+        public virtual void OnTick(float deltaTime) { }
+
+        /// <summary>
+        /// DeltaTime in seconds
+        /// </summary>
+        /// <param name="deltaTime"></param>
+        public virtual void OnEditorTick(float deltaTime) { }
     }
 }

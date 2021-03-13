@@ -22,7 +22,7 @@ namespace Futura.Engine.UserInterface
                 {
                     if (ImGui.MenuItem("Save")) 
                     {
-                        Runtime.Instance.Context.GetSubSystem<WorldSystem>().Save(Runtime.Instance.CurrentScene);
+                        Runtime.Instance.ExecuteCommand(new Runtime.SaveSceneCommand());
                     }
                     if (ImGui.MenuItem("Load")) 
                     {
@@ -48,6 +48,7 @@ namespace Futura.Engine.UserInterface
                 {
                     if (ImGui.MenuItem("Logs")) UIController.Instance.Register(new LogView());
                     if (ImGui.MenuItem("Performance")) UIController.Instance.Register(new PerformanceView());
+                    if (ImGui.MenuItem("Scene")) UIController.Instance.Register(new ScenePropertiesView());
 
                     ImGui.EndMenu();
                 }
@@ -74,7 +75,7 @@ namespace Futura.Engine.UserInterface
             ImGui.End();
 
             string hasChanged = RuntimeHelper.Instance.HasSceneChanged ? "*" : "";
-            string newWindowTitle = $"Futura - {Runtime.Instance.CurrentScene.Name}{hasChanged}";
+            string newWindowTitle = $"Futura - { Runtime.Instance.Context.GetSubSystem<WorldSystem>().CurrentSceneFile.Name }{hasChanged}";
 
             if(newWindowTitle != windowTitle)
             {

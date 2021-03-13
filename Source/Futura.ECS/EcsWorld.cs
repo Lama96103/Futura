@@ -161,11 +161,19 @@ namespace Futura.ECS
                 system.OnInit();
         }
 
-        public void Tick(double deltaTime)
+        public void Tick(float deltaTime)
         {
             foreach (EcsSystem system in EcsSystems)
             {
                 system.OnTick(deltaTime);
+            }
+        }
+
+        public void EditorTick(float deltaTime)
+        {
+            foreach (EcsSystem system in EcsSystems)
+            {
+                system.OnEditorTick(deltaTime);
             }
         }
         #endregion

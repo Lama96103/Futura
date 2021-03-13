@@ -11,18 +11,19 @@ namespace Futura.Engine.Core
     /// <summary>
     /// The runtime handles the current context of the engine, its subsystem and basic setup of user interface and other configuration
     /// </summary>
-    public sealed class Runtime : Singleton<Runtime>
+    public partial class Runtime : Singleton<Runtime>
     {
         public Context Context { get; init; }
 
         private TimeSystem timeSys;
 
         public DirectoryInfo AssetDir { get; set; } = new DirectoryInfo(@"..\..\..\Assets");
-        public FileInfo CurrentScene { get; private set; } = null;
 
         public SettingsController Settings { get; init; }
 
-        private FileInfo loadSceneFile = null;
+        private List<IRuntimeCommand> runtimeCommands = new List<IRuntimeCommand>();
+
+        public RuntimeState State { get; private set; } = RuntimeState.Editor;
 
         public Runtime()
         {
@@ -66,13 +67,11 @@ namespace Futura.Engine.Core
         {
             Profiler.StartFrame();
 
-            if (loadSceneFile != null)
+            if(runtimeCommands.Count > 0)
             {
-                CurrentScene = loadSceneFile;
-                Context.GetSubSystem<WorldSystem>().Load(loadSceneFile);
-                RuntimeHelper.Instance.SelectedAsset = null;
-                RuntimeHelper.Instance.SelectedEntity = null;
-                loadSceneFile = null;
+                foreach(IRuntimeCommand command in runtimeCommands)
+                    command.Execute(this, Context);
+                runtimeCommands.Clear();
             }
 
 
@@ -81,9 +80,15 @@ namespace Futura.Engine.Core
             Profiler.EndFrame();
         }
 
-        public void LoadScene(FileInfo file)
+        public void ExecuteCommand(IRuntimeCommand command)
         {
-            loadSceneFile = file;
+            runtimeCommands.Add(command);
+        }
+
+
+        public enum RuntimeState
+        {
+            Editor, Playing, Pause
         }
     }
 }

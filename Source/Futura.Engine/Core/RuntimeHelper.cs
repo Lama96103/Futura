@@ -39,7 +39,15 @@ namespace Futura.Engine.Core
         }
         public event EventHandler<EntitySelectionChangedEventArgs> EntitySelectionChanged;
 
-        public bool HasSceneChanged { get; set; } = false;
+        private bool hasSceneChanged = false;
+        public bool HasSceneChanged 
+        {
+            get => hasSceneChanged;
+            set 
+            {
+                if (Runtime.Instance.State == Runtime.RuntimeState.Editor) hasSceneChanged = value;
+            }
+        }
     }
 
     class EntitySelectionChangedEventArgs

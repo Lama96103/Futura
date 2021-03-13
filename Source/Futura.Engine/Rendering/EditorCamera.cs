@@ -50,12 +50,12 @@ namespace Futura.Engine.Rendering
 
             if (ImGui.IsKeyDown((int)Key.A))
             {
-                Transform.Position += (Transform.Right() * veloctiy);
+                Transform.Position -= (Transform.Right() * veloctiy);
             }
 
             if (ImGui.IsKeyDown((int)Key.D))
             {
-                Transform.Position -= (Transform.Right() * veloctiy);
+                Transform.Position += (Transform.Right() * veloctiy);
             }
 
             if (ImGui.IsKeyDown((int)Key.Q))

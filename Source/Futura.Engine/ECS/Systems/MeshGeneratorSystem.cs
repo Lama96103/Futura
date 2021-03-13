@@ -23,7 +23,7 @@ namespace Futura.Engine.ECS.Systems
             filter = World.CreateFilter<MeshFilter, MeshGenerator>();
         }
 
-        public override void OnTick(double deltaTime)
+        public override void OnTick(float deltaTime)
         {
             foreach(var reference in filter.Entities)
             {
@@ -42,6 +42,11 @@ namespace Futura.Engine.ECS.Systems
 
                 
             }
+        }
+
+        public override void OnEditorTick(float deltaTime)
+        {
+            OnTick(deltaTime);
         }
 
         private void BuildMesh(EcsFilter.EntityReference reference)

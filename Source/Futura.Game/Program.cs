@@ -16,7 +16,7 @@ namespace Futura.Game
 
             if(args.Length == 1)
             {
-                runtime.LoadScene(new System.IO.FileInfo(args[0]));
+                runtime.ExecuteCommand(new Runtime.LoadSceneCommand(new System.IO.FileInfo(args[0])));
             }
 
             while (mainWindow.Exists)

@@ -139,6 +139,23 @@ namespace Futura.Engine.UserInterface
         {
             if (ImGui.BeginMenuBar())
             {
+                if(Runtime.Instance.State == Runtime.RuntimeState.Editor)
+                {
+                    if (ImGui.MenuItem("Play")) Runtime.Instance.ExecuteCommand(new Runtime.ChangeRuntimeStateCommand(Runtime.RuntimeState.Playing));
+                }
+                else
+                {
+                    if(Runtime.Instance.State == Runtime.RuntimeState.Playing)
+                        if (ImGui.MenuItem("Pause")) Runtime.Instance.ExecuteCommand(new Runtime.ChangeRuntimeStateCommand(Runtime.RuntimeState.Pause));
+                    else if (Runtime.Instance.State == Runtime.RuntimeState.Pause)
+                        if (ImGui.MenuItem("Resume")) Runtime.Instance.ExecuteCommand(new Runtime.ChangeRuntimeStateCommand(Runtime.RuntimeState.Playing));
+
+                    if (ImGui.MenuItem("Stop")) Runtime.Instance.ExecuteCommand(new Runtime.ChangeRuntimeStateCommand(Runtime.RuntimeState.Editor));
+                }
+
+
+
+
                 if (ImGui.BeginMenu("View"))
                 {
                     if (ImGui.MenuItem("Normal", currentView != RenderView.Normal)) currentView = RenderView.Normal;
@@ -146,8 +163,6 @@ namespace Futura.Engine.UserInterface
                     if (ImGui.MenuItem("Selection", currentView != RenderView.Selection)) currentView = RenderView.Selection;
                     ImGui.EndMenu();
                 }
-
-
                 ImGui.EndMenuBar();
             }
         }
