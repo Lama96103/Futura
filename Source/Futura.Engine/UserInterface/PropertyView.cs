@@ -1,6 +1,4 @@
-﻿using Futura.ECS;
-using Futura.Engine.Components;
-using Futura.Engine.Core;
+﻿using Futura.Engine.Core;
 using Futura.Engine.ECS;
 using Futura.Engine.ECS.Components;
 using Futura.Engine.Rendering;
@@ -127,7 +125,7 @@ namespace Futura.Engine.UserInterface
 
             if (ImGui.BeginPopup("ComponentSelector"))
             {
-                var components = AppDomain.CurrentDomain.GetAssemblies().SelectMany(t => t.GetTypes()).Where(t => t.IsClass && t.GetInterface("Futura.ECS.IComponent") != null);
+                var components = AppDomain.CurrentDomain.GetAssemblies().SelectMany(t => t.GetTypes()).Where(t => t.IsClass && t.GetInterface(typeof(IComponent).FullName) != null);
 
 
                 int id = 0;

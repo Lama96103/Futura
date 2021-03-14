@@ -1,4 +1,5 @@
-﻿using Futura.ECS;
+﻿using Futura.Engine.ECS;
+using Futura.Engine.ECS.Components;
 using Futura.Engine.Rendering;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace Futura.Engine.Core
 
         private EcsFilter entityFilter;
         private EcsFilter cameraFilter;
+        private EcsFilter directionalLightFilter;
 
         private CommandList diffuseCommandList;
         private CommandList uiCommandList;
@@ -38,8 +40,9 @@ namespace Futura.Engine.Core
             deviceResourceCache = new DeviceResourceCache(renderAPI.Factory);
 
             EcsWorld world = Context.GetSubSystem<WorldSystem>().World;
-            entityFilter = world.CreateFilter<Components.Transform, Components.MeshFilter>();
-            cameraFilter = world.CreateFilter<Components.Transform, Components.Camera>();
+            entityFilter = world.CreateFilter<Transform, MeshFilter>();
+            cameraFilter = world.CreateFilter<Transform, Camera>();
+            directionalLightFilter = world.CreateFilter<Transform, ECS.Components.Lights.DirectionalLight>();
 
             diffuseCommandList = renderAPI.GenerateCommandList();
             uiCommandList = renderAPI.GenerateCommandList();
@@ -79,15 +82,16 @@ namespace Futura.Engine.Core
             if(entityFilter.IsDead || cameraFilter.IsDead)
             {
                 EcsWorld world = Context.GetSubSystem<WorldSystem>().World;
-                entityFilter = world.CreateFilter<Components.Transform, Components.MeshFilter>();
-                cameraFilter = world.CreateFilter<Components.Transform, Components.Camera>();
+                entityFilter = world.CreateFilter<Transform, MeshFilter>();
+                cameraFilter = world.CreateFilter<Transform, Camera>();
+                directionalLightFilter = world.CreateFilter<Transform, ECS.Components.Lights.DirectionalLight>();
             }
 
             MainPass();
             ImGuiPass(deltaTime);
 
-            renderAPI.WaitForIdle();
             renderAPI.SwapBuffers();
+            renderAPI.WaitForIdle();
         }
 
         private void ImGuiPass(double deltaTime)
@@ -97,14 +101,16 @@ namespace Futura.Engine.Core
 
             UserInterface.UIController.Instance.Tick();
 
-            uiCommandList.PushDebugGroup("Pass_ImGui");
             uiCommandList.Begin();
+            uiCommandList.PushDebugGroup("Pass_ImGui");
+
             uiCommandList.SetFramebuffer(renderAPI.GraphicAPI.SwapchainFramebuffer);
             uiCommandList.ClearColorTarget(0, RgbaFloat.Black);
             ImGuiController.Instance.Render(uiCommandList);
+
+            uiCommandList.PopDebugGroup();
             uiCommandList.End();
             renderAPI.SubmitCommands(uiCommandList);
-            uiCommandList.PopDebugGroup();
 
         }
     }

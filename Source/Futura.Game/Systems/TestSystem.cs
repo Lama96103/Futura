@@ -1,11 +1,11 @@
-﻿using Futura.ECS;
+﻿using Futura.Engine.ECS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Futura.Engine.ECS.Systems
+namespace Futura.Game.Systems
 {
     class TestSystem : EcsSystem
     {

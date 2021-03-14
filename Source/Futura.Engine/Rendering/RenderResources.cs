@@ -19,9 +19,11 @@ namespace Futura.Engine.Core
 
         private DeviceBuffer worldBuffer;
         private DeviceBuffer modelBuffer;
+        private DeviceBuffer lightingBuffer;
 
         private ResourceSet worldSet;
         private ResourceSet modelSet;
+        private ResourceSet lightingSet;
 
         private Pipeline diffusePipline;
         private Pipeline gizmoPipline;
@@ -38,17 +40,26 @@ namespace Futura.Engine.Core
             RecreateRenderResources(1920, 1080);
 
             worldBuffer = factory.CreateBuffer(new BufferDescription((uint)Unsafe.SizeOf<WorldBuffer>(), BufferUsage.UniformBuffer | BufferUsage.Dynamic));
+            worldBuffer.Name = "WorldBuffer";
             modelBuffer = factory.CreateBuffer(new BufferDescription((uint)Unsafe.SizeOf<ModelBuffer>(), BufferUsage.UniformBuffer | BufferUsage.Dynamic));
+            modelBuffer.Name = "ModelBuffer";
+            lightingBuffer = factory.CreateBuffer(new BufferDescription((uint)Unsafe.SizeOf<LightingBuffer>(), BufferUsage.UniformBuffer | BufferUsage.Dynamic));
+            lightingBuffer.Name = "LightingBuffer";
             Sampler pointSampler = renderAPI.GraphicAPI.PointSampler;
 
             ResourceLayout worldLayout = deviceResourceCache.GetLayout(ref deviceResourceCache.WorldLayout);
             ResourceLayout modelLayout = deviceResourceCache.GetLayout(ref deviceResourceCache.ModelLayout);
+            ResourceLayout lightingLayout = deviceResourceCache.GetLayout(ref deviceResourceCache.LightingLayout);
+
 
             ResourceSetDescription wordSetDescription = new ResourceSetDescription(worldLayout, worldBuffer, pointSampler);
             worldSet = deviceResourceCache.GetSet(ref wordSetDescription);
 
             ResourceSetDescription modelSetDescription = new ResourceSetDescription(modelLayout, modelBuffer);
             modelSet = deviceResourceCache.GetSet(ref modelSetDescription);
+
+            ResourceSetDescription lightingSetDescription = new ResourceSetDescription(lightingLayout, lightingBuffer);
+            lightingSet = deviceResourceCache.GetSet(ref lightingSetDescription);
 
             Rendering.Shader diffuseShader = new Rendering.Shader();
             diffuseShader.Compile(factory, Futura.Rendering.Resources.EditorAssets.DiffuseVertex, Futura.Rendering.Resources.EditorAssets.DiffuseFragment, true);
@@ -60,7 +71,7 @@ namespace Futura.Engine.Core
                 new RasterizerStateDescription(FaceCullMode.Back, PolygonFillMode.Solid, FrontFace.CounterClockwise, true, false),
                 PrimitiveTopology.TriangleList,
                 new ShaderSetDescription(new VertexLayoutDescription[] { Vertex.GetLayoutDescription() }, diffuseShader.Handles),
-                new ResourceLayout[] { worldLayout, modelLayout },
+                new ResourceLayout[] { worldLayout, modelLayout, lightingLayout },
                 diffuseFramebuffer.Handle.OutputDescription
             );
 
@@ -73,7 +84,7 @@ namespace Futura.Engine.Core
                 new RasterizerStateDescription(FaceCullMode.Back, PolygonFillMode.Solid, FrontFace.CounterClockwise, false, false),
                 PrimitiveTopology.TriangleList,
                 new ShaderSetDescription(new VertexLayoutDescription[] { Vertex.GetLayoutDescription() }, diffuseShader.Handles),
-                new ResourceLayout[] { worldLayout, modelLayout },
+                new ResourceLayout[] { worldLayout, modelLayout, lightingLayout },
                 diffuseFramebuffer.Handle.OutputDescription
             );
 

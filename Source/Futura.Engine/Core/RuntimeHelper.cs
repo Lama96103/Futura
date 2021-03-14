@@ -1,5 +1,4 @@
-﻿using Futura.ECS;
-using Futura.Engine.ECS;
+﻿using Futura.Engine.ECS;
 using Futura.Engine.Resources;
 using System;
 using System.Collections.Generic;

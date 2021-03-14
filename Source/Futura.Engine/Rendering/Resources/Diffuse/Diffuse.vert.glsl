@@ -21,6 +21,7 @@ layout(set = 0, binding = 0) uniform WorldBuffer
     mat4 worldProjection;
     mat4 worldView;
     mat4 worldProjectionView;
+
     vec3 worldCameraPosition;
 	float worldCameraNear;
 	float worldCameraFar;
@@ -32,6 +33,8 @@ layout(set = 1, binding = 0) uniform ModelBuffer
     vec4 modelSelectionColor;
 	vec4 modelDiffuseColor;
 };
+
+
 
 
 void main() 

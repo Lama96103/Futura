@@ -1,5 +1,4 @@
-﻿using Futura.ECS;
-using Futura.Engine.Components;
+﻿using Futura.Engine.ECS;
 using Futura.Engine.ECS.Systems;
 using Futura.Engine.Utility;
 using System;
@@ -46,22 +45,32 @@ namespace Futura.Engine.Core
         {
             CurrentSceneFile = file;
 
-            World.Destroy();
-            World = null;
-            string json = File.ReadAllText(file.FullName);
-            World = Serialize.ToObject<EcsWorld>(json);
-            World.RefreshReferences();
-
-            string configFile = file.FullName + ".config.json";
-            if (File.Exists(configFile))
+            if (!CurrentSceneFile.Exists)
             {
-                string config = File.ReadAllText(configFile);
-                WorldSystems = Serialize.ToObject<Dictionary<Type, int>>(config); 
+                World.Destroy();
+                World = new EcsWorld();
+                WorldSystems.Clear();
+                Save();
+            }
+            else
+            {
+                World.Destroy();
+                World = null;
+                string json = File.ReadAllText(file.FullName);
+                World = Serialize.ToObject<EcsWorld>(json);
+                World.RefreshReferences();
 
-                foreach(var c in WorldSystems)
+                string configFile = file.FullName + ".config.json";
+                if (File.Exists(configFile))
                 {
-                    EcsSystem sys = Activator.CreateInstance(c.Key) as EcsSystem;
-                    World.RegisterSystem(sys, c.Value);
+                    string config = File.ReadAllText(configFile);
+                    WorldSystems = Serialize.ToObject<Dictionary<Type, int>>(config);
+
+                    foreach (var c in WorldSystems)
+                    {
+                        EcsSystem sys = Activator.CreateInstance(c.Key) as EcsSystem;
+                        World.RegisterSystem(sys, c.Value);
+                    }
                 }
             }
         }

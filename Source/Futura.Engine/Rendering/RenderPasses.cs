@@ -1,6 +1,6 @@
-﻿using Futura.ECS;
-using Futura.Engine.Components;
-using Futura.Engine.ECS;
+﻿using Futura.Engine.ECS;
+using Futura.Engine.ECS.Components;
+using Futura.Engine.ECS.Components.Lights;
 using Futura.Engine.Rendering;
 using Futura.Engine.Rendering.Gizmo;
 using System;
@@ -26,56 +26,83 @@ namespace Futura.Engine.Core
 
         private void MainPass()
         {
-            if (!UpdateWorldBuffer()) return;
+            diffuseCommandList.Begin();
 
-            EntityColorDictionary.Clear();
-            DiffusePass(diffuseCommandList);
+            bool isRendering = UpdateWorldBuffer(diffuseCommandList);
+
+            if (isRendering)
+            {
+                EntityColorDictionary.Clear();
+                DiffusePass(diffuseCommandList);
+            }
+
+            diffuseCommandList.End();
+            renderAPI.SubmitCommands(diffuseCommandList);
         }
 
-        private bool UpdateWorldBuffer()
+        private bool UpdateWorldBuffer(CommandList commandList)
         {
-            Transform transform = null;
+            commandList.PushDebugGroup("Pass_UpdateBuffer");
+
+            Transform cameraTransform = null;
             Camera camera = null;
 
             if (UseEditorCamera)
             {
-                transform = EditorCamera.Instance.Transform;
+                cameraTransform = EditorCamera.Instance.Transform;
                 camera = EditorCamera.Instance.Camera;
             }
             else
             {
                 if (cameraFilter.Entities.Count() == 0) return false;
                 var cameraEntity = cameraFilter.Entities.ElementAt(0);
-                transform = cameraEntity.GetComponent<Transform>();
+                cameraTransform = cameraEntity.GetComponent<Transform>();
                 camera = cameraEntity.GetComponent<Camera>();
             }
 
-            camera.UpdatePosition(transform, (float)RenderResolutionWidth, (float)RenderResolutionHeight);
+            camera.UpdatePosition(cameraTransform, (float)RenderResolutionWidth, (float)RenderResolutionHeight);
 
             WorldBuffer world = new WorldBuffer();
             world.Projection = camera.ProjectionMatrix;
             world.View = camera.ViewMatrix;
             world.ProjectionView = camera.ViewProjectionMatrix;
-            world.CameraPosition = transform.Position;
+            world.CameraPosition = cameraTransform.Position;
             world.CameraNear = camera.NearPlane;
             world.CameraFar = camera.FarPlane;
 
-            cameraPos = transform.Position;
+            cameraPos = cameraTransform.Position;
 
+            // commandList.UpdateBuffer(worldBuffer, 0, world);
             renderAPI.GraphicAPI.UpdateBuffer(worldBuffer, 0, world);
+
+            LightingBuffer light = new LightingBuffer();
+            if(directionalLightFilter.Entities.Count() == 1)
+            {
+                var dirLight = directionalLightFilter.Entities.ElementAt(0);
+
+                light.DirectionalLightColor = dirLight.GetComponent<DirectionalLight>().Color.RawData;
+                light.DirectionalLightIntensitiy = dirLight.GetComponent<DirectionalLight>().Intensity;
+                light.DirectionalLightDirection = dirLight.GetComponent<Transform>().Rotation.ToEulerAngles();
+            }
+            light.AmbientLightIntensity = 0.01f;
+
+            // commandList.UpdateBuffer(lightingBuffer, 0, light);
+            renderAPI.GraphicAPI.UpdateBuffer(lightingBuffer, 0, light);
+
+            commandList.PopDebugGroup();
 
             return true;
         }
 
         private void DiffusePass(CommandList commandList)
         {
-            commandList.Begin();
             commandList.PushDebugGroup("Pass_Diffuse");
 
             commandList.SetPipeline(diffusePipline);
             commandList.SetFramebuffer(diffuseFramebuffer.Handle);
             commandList.SetGraphicsResourceSet(0, worldSet);
             commandList.SetGraphicsResourceSet(1, modelSet);
+            commandList.SetGraphicsResourceSet(2, lightingSet);
 
             commandList.ClearColorTarget(0, RgbaFloat.Black);
             commandList.ClearColorTarget(1, RgbaFloat.Black);
@@ -118,8 +145,6 @@ namespace Futura.Engine.Core
             commandList.CopyTexture(DiffuseFrameBuffer.ColorTextures[1].Handle, SelectionTexture.Handle);
 
             commandList.PopDebugGroup();
-            commandList.End();
-            renderAPI.SubmitCommands(commandList);
         }
 
    

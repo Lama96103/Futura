@@ -1,5 +1,4 @@
-﻿using Futura.ECS;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +6,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Futura.Engine.Components
+namespace Futura.Engine.ECS.Components
 {
     public class Transform : IComponent
     {

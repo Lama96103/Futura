@@ -1,5 +1,4 @@
-﻿using Futura.ECS;
-using Futura.Engine.UserInterface.Properties;
+﻿using Futura.Engine.UserInterface.Properties;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

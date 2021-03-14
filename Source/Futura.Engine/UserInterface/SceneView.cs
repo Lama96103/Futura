@@ -1,5 +1,5 @@
-﻿using Futura.ECS;
-using Futura.Engine.Core;
+﻿using Futura.Engine.Core;
+using Futura.Engine.ECS;
 using Futura.Engine.Rendering;
 using Futura.Engine.Rendering.Gizmo;
 using ImGuiNET;
@@ -12,9 +12,9 @@ namespace Futura.Engine.UserInterface
 {
     public class SceneView : View
     {
-        private enum RenderView { Normal, Selection, Depth }
+        private enum RenderView { Shaded, Selection, Depth }
 
-        private RenderView currentView = RenderView.Normal;
+        private RenderView currentView = RenderView.Shaded;
         private string txt_WindowName;
         private string txt_SceneChild;
         private string txt_OverlayChild;
@@ -117,9 +117,13 @@ namespace Futura.Engine.UserInterface
 
             if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
             {
-                if (ImGui.IsItemHovered()) startedOnItem = true;
+                if (ImGui.IsItemHovered())
+                {
+                    ImGui.SetKeyboardFocusHere();
+                    startedOnItem = true;
+                }
 
-                if(startedOnItem)
+                if (startedOnItem)
                     EditorCamera.Instance.Tick();
             }
             else
@@ -154,11 +158,9 @@ namespace Futura.Engine.UserInterface
                 }
 
 
-
-
-                if (ImGui.BeginMenu("View"))
+                if (ImGui.BeginMenu(currentView.ToString()))
                 {
-                    if (ImGui.MenuItem("Normal", currentView != RenderView.Normal)) currentView = RenderView.Normal;
+                    if (ImGui.MenuItem("Normal", currentView != RenderView.Shaded)) currentView = RenderView.Shaded;
                     if (ImGui.MenuItem("Depth", currentView != RenderView.Depth)) currentView = RenderView.Depth;
                     if (ImGui.MenuItem("Selection", currentView != RenderView.Selection)) currentView = RenderView.Selection;
                     ImGui.EndMenu();

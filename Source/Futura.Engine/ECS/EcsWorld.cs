@@ -1,4 +1,4 @@
-﻿using Futura.ECS.Exceptions;
+﻿using Futura.Engine.ECS.Exceptions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Futura.ECS
+namespace Futura.Engine.ECS
 {
     public class EcsWorld
     {
@@ -158,14 +158,20 @@ namespace Futura.ECS
         public void Init()
         {
             foreach (EcsSystem system in EcsSystems)
+            {
+                Core.Profiler.StartTimeMeasure(system.GetType().FullName + ".OnInit()");
                 system.OnInit();
+                Core.Profiler.StopTimeMeasure(system.GetType().FullName + ".OnInit()");
+            }
         }
 
         public void Tick(float deltaTime)
         {
             foreach (EcsSystem system in EcsSystems)
             {
+                Core.Profiler.StartTimeMeasure(system.GetType().FullName + ".OnTick()");
                 system.OnTick(deltaTime);
+                Core.Profiler.StopTimeMeasure(system.GetType().FullName + ".OnTick()");
             }
         }
 
@@ -173,7 +179,9 @@ namespace Futura.ECS
         {
             foreach (EcsSystem system in EcsSystems)
             {
+                Core.Profiler.StartTimeMeasure(system.GetType().FullName + ".OnEditorTick()");
                 system.OnEditorTick(deltaTime);
+                Core.Profiler.StopTimeMeasure(system.GetType().FullName + ".OnEditorTick()");
             }
         }
         #endregion

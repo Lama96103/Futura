@@ -14,18 +14,35 @@ namespace Futura.Engine.UserInterface
     {
         private string windowTitle = "Futura";
 
+        private bool isLoadSceneDialogOpen = false;
+        private bool isNewSceneDialogOpen = false;
+
+        private FileInfo selectedFile = null;
+        private DirectoryInfo searchDirectory = Runtime.Instance.AssetDir.Parent.CreateSubdirectory("Scenes");
+
+        private bool showImGuiMetrics = false;
+        private bool showImGuiStyle = false;
+
         public override void Tick()
         {
             if (ImGui.BeginMainMenuBar())
             {
                 if (ImGui.BeginMenu("File"))
                 {
-                    if (ImGui.MenuItem("Save")) 
+                    if (ImGui.MenuItem("New Scene"))
                     {
-                        Runtime.Instance.ExecuteCommand(new Runtime.SaveSceneCommand());
+                        isNewSceneDialogOpen = true;
                     }
-                    if (ImGui.MenuItem("Load")) 
+                    if (ImGui.MenuItem("Save Scene", "CTRL+S"))
                     {
+                        if (Runtime.Instance.Context.GetSubSystem<WorldSystem>().CurrentSceneFile != null)
+                        {
+                            Runtime.Instance.ExecuteCommand(new Runtime.SaveSceneCommand());
+                        }
+                    }
+                    if (ImGui.MenuItem("Load Scene"))
+                    {
+                        isLoadSceneDialogOpen = true;
                     }
                     ImGui.Separator();
                   
@@ -44,6 +61,14 @@ namespace Futura.Engine.UserInterface
                     ImGui.EndMenu();
                 }
 
+                if (ImGui.BeginMenu("Debug"))
+                {
+                    if (ImGui.MenuItem("ImGui Metrics", "", ref showImGuiMetrics)) { }
+                    if (ImGui.MenuItem("ImGui Style", "", ref showImGuiStyle)) { }
+
+                    ImGui.EndMenu();
+                }
+
                 if (ImGui.BeginMenu("Window"))
                 {
                     if (ImGui.MenuItem("Logs")) UIController.Instance.Register(new LogView());
@@ -52,8 +77,6 @@ namespace Futura.Engine.UserInterface
 
                     ImGui.EndMenu();
                 }
-
-
 
                 ImGui.EndMainMenuBar();
             }
@@ -75,13 +98,45 @@ namespace Futura.Engine.UserInterface
             ImGui.End();
 
             string hasChanged = RuntimeHelper.Instance.HasSceneChanged ? "*" : "";
-            string newWindowTitle = $"Futura - { Runtime.Instance.Context.GetSubSystem<WorldSystem>().CurrentSceneFile.Name }{hasChanged}";
+            string newWindowTitle = $"Futura - { Runtime.Instance.Context.GetSubSystem<WorldSystem>().CurrentSceneFile?.Name }{hasChanged}";
 
             if(newWindowTitle != windowTitle)
             {
                 Window.Instance.Title = newWindowTitle;
                 windowTitle = newWindowTitle;
             }
+
+
+
+            if (isLoadSceneDialogOpen)
+            {
+                if(FileDialog.Open("Open Scene", "*.scene", ref selectedFile, ref searchDirectory))
+                {
+                    if(selectedFile != null)
+                    {
+                        Runtime.Instance.ExecuteCommand(new Runtime.LoadSceneCommand(selectedFile));
+                    }
+                    isLoadSceneDialogOpen = false;
+                }
+            }
+
+            if (isNewSceneDialogOpen)
+            {
+                if (FileDialog.Save("New Scene", "*.scene", ref selectedFile, ref searchDirectory))
+                {
+                    if (selectedFile != null)
+                    {
+                        Runtime.Instance.ExecuteCommand(new Runtime.LoadSceneCommand(selectedFile));
+                    }
+                    isNewSceneDialogOpen = false;
+                }
+            }
+
+            if(showImGuiMetrics)
+                ImGui.ShowMetricsWindow();
+            if(showImGuiStyle)
+                ImGui.ShowStyleEditor();
         }
+
     }
 }

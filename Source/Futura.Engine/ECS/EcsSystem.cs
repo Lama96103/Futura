@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Futura.ECS
+namespace Futura.Engine.ECS
 {
     public abstract class EcsSystem
     {

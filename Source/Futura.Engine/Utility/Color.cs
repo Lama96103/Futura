@@ -78,5 +78,10 @@ namespace Futura
         {
             return !c1.Equals(c2);
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

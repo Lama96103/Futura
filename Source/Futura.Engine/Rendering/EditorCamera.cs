@@ -1,4 +1,4 @@
-﻿using Futura.Engine.Components;
+﻿using Futura.Engine.ECS.Components;
 using ImGuiNET;
 using System;
 using System.Collections.Generic;

@@ -3,6 +3,7 @@ using ImGuiNET;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,13 +26,16 @@ namespace Futura.Engine.UserInterface
         {
             ImGui.Begin($"Scene##{ID}", ref isOpen);
 
-            ImGui.Columns(2);
-            ImGui.SetColumnWidth(0, 200);
-            ImGui.SetColumnWidth(1, 200);
+            Vector2 windowSize = ImGui.GetWindowSize();
 
-            ImGui.Text("System");
+            ImGui.Columns(2);
+
+            ImGui.SetColumnWidth(0, windowSize.X - 125);
+            ImGui.SetColumnWidth(1, 125);
+
+            ImGui.TextDisabled("System");
             ImGui.NextColumn();
-            ImGui.Text("Execution Order");
+            ImGui.TextDisabled("Execution Order");
             ImGui.NextColumn();
 
             foreach (var s in worldSystem.WorldSystems.OrderBy(s => s.Value))
@@ -55,7 +59,7 @@ namespace Futura.Engine.UserInterface
 
             if (ImGui.BeginPopup("SystemSelector"))
             {
-                var components = AppDomain.CurrentDomain.GetAssemblies().SelectMany(t => t.GetTypes()).Where(t => t.IsClass && t.BaseType == typeof(Futura.ECS.EcsSystem) && !worldSystem.WorldSystems.ContainsKey(t));
+                var components = AppDomain.CurrentDomain.GetAssemblies().SelectMany(t => t.GetTypes()).Where(t => t.IsClass && t.BaseType == typeof(Futura.Engine.ECS.EcsSystem) && !worldSystem.WorldSystems.ContainsKey(t));
 
                 int id = 0;
                 foreach (var comp in components)

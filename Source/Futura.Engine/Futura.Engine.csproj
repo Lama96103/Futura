@@ -62,10 +62,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Futura.ECS\Futura.ECS.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="UserInterface\Properties\" />
   </ItemGroup>
 

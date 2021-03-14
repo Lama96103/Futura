@@ -1,5 +1,5 @@
 {
   "$type": "System.Collections.Generic.Dictionary`2[[System.Type, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-  "Futura.Engine.ECS.Systems.MeshGeneratorSystem, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": 100,
-  "Futura.Engine.ECS.Systems.PlayerControllerSystem, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": 100
+  "Futura.Engine.ECS.Systems.MeshGeneratorSystem, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": 10,
+  "Futura.Game.Systems.PlayerControllerSystem, Futura.Game, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": 100
 }

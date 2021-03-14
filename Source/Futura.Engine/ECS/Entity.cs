@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace Futura.ECS
+namespace Futura.Engine.ECS
 {
     public class Entity
     {
@@ -40,7 +40,7 @@ namespace Futura.ECS
 
         public void AddComponent(Type t)
         {
-            if(t.IsClass && t.GetInterface("Futura.ECS.IComponent") != null)
+            if(t.IsClass && t.GetInterface(typeof(IComponent).FullName) != null)
             {
                 var method = typeof(EcsWorld).GetMethod("GetComponent", BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(t);
                 method.Invoke(world, new object[] { this });

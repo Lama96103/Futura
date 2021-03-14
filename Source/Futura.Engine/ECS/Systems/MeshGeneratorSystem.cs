@@ -1,6 +1,4 @@
-﻿using Futura.ECS;
-using Futura.Engine.Components;
-using Futura.Engine.Core;
+﻿using Futura.Engine.Core;
 using Futura.Engine.ECS.Components;
 using Futura.Engine.Rendering;
 using Futura.Engine.Resources;

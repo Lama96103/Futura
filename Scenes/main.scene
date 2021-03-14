@@ -1,107 +1,15 @@
 {
-  "$type": "Futura.ECS.EcsWorld, Futura.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-  "entityIndex": 6,
+  "$type": "Futura.Engine.ECS.EcsWorld, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "entityIndex": 5,
   "ComponentManagers": {
-    "$type": "System.Collections.Generic.List`1[[Futura.ECS.IComponentManager, Futura.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+    "$type": "System.Collections.Generic.List`1[[Futura.Engine.ECS.IComponentManager, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
     "$values": [
       {
-        "$type": "Futura.ECS.ComponentManager`1[[Futura.Engine.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Futura.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "$type": "Futura.Engine.ECS.ComponentManager`1[[Futura.Engine.ECS.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "componentData": {
-          "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Futura.Engine.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+          "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Futura.Engine.ECS.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
           "1": {
-            "$type": "Futura.Engine.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Position": {
-              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 0.0,
-              "Y": 2.0,
-              "Z": -15.0
-            },
-            "Rotation": {
-              "$type": "System.Numerics.Quaternion, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 0.0,
-              "Y": 0.0,
-              "Z": 0.0,
-              "W": 1.0,
-              "IsIdentity": true
-            },
-            "Scale": {
-              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 1.0,
-              "Y": 1.0,
-              "Z": 1.0
-            }
-          },
-          "3": {
-            "$type": "Futura.Engine.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Position": {
-              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 0.0,
-              "Y": 1.0,
-              "Z": -8.0
-            },
-            "Rotation": {
-              "$type": "System.Numerics.Quaternion, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 0.0,
-              "Y": 0.0,
-              "Z": 0.0,
-              "W": 1.0,
-              "IsIdentity": true
-            },
-            "Scale": {
-              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 1.0,
-              "Y": 1.0,
-              "Z": 1.0
-            }
-          },
-          "4": {
-            "$type": "Futura.Engine.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Position": {
-              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 0.0,
-              "Y": 1.6389159,
-              "Z": 4.632721
-            },
-            "Rotation": {
-              "$type": "System.Numerics.Quaternion, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 0.0,
-              "Y": 0.0,
-              "Z": 0.0,
-              "W": 1.0,
-              "IsIdentity": true
-            },
-            "Scale": {
-              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 1.0,
-              "Y": 1.0,
-              "Z": 1.0
-            }
-          },
-          "5": {
-            "$type": "Futura.Engine.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Position": {
-              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 3.541194,
-              "Y": 1.0371205,
-              "Z": -4.540734
-            },
-            "Rotation": {
-              "$type": "System.Numerics.Quaternion, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 0.0,
-              "Y": 0.0,
-              "Z": 0.0,
-              "W": 1.0,
-              "IsIdentity": true
-            },
-            "Scale": {
-              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 1.0,
-              "Y": 1.0,
-              "Z": 1.0
-            }
-          },
-          "6": {
-            "$type": "Futura.Engine.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "$type": "Futura.Engine.ECS.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Position": {
               "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
               "X": 0.0,
@@ -122,37 +30,129 @@
               "Y": 1.0,
               "Z": 1.0
             }
+          },
+          "2": {
+            "$type": "Futura.Engine.ECS.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Position": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 0.0
+            },
+            "Rotation": {
+              "$type": "System.Numerics.Quaternion, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 0.0,
+              "W": 1.0,
+              "IsIdentity": true
+            },
+            "Scale": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 1.0,
+              "Y": 1.0,
+              "Z": 1.0
+            }
+          },
+          "3": {
+            "$type": "Futura.Engine.ECS.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Position": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 0.0,
+              "Y": 0.5,
+              "Z": 0.0
+            },
+            "Rotation": {
+              "$type": "System.Numerics.Quaternion, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 0.0,
+              "W": 1.0,
+              "IsIdentity": true
+            },
+            "Scale": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 1.0,
+              "Y": 1.0,
+              "Z": 1.0
+            }
+          },
+          "4": {
+            "$type": "Futura.Engine.ECS.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Position": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": -5.3038836,
+              "Y": 0.44185328,
+              "Z": 0.0
+            },
+            "Rotation": {
+              "$type": "System.Numerics.Quaternion, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 0.0,
+              "W": 1.0,
+              "IsIdentity": true
+            },
+            "Scale": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 1.0,
+              "Y": 1.0,
+              "Z": 1.0
+            }
+          },
+          "5": {
+            "$type": "Futura.Engine.ECS.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Position": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 0.0,
+              "Y": 5.0,
+              "Z": 0.0
+            },
+            "Rotation": {
+              "$type": "System.Numerics.Quaternion, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": -0.50925326,
+              "Y": -0.6530315,
+              "Z": 0.5365499,
+              "W": -0.16225022,
+              "IsIdentity": false
+            },
+            "Scale": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 1.0,
+              "Y": 1.0,
+              "Z": 1.0
+            }
           }
         },
-        "Type": "Futura.Engine.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        "Type": "Futura.Engine.ECS.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       },
       {
-        "$type": "Futura.ECS.ComponentManager`1[[Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Futura.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "$type": "Futura.Engine.ECS.ComponentManager`1[[Futura.Engine.ECS.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "componentData": {
-          "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-          "3": {
-            "$type": "Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Mesh": "3ec14962-f67c-4bcf-9875-2f02017eda9c",
+          "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Futura.Engine.ECS.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+          "1": {
+            "$type": "Futura.Engine.ECS.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Mesh": "00000000-0000-0000-0000-000000000000",
             "Material": "64669d6b-c95d-4806-ad07-837369422dc5",
-            "UseModelColor": false,
+            "UseModelColor": true,
             "ModelDiffuseColor": {
               "$type": "Futura.Color, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
               "RawData": {
                 "$type": "System.Numerics.Vector4, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-                "X": 0.0,
-                "Y": 0.0,
-                "Z": 0.0,
+                "X": 0.5245098,
+                "Y": 0.52450454,
+                "Z": 0.52450454,
                 "W": 1.0
               },
-              "R": 0.0,
-              "G": 0.0,
-              "B": 0.0,
+              "R": 0.5245098,
+              "G": 0.52450454,
+              "B": 0.52450454,
               "A": 1.0
             }
           },
-          "4": {
-            "$type": "Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Mesh": "04d6ef08-5a8c-43a4-8101-a46183147834",
+          "3": {
+            "$type": "Futura.Engine.ECS.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Mesh": "00000000-0000-0000-0000-000000000000",
             "Material": "64669d6b-c95d-4806-ad07-837369422dc5",
             "UseModelColor": true,
             "ModelDiffuseColor": {
@@ -170,118 +170,85 @@
               "A": 1.0
             }
           },
-          "5": {
-            "$type": "Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "4": {
+            "$type": "Futura.Engine.ECS.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Mesh": "00000000-0000-0000-0000-000000000000",
             "Material": "64669d6b-c95d-4806-ad07-837369422dc5",
-            "UseModelColor": true,
+            "UseModelColor": false,
             "ModelDiffuseColor": {
               "$type": "Futura.Color, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
               "RawData": {
                 "$type": "System.Numerics.Vector4, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
                 "X": 0.0,
-                "Y": 0.6666666,
-                "Z": 0.39215675,
+                "Y": 0.0,
+                "Z": 0.0,
                 "W": 1.0
               },
               "R": 0.0,
-              "G": 0.6666666,
-              "B": 0.39215675,
-              "A": 1.0
-            }
-          },
-          "6": {
-            "$type": "Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Mesh": "00000000-0000-0000-0000-000000000000",
-            "Material": "64669d6b-c95d-4806-ad07-837369422dc5",
-            "UseModelColor": true,
-            "ModelDiffuseColor": {
-              "$type": "Futura.Color, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-              "RawData": {
-                "$type": "System.Numerics.Vector4, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-                "X": 0.24019605,
-                "Y": 0.24019545,
-                "Z": 0.24019365,
-                "W": 1.0
-              },
-              "R": 0.24019605,
-              "G": 0.24019545,
-              "B": 0.24019365,
+              "G": 0.0,
+              "B": 0.0,
               "A": 1.0
             }
           }
         },
-        "Type": "Futura.Engine.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        "Type": "Futura.Engine.ECS.Components.MeshFilter, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       },
       {
-        "$type": "Futura.ECS.ComponentManager`1[[Futura.Engine.Components.Camera, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Futura.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "$type": "Futura.Engine.ECS.ComponentManager`1[[Futura.Engine.ECS.Components.Camera, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "componentData": {
-          "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Futura.Engine.Components.Camera, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-          "1": {
-            "$type": "Futura.Engine.Components.Camera, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+          "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Futura.Engine.ECS.Components.Camera, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+          "2": {
+            "$type": "Futura.Engine.ECS.Components.Camera, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Projection": 0,
             "FieldOfView": 80.0,
             "NearPlane": 0.3,
             "FarPlane": 1000.0
           }
         },
-        "Type": "Futura.Engine.Components.Camera, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        "Type": "Futura.Engine.ECS.Components.Camera, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       },
       {
-        "$type": "Futura.ECS.ComponentManager`1[[Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Futura.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "$type": "Futura.Engine.ECS.ComponentManager`1[[Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "componentData": {
           "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
           "1": {
             "$type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Name": "Camera",
-            "IsEnabled": true,
-            "IsSelected": true
-          },
-          "3": {
-            "$type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Name": "Entity",
-            "IsEnabled": true,
-            "IsSelected": false
-          },
-          "4": {
-            "$type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Name": "Monkey",
-            "IsEnabled": true,
-            "IsSelected": false
-          },
-          "5": {
-            "$type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Name": "GeneratedMesh",
-            "IsEnabled": true,
-            "IsSelected": false
-          },
-          "6": {
-            "$type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Name": "Floor",
             "IsEnabled": true,
             "IsSelected": false
+          },
+          "2": {
+            "$type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Name": "Player",
+            "IsEnabled": true,
+            "IsSelected": false
+          },
+          "3": {
+            "$type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Name": "Block",
+            "IsEnabled": true,
+            "IsSelected": true
+          },
+          "4": {
+            "$type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Name": "Block",
+            "IsEnabled": true,
+            "IsSelected": true
+          },
+          "5": {
+            "$type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Name": "DirLight",
+            "IsEnabled": true,
+            "IsSelected": true
           }
         },
         "Type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       },
       {
-        "$type": "Futura.ECS.ComponentManager`1[[Futura.Engine.ECS.Components.MeshGenerator, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Futura.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "$type": "Futura.Engine.ECS.ComponentManager`1[[Futura.Engine.ECS.Components.MeshGenerator, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "componentData": {
           "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Futura.Engine.ECS.Components.MeshGenerator, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-          "5": {
-            "$type": "Futura.Engine.ECS.Components.MeshGenerator, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "X": 1.0,
-            "Y": 1.0,
-            "Z": 1.0,
-            "Radius": 1.0,
-            "Slices": 20,
-            "Stacks": 20,
-            "RadiusTop": 1.0,
-            "RadiusBottom": 1.0,
-            "Height": 1.0,
-            "GeometryType": 2
-          },
-          "6": {
+          "1": {
             "$type": "Futura.Engine.ECS.Components.MeshGenerator, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "X": 100.0,
             "Y": 100.0,
@@ -293,34 +260,85 @@
             "RadiusBottom": 1.0,
             "Height": 1.0,
             "GeometryType": 1
+          },
+          "3": {
+            "$type": "Futura.Engine.ECS.Components.MeshGenerator, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "X": 0.5,
+            "Y": 0.5,
+            "Z": 0.5,
+            "Radius": 1.0,
+            "Slices": 20,
+            "Stacks": 20,
+            "RadiusTop": 1.0,
+            "RadiusBottom": 1.0,
+            "Height": 1.0,
+            "GeometryType": 2
+          },
+          "4": {
+            "$type": "Futura.Engine.ECS.Components.MeshGenerator, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "X": 0.5,
+            "Y": 0.5,
+            "Z": 0.5,
+            "Radius": 1.0,
+            "Slices": 20,
+            "Stacks": 20,
+            "RadiusTop": 1.0,
+            "RadiusBottom": 1.0,
+            "Height": 1.0,
+            "GeometryType": 4
           }
         },
         "Type": "Futura.Engine.ECS.Components.MeshGenerator, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "$type": "Futura.Engine.ECS.ComponentManager`1[[Futura.Engine.ECS.Components.Lights.DirectionalLight, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "componentData": {
+          "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Futura.Engine.ECS.Components.Lights.DirectionalLight, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+          "5": {
+            "$type": "Futura.Engine.ECS.Components.Lights.DirectionalLight, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Color": {
+              "$type": "Futura.Color, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+              "RawData": {
+                "$type": "System.Numerics.Vector4, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+                "X": 1.0,
+                "Y": 0.99999,
+                "Z": 0.99999,
+                "W": 1.0
+              },
+              "R": 1.0,
+              "G": 0.99999,
+              "B": 0.99999,
+              "A": 1.0
+            },
+            "Intensity": 1.0
+          }
+        },
+        "Type": "Futura.Engine.ECS.Components.Lights.DirectionalLight, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       }
     ]
   },
   "Entities": {
-    "$type": "System.Collections.Generic.List`1[[Futura.ECS.Entity, Futura.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+    "$type": "System.Collections.Generic.List`1[[Futura.Engine.ECS.Entity, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
     "$values": [
       {
-        "$type": "Futura.ECS.Entity, Futura.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "$type": "Futura.Engine.ECS.Entity, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "ID": 1
       },
       {
-        "$type": "Futura.ECS.Entity, Futura.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "$type": "Futura.Engine.ECS.Entity, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "ID": 2
+      },
+      {
+        "$type": "Futura.Engine.ECS.Entity, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "ID": 3
       },
       {
-        "$type": "Futura.ECS.Entity, Futura.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "$type": "Futura.Engine.ECS.Entity, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "ID": 4
       },
       {
-        "$type": "Futura.ECS.Entity, Futura.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "$type": "Futura.Engine.ECS.Entity, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "ID": 5
-      },
-      {
-        "$type": "Futura.ECS.Entity, Futura.ECS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-        "ID": 6
       }
     ]
   }

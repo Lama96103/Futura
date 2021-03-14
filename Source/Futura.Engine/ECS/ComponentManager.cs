@@ -1,4 +1,4 @@
-﻿using Futura.ECS.Exceptions;
+﻿using Futura.Engine.ECS.Exceptions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
-namespace Futura.ECS
+namespace Futura.Engine.ECS
 {
     internal interface IComponentManager 
     {

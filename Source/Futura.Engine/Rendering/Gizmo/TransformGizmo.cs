@@ -1,5 +1,5 @@
-﻿using Futura.ECS;
-using Futura.Engine.Components;
+﻿using Futura.Engine.ECS;
+using Futura.Engine.ECS.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,7 +81,7 @@ namespace Futura.Engine.Rendering.Gizmo
             float deltaZ = deltaXYZ * Math.Sign(delta.Z) * speed;
 
 
-            currentSelectedEntity.GetComponent<Components.Transform>().Translate(new Vector3(deltaX, deltaY, deltaZ) * currentEditAxis);
+            currentSelectedEntity.GetComponent<Transform>().Translate(new Vector3(deltaX, deltaY, deltaZ) * currentEditAxis);
 
             lastPos = currentPos;
         }

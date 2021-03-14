@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Futura.ECS
+namespace Futura.Engine.ECS
 {
     public class EcsFilter
     {

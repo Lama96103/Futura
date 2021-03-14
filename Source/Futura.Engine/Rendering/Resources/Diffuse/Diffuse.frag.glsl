@@ -19,10 +19,12 @@ layout(set = 0, binding = 0) uniform WorldBuffer
     mat4 worldProjection;
     mat4 worldView;
     mat4 worldProjectionView;
+
     vec3 worldCameraPosition;
 	float worldCameraNear;
 	float worldCameraFar;
 };
+
 layout(set = 0, binding = 1) uniform sampler MainSampler;
 
 layout(set = 1, binding = 0) uniform ModelBuffer
@@ -32,13 +34,40 @@ layout(set = 1, binding = 0) uniform ModelBuffer
 	vec4 modelDiffuseColor;
 };
 
+layout(set = 2, binding = 0) uniform LightingBuffer
+{
+	vec4 directionalLightColor;
+
+	vec3 directionalLightDirection;
+	float directionalLightIntensity;
+
+	vec3 _padding01;
+	float ambientLightIntensity;
+};
+
 
 
 
 
 void main()
 {
-	FragmentColor = modelDiffuseColor;
+	vec4 ambient = modelDiffuseColor * ambientLightIntensity;
+	ambient.w = 1.0f;
+
+	vec3 normalizedNormal = normalize(vertexNormal);
+	vec3 lightDir = normalize(-directionalLightDirection);
+	float diff = max(dot(normalizedNormal, lightDir), 0.0);
+
+	vec4 diffuse = directionalLightColor * diff * modelDiffuseColor;
+
+	FragmentColor = ambient + diffuse;
+
+
+
+
+
+
+	// Different render targets
 	SelectionColor = modelSelectionColor;
 	DepthColor = vec4(vec3(gl_FragCoord.z), 1.0);
 }

@@ -1,7 +1,6 @@
-﻿using Futura.ECS;
-using Futura.Engine.Components;
-using Futura.Engine.Core;
+﻿using Futura.Engine.Core;
 using Futura.Engine.ECS;
+using Futura.Engine.ECS.Components;
 using ImGuiNET;
 using System;
 using System.Collections.Generic;

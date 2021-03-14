@@ -1,5 +1,4 @@
-﻿using Futura.ECS;
-using Futura.Engine.Rendering;
+﻿using Futura.Engine.Rendering;
 using Futura.Engine.Resources;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Futura.Engine.Components
+namespace Futura.Engine.ECS.Components
 {
     public class MeshFilter : IComponent
     {
