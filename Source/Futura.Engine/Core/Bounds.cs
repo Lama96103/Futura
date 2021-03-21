@@ -53,5 +53,22 @@ namespace Futura.Engine.Core
         {
             throw new NotSupportedException();
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj.GetType() != typeof(Bounds)) return false;
+            Bounds col = (Bounds)obj;
+            return this.Center == col.Center && this.Extends == col.Extends;
+        }
+
+        public static bool operator ==(Bounds c1, Bounds c2)
+        {
+            return c1.Equals(c2);
+        }
+
+        public static bool operator !=(Bounds c1, Bounds c2)
+        {
+            return !c1.Equals(c2);
+        }
     }
 }

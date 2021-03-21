@@ -67,61 +67,65 @@ namespace Futura.Engine.UserInterface
                 RuntimeHelper.Instance.HasSceneChanged = true;
             }
 
-            ImGui.Separator();
+            PropertySerializerHelper.GetSerializer(typeof(EntityTags)).Serialize(baseComponent, nameof(baseComponent.EntityTags));
 
+
+            ImGui.Separator();
 
             // Content
             foreach (IComponent component in entity.GetAllComponents())
             {
                 Type componentType = component.GetType();
                 if (componentType.GetCustomAttribute<IgnoreAttribute>() != null) continue;
-                
-                ImGui.Text(componentType.Name);
 
-                if(componentType.GetInterface("ICustomUserInterface") != null)
-                {
-                    ICustomUserInterface ui = (ICustomUserInterface)component;
-                    ui.Display();
-                    continue;
-                }
 
-                var fields = componentType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                foreach (var f in fields)
+                bool isOpen = true;
+                if (ImGui.CollapsingHeader(componentType.Name, ref isOpen, ImGuiTreeNodeFlags.DefaultOpen))
                 {
-                    if (!f.IsPublic && f.GetCustomAttribute<SerializeField>() == null) continue;
-                    if (f.GetCustomAttribute<IgnoreAttribute>() != null) continue;
-                    var serializer = PropertySerializerHelper.GetSerializer(f.FieldType);
-                    if (serializer == null)
+                    if (componentType.GetInterface("ICustomUserInterface") != null)
                     {
-                        ImGui.LabelText(f.Name, "TODO - " + f.FieldType.Name);
+                        ICustomUserInterface ui = (ICustomUserInterface)component;
+                        ui.Display();
                     }
                     else
                     {
-                        bool change = serializer.Serialize(component, f);
-                        if (change)
+                        var fields = componentType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                        foreach (var f in fields)
                         {
-                            RuntimeHelper.Instance.HasSceneChanged = true;
-                            if (component.GetType() == typeof(Transform)) ((Transform)component).UpdateTransform();
+                            if (!f.IsPublic && f.GetCustomAttribute<SerializeField>() == null) continue;
+                            if (f.GetCustomAttribute<IgnoreAttribute>() != null) continue;
+                            var serializer = PropertySerializerHelper.GetSerializer(f.FieldType);
+                            if (serializer == null)
+                            {
+                                ImGui.LabelText(f.Name, "TODO - " + f.FieldType.Name);
+                            }
+                            else
+                            {
+                                bool change = serializer.Serialize(component, f);
+                                if (change)
+                                {
+                                    RuntimeHelper.Instance.HasSceneChanged = true;
+                                    if (component.GetType() == typeof(Transform)) ((Transform)component).UpdateTransform();
+                                }
+                            }
                         }
                     }
                 }
 
-                ImGui.Separator();
+                if (isOpen == false)
+                {
+                    entity.RemoveComponent(componentType);
+                }
             }
 
+            ImGui.Separator();
+
+            float i = ImGui.GetWindowSize().X / 2;
+            ImGui.Indent(i- 50);
             if (ImGui.Button("Add Component"))
             {
                 ImGui.OpenPopup("ComponentSelector");
             }
-
-#if DEBUG
-            if (ImGui.Button("Destroy"))
-            {
-                worldSystem.World.DestroyEntity(entity);
-                RuntimeHelper.Instance.HasSceneChanged = true;
-                RuntimeHelper.Instance.SelectedEntity = null;
-            }
-#endif
 
             if (ImGui.BeginPopup("ComponentSelector"))
             {

@@ -56,6 +56,15 @@ namespace Futura
             data = VectorExtension.ReadVector4(reader);
         }
 
+        public Veldrid.RgbaFloat ToRgbaFloat()
+        {
+            return new Veldrid.RgbaFloat(RawData);
+        }
+
+        public Vector3 ToVector3()
+        {
+            return new Vector3(R, G, B);
+        }
 
         public override string ToString()
         {

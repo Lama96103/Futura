@@ -3,6 +3,7 @@ using Futura.Engine.ECS.Components;
 using Futura.Engine.ECS.Components.Lights;
 using Futura.Engine.Rendering;
 using Futura.Engine.Rendering.Gizmo;
+using Futura.Engine.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,15 @@ namespace Futura.Engine.Core
 
         public Vector2 Viewport { get => new Vector2(RenderResolutionWidth, RenderResolutionHeight); }
 
+        private LightingSettings lightingSettings;
+        public RenderSettings renderSettings;
+
         private void MainPass()
         {
             diffuseCommandList.Begin();
+
+            lightingSettings = Runtime.Instance.Settings.Get<LightingSettings>();
+            renderSettings = Runtime.Instance.Settings.Get<RenderSettings>();
 
             bool isRendering = UpdateWorldBuffer(diffuseCommandList);
 
@@ -34,6 +41,7 @@ namespace Futura.Engine.Core
             {
                 EntityColorDictionary.Clear();
                 DiffusePass(diffuseCommandList);
+                DebugPass(diffuseCommandList);
             }
 
             diffuseCommandList.End();
@@ -72,22 +80,43 @@ namespace Futura.Engine.Core
 
             cameraPos = cameraTransform.Position;
 
-            // commandList.UpdateBuffer(worldBuffer, 0, world);
-            renderAPI.GraphicAPI.UpdateBuffer(worldBuffer, 0, world);
+            commandList.UpdateBuffer(worldBuffer, 0, world);
 
+            // Update DirectionLight Information
             LightingBuffer light = new LightingBuffer();
             if(directionalLightFilter.Entities.Count() == 1)
             {
                 var dirLight = directionalLightFilter.Entities.ElementAt(0);
 
-                light.DirectionalLightColor = dirLight.GetComponent<DirectionalLight>().Color.RawData;
+                light.DirectionalLightColor = dirLight.GetComponent<DirectionalLight>().Color.ToVector3();
                 light.DirectionalLightIntensitiy = dirLight.GetComponent<DirectionalLight>().Intensity;
                 light.DirectionalLightDirection = dirLight.GetComponent<Transform>().Rotation.ToEulerAngles();
             }
-            light.AmbientLightIntensity = 0.01f;
+            light.AmbientLightIntensity = lightingSettings.AmbientLightIntensity;
 
-            // commandList.UpdateBuffer(lightingBuffer, 0, light);
-            renderAPI.GraphicAPI.UpdateBuffer(lightingBuffer, 0, light);
+            commandList.UpdateBuffer(lightingBuffer, 0, light);
+
+            /// Update PointLight Information;
+            if (pointLightFilter.Entities.Count() > 0)
+            {
+                PointLightsInfo pointLightsInfo = new PointLightsInfo()
+                {
+                    PointLights = new PointLightInfo[4],
+                    NumActiveLights = pointLightFilter.Entities.Count() >= 4 ? 3 : pointLightFilter.Entities.Count()
+                };
+
+                for (int i = 0; i < pointLightFilter.Entities.Count(); i++)
+                {
+                    if (i >= 4) break;
+                    pointLightsInfo.PointLights[i].Position = pointLightFilter.Entities.ElementAt(i).GetComponent<Transform>().Position;
+                    pointLightsInfo.PointLights[i].Color = pointLightFilter.Entities.ElementAt(i).GetComponent<PointLight>().Color.ToVector3();
+                    pointLightsInfo.PointLights[i].Range = pointLightFilter.Entities.ElementAt(i).GetComponent<PointLight>().Range;
+                    pointLightsInfo.PointLights[i].Intensity = pointLightFilter.Entities.ElementAt(i).GetComponent<PointLight>().Intensity;
+                }
+
+                // renderAPI.GraphicAPI.UpdateBuffer(pointLightBuffer, 0, pointLightsInfo);
+                commandList.UpdateBuffer(pointLightBuffer, 0, pointLightsInfo.GetBlittable());
+            }
 
             commandList.PopDebugGroup();
 
@@ -104,7 +133,7 @@ namespace Futura.Engine.Core
             commandList.SetGraphicsResourceSet(1, modelSet);
             commandList.SetGraphicsResourceSet(2, lightingSet);
 
-            commandList.ClearColorTarget(0, RgbaFloat.Black);
+            commandList.ClearColorTarget(0, lightingSettings.BackgroundColor.ToRgbaFloat());
             commandList.ClearColorTarget(1, RgbaFloat.Black);
             commandList.ClearColorTarget(2, RgbaFloat.Black);
             commandList.ClearDepthStencil(RenderAPI.Instance.IsDepthRangeZeroToOne ? 1 : -1, 0);
@@ -125,8 +154,9 @@ namespace Futura.Engine.Core
                     ModelBuffer model = new ModelBuffer()
                     {
                         Transform = transform.LocalMatrix,
-                        ColorIdentifier = new System.Numerics.Vector4(colorData[0]/255f, colorData[1] / 255f, colorData[2] / 255f, 1),
-                        DiffuseColor = filter.UseModelColor ? filter.ModelDiffuseColor.RawData : filter.Material.DiffuseColor.RawData
+                        ColorIdentifier = new System.Numerics.Vector4(colorData[0] / 255f, colorData[1] / 255f, colorData[2] / 255f, 1),
+                        DiffuseColor = filter.UseModelColor ? filter.ModelDiffuseColor.RawData : filter.Material.DiffuseColor.RawData,
+                        IsLightingEnabled = 1.0f
                     };
                     commandList.UpdateBuffer(modelBuffer, 0, model);
                     filter.Mesh.Renderable.Draw(commandList);
@@ -143,6 +173,70 @@ namespace Futura.Engine.Core
 
             // TODO Do this only if enabled
             commandList.CopyTexture(DiffuseFrameBuffer.ColorTextures[1].Handle, SelectionTexture.Handle);
+
+            commandList.PopDebugGroup();
+        }
+
+        private void DebugPass(CommandList commandList)
+        {
+            commandList.PushDebugGroup("Pass_Debug");
+            commandList.SetPipeline(wireframePipline);
+
+
+            if (renderSettings.ShowLightGizmo)
+            {
+                foreach (var reference in pointLightFilter.Entities)
+                {
+                    Transform transform = reference.GetComponent<Transform>();
+                    PointLight light = reference.GetComponent<PointLight>();
+                    RuntimeComponent runtime = reference.Entity.GetComponent<RuntimeComponent>();
+
+                    if (runtime.IsEnabled && runtime.IsSelected)
+                    {
+                        ModelBuffer model = new ModelBuffer()
+                        {
+                            Transform = Transform.CalculateModelMatrix(transform.Position, Quaternion.Identity, new Vector3(light.Range)),
+                            DiffuseColor = Color.Blue.RawData,
+                            IsLightingEnabled = 0.0f
+                        };
+                        commandList.UpdateBuffer(modelBuffer, 0, model);
+                        debugSphere.Draw(commandList);
+                    }
+                }
+            }
+
+            if (renderSettings.ShowMeshBoundsGizmo)
+            {
+                foreach (var reference in entityFilter.Entities)
+                {
+                    Transform transform = reference.GetComponent<Transform>();
+                    MeshFilter filter = reference.GetComponent<MeshFilter>();
+                    RuntimeComponent runtime = reference.Entity.GetComponent<RuntimeComponent>();
+
+                    if (runtime.IsEnabled && (runtime.IsSelected || !renderSettings.ShowOnlySelectedMeshBoundsGizmo))
+                    {
+                        if (filter.Mesh == null || filter.Material == null) continue;
+                        if (filter.Mesh.IsLoaded == false) continue;
+
+                        Bounds b = filter.Mesh.Bounds;
+                        if (b == default(Bounds))
+                        {
+                            filter.Mesh.RecaculateBounds();
+                            b = filter.Mesh.Bounds;
+                        }
+
+                        ModelBuffer model = new ModelBuffer()
+                        {
+                            Transform = Transform.CalculateModelMatrix(transform.Position + b.Center, transform.Rotation, b.Extends),
+                            DiffuseColor = Color.Blue.RawData,
+                            IsLightingEnabled = 0.0f
+                        };
+                        commandList.UpdateBuffer(modelBuffer, 0, model);
+                        debugBox.Draw(commandList);
+                    }
+                }
+            }
+            
 
             commandList.PopDebugGroup();
         }

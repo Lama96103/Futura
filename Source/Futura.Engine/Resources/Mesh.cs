@@ -28,6 +28,7 @@ namespace Futura.Engine.Resources
         internal Mesh(FileInfo path, Guid guid) : base(guid, AssetType.Mesh, path)
         {
         }
+
         internal Mesh(FileInfo path, Guid guid, Vertex[] vertices, uint[] indices, Bounds bounds) : base(guid, AssetType.Mesh, path)
         {
             this.vertices = vertices;
@@ -55,11 +56,24 @@ namespace Futura.Engine.Resources
             indices = new uint[indexLength];
             for (int i = 0; i < indexLength; i++) indices[i] = reader.ReadUInt32();
             bounds = new Bounds(reader);
+
+            if (bounds == default(Bounds)) RecaculateBounds();
         }
 
         public void RecaculateBounds()
         {
-            throw new NotImplementedException();
+            Vector3 boundsMin = new Vector3();
+            Vector3 boundsMax = new Vector3();
+
+            foreach(Vertex v in vertices)
+            {
+                boundsMin = Vector3.Min(boundsMin, v.Position);
+                boundsMax = Vector3.Max(boundsMax, v.Position);
+            }
+
+            bounds = new Bounds(boundsMin, boundsMax, false);
+
+            HasAssetChanged = true;
         }
 
         public override void Load()

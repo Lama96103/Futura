@@ -143,21 +143,6 @@ namespace Futura.Engine.UserInterface
         {
             if (ImGui.BeginMenuBar())
             {
-                if(Runtime.Instance.State == Runtime.RuntimeState.Editor)
-                {
-                    if (ImGui.MenuItem("Play")) Runtime.Instance.ExecuteCommand(new Runtime.ChangeRuntimeStateCommand(Runtime.RuntimeState.Playing));
-                }
-                else
-                {
-                    if(Runtime.Instance.State == Runtime.RuntimeState.Playing)
-                        if (ImGui.MenuItem("Pause")) Runtime.Instance.ExecuteCommand(new Runtime.ChangeRuntimeStateCommand(Runtime.RuntimeState.Pause));
-                    else if (Runtime.Instance.State == Runtime.RuntimeState.Pause)
-                        if (ImGui.MenuItem("Resume")) Runtime.Instance.ExecuteCommand(new Runtime.ChangeRuntimeStateCommand(Runtime.RuntimeState.Playing));
-
-                    if (ImGui.MenuItem("Stop")) Runtime.Instance.ExecuteCommand(new Runtime.ChangeRuntimeStateCommand(Runtime.RuntimeState.Editor));
-                }
-
-
                 if (ImGui.BeginMenu(currentView.ToString()))
                 {
                     if (ImGui.MenuItem("Normal", currentView != RenderView.Shaded)) currentView = RenderView.Shaded;
@@ -165,6 +150,30 @@ namespace Futura.Engine.UserInterface
                     if (ImGui.MenuItem("Selection", currentView != RenderView.Selection)) currentView = RenderView.Selection;
                     ImGui.EndMenu();
                 }
+
+                if (ImGui.BeginMenu("Gizmos"))
+                {
+                    if (ImGui.Checkbox("Light", ref renderSystem.renderSettings.ShowLightGizmo)) Runtime.Instance.Settings.Save(renderSystem.renderSettings);
+                    if (ImGui.Checkbox("Bounding Box", ref renderSystem.renderSettings.ShowMeshBoundsGizmo)) Runtime.Instance.Settings.Save(renderSystem.renderSettings);
+                    ImGui.EndMenu();
+                }
+
+                if (Runtime.Instance.State == Runtime.RuntimeState.Editor)
+                {
+                    ImGui.Indent(ImGui.GetWindowWidth() / 2 - 50);
+                    if (ImGui.MenuItem("Play")) Runtime.Instance.ExecuteCommand(new Runtime.ChangeRuntimeStateCommand(Runtime.RuntimeState.Playing));
+                }
+                else
+                {
+                    ImGui.Indent(ImGui.GetWindowWidth() / 2 - 75);
+                    if (Runtime.Instance.State == Runtime.RuntimeState.Playing)
+                        if (ImGui.MenuItem("Pause")) Runtime.Instance.ExecuteCommand(new Runtime.ChangeRuntimeStateCommand(Runtime.RuntimeState.Pause));
+                    else if (Runtime.Instance.State == Runtime.RuntimeState.Pause)
+                        if (ImGui.MenuItem("Resume")) Runtime.Instance.ExecuteCommand(new Runtime.ChangeRuntimeStateCommand(Runtime.RuntimeState.Playing));
+
+                    if (ImGui.MenuItem("Stop")) Runtime.Instance.ExecuteCommand(new Runtime.ChangeRuntimeStateCommand(Runtime.RuntimeState.Editor));
+                }              
+
                 ImGui.EndMenuBar();
             }
         }

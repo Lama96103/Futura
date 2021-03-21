@@ -17,7 +17,8 @@ namespace Futura.Engine.Rendering
            new ResourceLayoutElementDescription("ModelBuffer", ResourceKind.UniformBuffer, ShaderStages.Vertex | ShaderStages.Fragment));
 
         public ResourceLayoutDescription LightingLayout = new ResourceLayoutDescription(
-            new ResourceLayoutElementDescription("LightingBuffer", ResourceKind.UniformBuffer, ShaderStages.Fragment));
+            new ResourceLayoutElementDescription("LightingBuffer", ResourceKind.UniformBuffer, ShaderStages.Fragment),
+            new ResourceLayoutElementDescription("PointLightBuffer", ResourceKind.UniformBuffer, ShaderStages.Vertex | ShaderStages.Fragment));
         #endregion
 
         private ResourceFactory factory;

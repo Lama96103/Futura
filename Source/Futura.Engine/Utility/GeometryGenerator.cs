@@ -10,7 +10,7 @@ namespace Futura.Engine.Utility
 {
     public static class GeometryGenerator
     {
-        public static void GenerateCube(ref List<Vertex> vertices, ref List<uint> indices, float x = 1, float y = 0.5f, float z = 1)
+        public static void GenerateCube(ref List<Vertex> vertices, ref List<uint> indices, float x = 1, float y = 1, float z = 1)
         {
             uint index = (uint)vertices.Count;
 

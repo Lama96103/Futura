@@ -47,6 +47,15 @@ namespace Futura.Engine.ECS
             }
         }
 
+        public void RemoveComponent(Type t)
+        {
+            if (t.IsClass && t.GetInterface(typeof(IComponent).FullName) != null)
+            {
+                var method = typeof(EcsWorld).GetMethod("RemoveComponent", BindingFlags.Instance | BindingFlags.NonPublic).MakeGenericMethod(t);
+                method.Invoke(world, new object[] { this });
+            }
+        }
+
         /// <summary>
         /// Removes component from entity
         /// </summary>

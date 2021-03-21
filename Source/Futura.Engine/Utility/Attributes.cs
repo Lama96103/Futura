@@ -42,12 +42,21 @@ namespace Futura
     public class RangeAttribute : System.Attribute
     {
         public float Min { get; private set; } = 0;
-        public float Max { get; private set; } = 10;
+        public float Max { get; private set; } = 1;
+        public float Step { get; set; } = 0.1f;
+
 
         public RangeAttribute(float min, float max)
         {
             this.Min = min;
             this.Max = max;
+        }
+
+        public RangeAttribute(float min, float max, float step)
+        {
+            this.Min = min;
+            this.Max = max;
+            this.Step = step;
         }
     }
 

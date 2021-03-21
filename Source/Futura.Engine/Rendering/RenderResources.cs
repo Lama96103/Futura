@@ -20,6 +20,7 @@ namespace Futura.Engine.Core
         private DeviceBuffer worldBuffer;
         private DeviceBuffer modelBuffer;
         private DeviceBuffer lightingBuffer;
+        private DeviceBuffer pointLightBuffer;
 
         private ResourceSet worldSet;
         private ResourceSet modelSet;
@@ -27,11 +28,15 @@ namespace Futura.Engine.Core
 
         private Pipeline diffusePipline;
         private Pipeline gizmoPipline;
+        private Pipeline wireframePipline;
 
         private Rendering.Framebuffer diffuseFramebuffer;
         public Rendering.Framebuffer DiffuseFrameBuffer { get => diffuseFramebuffer; }
 
         public Texture2D SelectionTexture { get; private set; }
+
+        private Renderable debugSphere;
+        private Renderable debugBox;
 
         private void Load()
         {
@@ -41,10 +46,16 @@ namespace Futura.Engine.Core
 
             worldBuffer = factory.CreateBuffer(new BufferDescription((uint)Unsafe.SizeOf<WorldBuffer>(), BufferUsage.UniformBuffer | BufferUsage.Dynamic));
             worldBuffer.Name = "WorldBuffer";
+
             modelBuffer = factory.CreateBuffer(new BufferDescription((uint)Unsafe.SizeOf<ModelBuffer>(), BufferUsage.UniformBuffer | BufferUsage.Dynamic));
             modelBuffer.Name = "ModelBuffer";
+
             lightingBuffer = factory.CreateBuffer(new BufferDescription((uint)Unsafe.SizeOf<LightingBuffer>(), BufferUsage.UniformBuffer | BufferUsage.Dynamic));
             lightingBuffer.Name = "LightingBuffer";
+
+            pointLightBuffer = factory.CreateBuffer(new BufferDescription((uint)Unsafe.SizeOf<PointLightsInfo.Blittable>(), BufferUsage.UniformBuffer | BufferUsage.Dynamic));
+            pointLightBuffer.Name = "PointLightBuffer";
+
             Sampler pointSampler = renderAPI.GraphicAPI.PointSampler;
 
             ResourceLayout worldLayout = deviceResourceCache.GetLayout(ref deviceResourceCache.WorldLayout);
@@ -58,7 +69,7 @@ namespace Futura.Engine.Core
             ResourceSetDescription modelSetDescription = new ResourceSetDescription(modelLayout, modelBuffer);
             modelSet = deviceResourceCache.GetSet(ref modelSetDescription);
 
-            ResourceSetDescription lightingSetDescription = new ResourceSetDescription(lightingLayout, lightingBuffer);
+            ResourceSetDescription lightingSetDescription = new ResourceSetDescription(lightingLayout, lightingBuffer, pointLightBuffer);
             lightingSet = deviceResourceCache.GetSet(ref lightingSetDescription);
 
             Rendering.Shader diffuseShader = new Rendering.Shader();
@@ -90,8 +101,40 @@ namespace Futura.Engine.Core
 
             gizmoPipline = deviceResourceCache.GetPipline(ref pipelineDescription);
 
+            pipelineDescription = new GraphicsPipelineDescription
+            (
+                BlendStateDescription.SingleAlphaBlend,
+                DepthStencilStateDescription.DepthOnlyLessEqual,
+                new RasterizerStateDescription(FaceCullMode.None, PolygonFillMode.Wireframe, FrontFace.CounterClockwise, true, false),
+                PrimitiveTopology.TriangleList,
+                new ShaderSetDescription(new VertexLayoutDescription[] { Vertex.GetLayoutDescription() }, diffuseShader.Handles),
+                new ResourceLayout[] { worldLayout, modelLayout, lightingLayout },
+                diffuseFramebuffer.Handle.OutputDescription
+            );
+
+            wireframePipline = deviceResourceCache.GetPipline(ref pipelineDescription);
+
             transformGizmo.Init(factory);
 
+            LoadDebugRenderables();
+        }
+
+        private void LoadDebugRenderables()
+        {
+            List<Vertex> vertices = new List<Vertex>();
+            List<uint> indices = new List<uint>();
+
+            Utility.GeometryGenerator.GenerateSphere(ref vertices, ref indices);
+
+            debugSphere = new Renderable();
+            debugSphere.Load(renderAPI, vertices.ToArray(), indices.ToArray());
+
+            vertices.Clear(); indices.Clear();
+
+            Utility.GeometryGenerator.GenerateCube(ref vertices, ref indices);
+
+            debugBox = new Renderable();
+            debugBox.Load(renderAPI, vertices.ToArray(), indices.ToArray());
         }
 
         private void RecreateRenderResources(uint width, uint height)

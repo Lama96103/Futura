@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,13 @@ namespace Futura.Engine.ECS
     {
         public string Name = "Entity";
         public bool IsEnabled = true;
-        public bool IsSelected = false;
+        public EntityTags EntityTags = EntityTags.None;
+        [JsonIgnore] public bool IsSelected = false;
+    }
+
+    [Flags]
+    public enum EntityTags
+    {
+        None, Player, MainCamera, Water
     }
 }

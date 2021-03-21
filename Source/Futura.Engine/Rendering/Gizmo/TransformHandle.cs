@@ -52,7 +52,8 @@ namespace Futura.Engine.Rendering.Gizmo
             {
                 Transform = matrix,
                 ColorIdentifier = TransformGizmo.ColorAxisYId.RawData,
-                DiffuseColor = hooverAxis == Vector3.UnitY? TransformGizmo.ColorAxisHoover.RawData : TransformGizmo.ColorAxisY.RawData
+                DiffuseColor = hooverAxis == Vector3.UnitY ? TransformGizmo.ColorAxisHoover.RawData : TransformGizmo.ColorAxisY.RawData,
+                IsLightingEnabled = 0.0f
             };
             commandList.UpdateBuffer(modelBuffer, 0, model);
             renderable.Draw(commandList);
