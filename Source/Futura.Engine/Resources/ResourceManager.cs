@@ -11,9 +11,9 @@ namespace Futura.Engine.Resources
 {
     public class ResourceManager : Singleton<ResourceManager>
     {
-        private const string MetaFileExtension = ".fMeta";
-        private const string AssetFileExtension = ".fAsset";
-        private DirectoryInfo rootDir;
+        public const string MetaFileExtension = ".fMeta";
+        public const string AssetFileExtension = ".fAsset";
+        public DirectoryInfo RootDirectory { get; private set; }
 
         private Dictionary<Guid, Asset> loadedAssets = new Dictionary<Guid, Asset>();
         public Dictionary<Guid, Asset>.ValueCollection LoadedAssets { get => loadedAssets.Values; }
@@ -24,15 +24,15 @@ namespace Futura.Engine.Resources
 
         internal void Init(DirectoryInfo rootDirectory)
         {
-            this.rootDir = rootDirectory;
-            if (!rootDir.Exists) rootDir.Create();
+            this.RootDirectory = rootDirectory;
+            if (!RootDirectory.Exists) RootDirectory.Create();
 
             // Add all available importers
             importers.Add(new Import.MeshImporter());
             importers.Add(new Import.TextureImporter());
 
             assetSettings = Core.Runtime.Instance.Settings.Get<Settings.AssetSettings>();
-            CheckFolderForAssets(this.rootDir);
+            CheckFolderForAssets(this.RootDirectory);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Futura.Engine.Resources
         /// </summary>
         public void CreateMaterial()
         {
-            FileInfo[] files = rootDir.GetFiles();
+            FileInfo[] files = RootDirectory.GetFiles();
             string fileName = "Material" + AssetFileExtension;
             int index = 0;
             while(files.Where(f=> f.Name == fileName).Count() > 0)
@@ -131,7 +131,7 @@ namespace Futura.Engine.Resources
             
 
 
-            FileInfo filePath = new FileInfo(rootDir.FullName + "\\" + fileName);
+            FileInfo filePath = new FileInfo(RootDirectory.FullName + "\\" + fileName);
 
 
 

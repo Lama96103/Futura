@@ -13,6 +13,14 @@ namespace Futura.Engine.Core
         private static Dictionary<StatisticIndicator, int> lastFrame = new Dictionary<StatisticIndicator, int>();
         private static Dictionary<string, Stopwatch> measuredTimes = new Dictionary<string, Stopwatch>();
 
+        private static Process currentProcess = Process.GetCurrentProcess();
+
+        public static long WorkingSet { get; private set; } = 0;
+        public static TimeSpan TotalProcessorTime { get; private set; } = TimeSpan.Zero;
+        public static long PagedMemorySize { get; private set; } = 0;
+        public static long PagedSystemMemorySize { get; private set; } = 0;
+        public static long PrivateMemorySize { get; private set; } = 0;
+
         [Conditional("PROFILE")]
         internal static void StartFrame()
         {
@@ -21,6 +29,15 @@ namespace Futura.Engine.Core
             {
                 indicatorValues.Add((StatisticIndicator)i, 0);
             }
+
+            currentProcess.Refresh();
+            WorkingSet = currentProcess.WorkingSet64;
+            TotalProcessorTime = currentProcess.TotalProcessorTime;
+            PagedMemorySize = currentProcess.PagedMemorySize64;
+            PagedSystemMemorySize = currentProcess.PagedSystemMemorySize64;
+            PrivateMemorySize = currentProcess.PrivateMemorySize64;
+
+            measuredTimes.Clear();
         }
 
         [Conditional("PROFILE")]

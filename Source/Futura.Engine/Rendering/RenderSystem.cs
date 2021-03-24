@@ -90,8 +90,12 @@ namespace Futura.Engine.Core
                 pointLightFilter = world.CreateFilter<Transform, ECS.Components.Lights.PointLight>();
             }
 
+            Profiler.StartTimeMeasure(typeof(RenderSystem).FullName + ".MainPass()");
             MainPass();
+            Profiler.StopTimeMeasure(typeof(RenderSystem).FullName + ".MainPass()");
+            Profiler.StartTimeMeasure(typeof(RenderSystem).FullName + ".ImGuiPass()");
             ImGuiPass(deltaTime);
+            Profiler.StopTimeMeasure(typeof(RenderSystem).FullName + ".ImGuiPass()");
 
             renderAPI.SwapBuffers();
             renderAPI.WaitForIdle();

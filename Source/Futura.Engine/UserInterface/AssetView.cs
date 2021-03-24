@@ -37,15 +37,32 @@ namespace Futura.Engine.UserInterface
             }
 
 
-            var allAssets = manager.LoadedAssets;
+            Asset[] userAssets = manager.LoadedAssets.ToArray();
+            DirectoryInfo rootPath = manager.RootDirectory;
+            DisplayDirectory(rootPath, userAssets);
+                 
+            ImGui.End();
+        }
 
-            var userAssets = allAssets;
-            // var editorAssets = allAssets.Where(s => s.EditorPath == "Built-In");
-
-            if (ImGui.TreeNodeEx("Assets", ImGuiTreeNodeFlags.DefaultOpen))
+        private void DisplayDirectory(DirectoryInfo directory, Asset[] assets)
+        {
+            ImGuiTreeNodeFlags flags = 0;
+            if (directory == manager.RootDirectory) flags = ImGuiTreeNodeFlags.DefaultOpen;
+            if (ImGui.TreeNodeEx(directory.Name, flags))
             {
-                foreach (var asset in userAssets.ToArray())
+                foreach (DirectoryInfo subDir in directory.GetDirectories())
+                    DisplayDirectory(subDir, assets);
+
+                foreach(FileInfo fileInfo in directory.GetFiles())
                 {
+                    if (fileInfo.Extension == ResourceManager.MetaFileExtension) continue;
+                    Asset asset = assets.Where(a => a.Path.FullName == fileInfo.FullName).FirstOrDefault();
+                    if(asset == null)
+                    {
+                        Log.Warn(fileInfo.FullName + " asset is null");
+                        continue;
+                    }
+
                     if (ImGui.Selectable(asset.Path.Name))
                     {
                         RuntimeHelper.Instance.SelectedAsset = asset;
@@ -59,10 +76,12 @@ namespace Futura.Engine.UserInterface
                         ImGui.EndDragDropSource();
                     }
                 }
+
                 ImGui.TreePop();
             }
+            
 
-            ImGui.End();
+
         }
     }
 }

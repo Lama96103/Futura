@@ -49,7 +49,7 @@ namespace Futura.Engine.Core
 
                 try
                 {
-                    string identifier = sub.GetType().FullName;
+                    string identifier = sub.GetType().FullName + ".Tick()";
                     Profiler.StartTimeMeasure(identifier);
                     sub.Tick(deltaTime);
                     Profiler.StopTimeMeasure(identifier);

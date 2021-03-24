@@ -69,9 +69,10 @@ namespace Futura.Engine.UserInterface
             {
                 Vector2 windowPos = ImGui.GetWindowPos();
                 Vector2 mousePos = Input.MousePosition - windowPos;
-                Profiler.StartTimeMeasure("GetSelectedObject");
+
+                Profiler.StartTimeMeasure(typeof(SceneView).FullName + ".GetMousePickedObject()");
                 Color color = renderSystem.SelectionTexture.GetData((int)mousePos.X, (int)mousePos.Y);
-                Profiler.StopTimeMeasure("GetSelectedObject");
+                Profiler.StopTimeMeasure(typeof(SceneView).FullName + ".GetMousePickedObject()");
 
                 if (Input.IsMouseDown(Veldrid.MouseButton.Left))
                 {

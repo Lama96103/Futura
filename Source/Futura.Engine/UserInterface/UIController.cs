@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Futura.Engine.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -18,6 +19,7 @@ namespace Futura.Engine.UserInterface
    
         internal void Tick()
         {
+            Profiler.StartTimeMeasure(typeof(UIController).FullName + ".Tick()");
             foreach (View view in toRemove)
             {
                 view.OnDestroy();
@@ -35,10 +37,15 @@ namespace Futura.Engine.UserInterface
             foreach (View view in views)
             {
                 if (view.IsOpen)
+                {
+                    Profiler.StartTimeMeasure(view.GetType().FullName + ".Tick()");
                     view.Tick();
+                    Profiler.StopTimeMeasure(view.GetType().FullName + ".Tick()");
+                }
                 else
                     toRemove.Add(view);
             }
+            Profiler.StopTimeMeasure(typeof(UIController).FullName + ".Tick()");
         }
 
   
