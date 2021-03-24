@@ -45,15 +45,8 @@ namespace Futura.Engine.UserInterface
                         isLoadSceneDialogOpen = true;
                     }
                     ImGui.Separator();
-                  
-                    
-                    
-                    ImGui.EndMenu();
-                }
 
-                if (ImGui.BeginMenu("Options"))
-                {
-                    if (ImGui.MenuItem("Engine Settings"))
+                    if (ImGui.MenuItem("Options"))
                     {
                         UIController.Instance.Register(new SettingView(Core.Runtime.Instance.Settings, "Engine"));
                     }

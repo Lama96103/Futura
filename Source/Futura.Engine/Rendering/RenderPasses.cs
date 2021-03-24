@@ -196,7 +196,7 @@ namespace Futura.Engine.Core
                         ModelBuffer model = new ModelBuffer()
                         {
                             Transform = Transform.CalculateModelMatrix(transform.Position, Quaternion.Identity, new Vector3(light.Range)),
-                            DiffuseColor = Color.Blue.RawData,
+                            DiffuseColor = renderSettings.WireframeColor.RawData,
                             IsLightingEnabled = 0.0f
                         };
                         commandList.UpdateBuffer(modelBuffer, 0, model);
@@ -228,7 +228,7 @@ namespace Futura.Engine.Core
                         ModelBuffer model = new ModelBuffer()
                         {
                             Transform = Transform.CalculateModelMatrix(transform.Position + b.Center, transform.Rotation, b.Extends),
-                            DiffuseColor = Color.Blue.RawData,
+                            DiffuseColor = renderSettings.WireframeColor.RawData,
                             IsLightingEnabled = 0.0f
                         };
                         commandList.UpdateBuffer(modelBuffer, 0, model);

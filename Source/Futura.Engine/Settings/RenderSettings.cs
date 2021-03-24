@@ -11,5 +11,6 @@ namespace Futura.Engine.Settings
         public bool ShowLightGizmo = false;
         public bool ShowMeshBoundsGizmo = false;
         public bool ShowOnlySelectedMeshBoundsGizmo = true;
+        public Color WireframeColor = Color.Blue;
     }
 }
