@@ -15,6 +15,8 @@ namespace Futura.Game
             Runtime runtime = Runtime.Instance;
             runtime.Init();
 
+            // runtime.Context.GetSubSystem<TimeSystem>().SetTargetFPS(TimeSystem.Mode.Fixed, 60);
+
             if(args.Length == 1)
             {
                 if(File.Exists(args[0]))

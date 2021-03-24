@@ -31,16 +31,19 @@ namespace Futura.Engine.UserInterface
 
             Vector2 windowSize = ImGui.GetWindowSize();
 
-            memoryBuffer.Push((float)(Profiler.PrivateMemorySize / 1000 / 1000));
+            memoryBuffer.Push((float)(Profiler.WorkingSet / 1000 / 1000));
             frameTimes.Push(Time.DeltaTime);
 
-            ImGui.PlotLines("##Memory", ref memoryBuffer.Array[0], memoryBuffer.Length, 0, "Memory (MB)", memoryBuffer.MinValue, memoryBuffer.MaxValue, new Vector2(windowSize.X/2, 75));
+            ImGui.PlotLines("##DeltaTime", ref frameTimes.Array[0], frameTimes.Length, 0, "Deltatime (ms)", 0, 45f, new Vector2(windowSize.X / 2, 75));
             ImGui.SameLine();
-            ImGui.PlotLines("##DeltaTime", ref frameTimes.Array[0], frameTimes.Length, 0, "Deltatime (ms)", 0, 50f, new Vector2(windowSize.X / 2, 75));
+            ImGui.PlotLines("##Memory", ref memoryBuffer.Array[0], memoryBuffer.Length, 0, "Memory (MB)", memoryBuffer.MinValue, memoryBuffer.MaxValue, new Vector2(windowSize.X/2, 75));
+
+            ImGui.Separator();
+
+            if (ImGui.InputText("Filter", ref filter, 400)) { }
 
             if (ImGui.BeginChild("PerformanceFilter"))
             {
-                if (ImGui.InputText("Filter", ref filter, 300)) { }
 
 
                 var measuredTimes = Profiler.MeasuredTime;

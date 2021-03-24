@@ -29,7 +29,7 @@ namespace Futura.Engine.Core
         private double deltaTime = 0.0f;
         private double deltaTimeSmoothed = 0.0f;
 
-        double sleepOverhead = 0.0f;
+        private TimeSpan sleepOverhead = TimeSpan.Zero;
 
         private double secondsTick = 0;
 
@@ -46,17 +46,19 @@ namespace Futura.Engine.Core
             TimeSpan time = frameTime.Elapsed;
             frameTime.Restart();
 
-            double remainingTime = (1000.0 / TargetFPS) - time.TotalMilliseconds;
+            TimeSpan remainingTime = TimeSpan.FromMilliseconds(1000.0 / TargetFPS) - time;
 
-            if(remainingTime > 0.0)
+            if(remainingTime.TotalMilliseconds > 0.0)
             {
                 Stopwatch overhead = Stopwatch.StartNew();
                 
-                double requested = remainingTime - sleepOverhead;
-                if(requested > 0)
-                    Thread.Sleep((int)requested);
+                TimeSpan requested = remainingTime - sleepOverhead;
 
-                sleepOverhead = overhead.ElapsedMilliseconds;
+                if(requested.TotalMilliseconds > 0)
+                    Thread.Sleep(requested);
+
+                overhead.Stop();
+                sleepOverhead = overhead.Elapsed;
             }
 
             this.deltaTime = time.TotalMilliseconds;
@@ -131,5 +133,7 @@ namespace Futura
         /// DeltaTime in s
         /// </summary>
         public static float DeltaSeconds { get => (float)timeSys.DeltaTime/1000.0f; }
+
+        public static float DeltaTimeSmoothed { get => (float)timeSys.DeltaTimeSmoothed; }
     }
 }

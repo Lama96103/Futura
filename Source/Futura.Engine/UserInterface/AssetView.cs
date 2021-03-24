@@ -38,31 +38,42 @@ namespace Futura.Engine.UserInterface
 
 
             Asset[] userAssets = manager.LoadedAssets.ToArray();
-            DirectoryInfo rootPath = manager.RootDirectory;
-            DisplayDirectory(rootPath, userAssets);
+
+            Profiler.StartTimeMeasure(typeof(AssetView).FullName + ".CreateFolderStructure()");
+            Folder rootFolder = new Folder(manager.RootDirectory.Name);
+            foreach (Asset a in userAssets)
+            {
+                string[] folders = a.Path.Directory.FullName.Split('\\');
+                int rootIndex = 0;
+                for (int i = 0; i < folders.Length; i++)
+                {
+                    if (folders[i] == manager.RootDirectory.Name)
+                    {
+                        rootIndex = i;
+                        break;
+                    }
+                }
+
+                rootFolder.Insert(a, folders.Skip(rootIndex));
+            }
+            Profiler.StopTimeMeasure(typeof(AssetView).FullName + ".CreateFolderStructure()");
+
+            Profiler.StartTimeMeasure(typeof(AssetView).FullName + ".DisplayDirectory()");
+            DisplayDirectory(rootFolder);
+            Profiler.StopTimeMeasure(typeof(AssetView).FullName + ".DisplayDirectory()");
                  
             ImGui.End();
         }
 
-        private void DisplayDirectory(DirectoryInfo directory, Asset[] assets)
+        private void DisplayDirectory(Folder folder)
         {
-            ImGuiTreeNodeFlags flags = 0;
-            if (directory == manager.RootDirectory) flags = ImGuiTreeNodeFlags.DefaultOpen;
-            if (ImGui.TreeNodeEx(directory.Name, flags))
+            if (ImGui.TreeNodeEx(folder.Name))
             {
-                foreach (DirectoryInfo subDir in directory.GetDirectories())
-                    DisplayDirectory(subDir, assets);
+                foreach (Folder subDir in folder.SubFolders)
+                    DisplayDirectory(subDir);
 
-                foreach(FileInfo fileInfo in directory.GetFiles())
+                foreach (Asset asset in folder.Assets)
                 {
-                    if (fileInfo.Extension == ResourceManager.MetaFileExtension) continue;
-                    Asset asset = assets.Where(a => a.Path.FullName == fileInfo.FullName).FirstOrDefault();
-                    if(asset == null)
-                    {
-                        Log.Warn(fileInfo.FullName + " asset is null");
-                        continue;
-                    }
-
                     if (ImGui.Selectable(asset.Path.Name))
                     {
                         RuntimeHelper.Instance.SelectedAsset = asset;
@@ -76,10 +87,49 @@ namespace Futura.Engine.UserInterface
                         ImGui.EndDragDropSource();
                     }
                 }
-
                 ImGui.TreePop();
             }
-            
+        }
+
+        class Folder
+        {
+            public string Name = "";
+            public List<Folder> SubFolders = new List<Folder>();
+            public List<Asset> Assets = new List<Asset>();
+
+            public Folder(string name)
+            {
+                Name = name;
+            }
+
+            public void Insert(Asset asset, IEnumerable<string> folders)
+            {
+                if(folders.Count() == 1)
+                {
+                    Assets.Add(asset);
+                }
+                else
+                {
+                    string subFolderName = folders.ElementAt(1);
+                    var subFoldersArray = folders.Skip(1);
+
+                    Folder subFolder = null;
+                    foreach(Folder s in SubFolders)
+                    {
+                        if(s.Name == subFolderName)
+                        {
+                            subFolder = s;
+                        }
+                    }
+                    if(subFolder == null)
+                    {
+                        subFolder = new Folder(subFolderName);
+                        SubFolders.Add(subFolder);
+                    }
+
+                    subFolder.Insert(asset, subFoldersArray);
+                }
+            }
 
 
         }
