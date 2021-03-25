@@ -25,7 +25,7 @@ namespace Futura.Engine.UserInterface
         {
             EcsWorld world = worldSystem.World;
 
-            ImGui.Begin(txt_WindowName, ImGuiWindowFlags.MenuBar);
+            Begin(txt_WindowName, ImGuiWindowFlags.MenuBar);
 
             if (ImGui.BeginMenuBar())
             {
@@ -67,7 +67,7 @@ namespace Futura.Engine.UserInterface
                 ImGui.EndPopup();
             }
 
-            ImGui.End();
+            End();
 
 
 

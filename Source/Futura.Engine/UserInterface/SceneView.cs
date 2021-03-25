@@ -47,97 +47,99 @@ namespace Futura.Engine.UserInterface
             ImGuiWindowFlags flags = ImGuiWindowFlags.AlwaysUseWindowPadding | ImGuiWindowFlags.MenuBar;
 
 
-            ImGui.Begin(txt_WindowName, flags);
-            ImGui.PopStyleVar();
-
-            DisplayMenu();
-
-            ImGui.BeginChild(txt_SceneChild);
-
-            if (imageSize != ImGui.GetWindowSize())
+            if(Begin(txt_WindowName, flags))
             {
-                imageSize = ImGui.GetWindowSize();
-                renderSystem.ResizeRenderResolution((uint)imageSize.X, (uint)imageSize.Y);
-                Log.Debug("Scene Size: " + imageSize.X + " " + imageSize.Y);
-            }
+                ImGui.PopStyleVar();
 
-            colorImagePointer = ImGuiController.Instance.GetOrCreateImGuiBinding(renderSystem.DiffuseFrameBuffer.ColorTextures[(int)currentView].Handle);
-            ImGui.Image(colorImagePointer, imageSize);
+                DisplayMenu();
 
+                ImGui.BeginChild(txt_SceneChild);
 
-            if (ImGui.IsWindowHovered())
-            {
-                Vector2 windowPos = ImGui.GetWindowPos();
-                Vector2 mousePos = Input.MousePosition - windowPos;
-
-                Profiler.StartTimeMeasure(typeof(SceneView).FullName + ".GetMousePickedObject()");
-                Color color = renderSystem.SelectionTexture.GetData((int)mousePos.X, (int)mousePos.Y);
-                Profiler.StopTimeMeasure(typeof(SceneView).FullName + ".GetMousePickedObject()");
-
-                if (Input.IsMouseDown(Veldrid.MouseButton.Left))
+                if (imageSize != ImGui.GetWindowSize())
                 {
-                    if (mousePos.X >= 0 && mousePos.Y >= 0)
+                    imageSize = ImGui.GetWindowSize();
+                    renderSystem.ResizeRenderResolution((uint)imageSize.X, (uint)imageSize.Y);
+                    Log.Debug("Scene Size: " + imageSize.X + " " + imageSize.Y);
+                }
+
+                colorImagePointer = ImGuiController.Instance.GetOrCreateImGuiBinding(renderSystem.DiffuseFrameBuffer.ColorTextures[(int)currentView].Handle);
+                ImGui.Image(colorImagePointer, imageSize);
+
+
+                if (ImGui.IsWindowHovered())
+                {
+                    Vector2 windowPos = ImGui.GetWindowPos();
+                    Vector2 mousePos = Input.MousePosition - windowPos;
+
+                    Profiler.StartTimeMeasure(typeof(SceneView).FullName + ".GetMousePickedObject()");
+                    Color color = renderSystem.SelectionTexture.GetData((int)mousePos.X, (int)mousePos.Y);
+                    Profiler.StopTimeMeasure(typeof(SceneView).FullName + ".GetMousePickedObject()");
+
+                    if (Input.IsMouseDown(Veldrid.MouseButton.Left))
                     {
-                        if (mousePos.X < imageSize.X && mousePos.Y < imageSize.Y)
+                        if (mousePos.X >= 0 && mousePos.Y >= 0)
                         {
-                            Color entityColor = color;
-                            entityColor.A = 1;
-
-                            if (renderSystem.EntityColorDictionary.TryGetValue(entityColor, out Entity entity))
-                                RuntimeHelper.Instance.SelectedEntity = entity;
-                            else
+                            if (mousePos.X < imageSize.X && mousePos.Y < imageSize.Y)
                             {
-                                Vector3 axis = Vector3.Zero;
-                                if (color == TransformGizmo.ColorAxisXId) axis = Vector3.UnitX;
-                                if (color == TransformGizmo.ColorAxisYId) axis = Vector3.UnitY;
-                                if (color == TransformGizmo.ColorAxisZId) axis = Vector3.UnitZ;
+                                Color entityColor = color;
+                                entityColor.A = 1;
 
-                                if (axis != Vector3.Zero) TransformGizmo.Instance.StartEditing(axis, mousePos, windowPos);
+                                if (renderSystem.EntityColorDictionary.TryGetValue(entityColor, out Entity entity))
+                                    RuntimeHelper.Instance.SelectedEntity = entity;
+                                else
+                                {
+                                    Vector3 axis = Vector3.Zero;
+                                    if (color == TransformGizmo.ColorAxisXId) axis = Vector3.UnitX;
+                                    if (color == TransformGizmo.ColorAxisYId) axis = Vector3.UnitY;
+                                    if (color == TransformGizmo.ColorAxisZId) axis = Vector3.UnitZ;
+
+                                    if (axis != Vector3.Zero) TransformGizmo.Instance.StartEditing(axis, mousePos, windowPos);
+                                }
                             }
                         }
+                    }
+
+
+                    // Check if mouse is hovering gizmo
+                    {
+                        Vector3 axis = Vector3.Zero;
+                        if (color == TransformGizmo.ColorAxisXId) axis = Vector3.UnitX;
+                        if (color == TransformGizmo.ColorAxisYId) axis = Vector3.UnitY;
+                        if (color == TransformGizmo.ColorAxisZId) axis = Vector3.UnitZ;
+                        TransformGizmo.Instance.SetHooverAxis(axis);
                     }
                 }
 
 
-                // Check if mouse is hovering gizmo
+
+
+
+                if (Input.IsMouseUp(Veldrid.MouseButton.Left)) TransformGizmo.Instance.EndEditing();
+
+
+                if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
                 {
-                    Vector3 axis = Vector3.Zero;
-                    if (color == TransformGizmo.ColorAxisXId) axis = Vector3.UnitX;
-                    if (color == TransformGizmo.ColorAxisYId) axis = Vector3.UnitY;
-                    if (color == TransformGizmo.ColorAxisZId) axis = Vector3.UnitZ;
-                    TransformGizmo.Instance.SetHooverAxis(axis);
+                    if (ImGui.IsItemHovered())
+                    {
+                        ImGui.SetKeyboardFocusHere();
+                        startedOnItem = true;
+                    }
+
+                    if (startedOnItem)
+                        EditorCamera.Instance.Tick();
                 }
-            }
-
-
-           
-
-
-            if(Input.IsMouseUp(Veldrid.MouseButton.Left)) TransformGizmo.Instance.EndEditing();
-        
-
-            if (ImGui.IsMouseDown(ImGuiMouseButton.Right))
-            {
-                if (ImGui.IsItemHovered())
+                else
                 {
-                    ImGui.SetKeyboardFocusHere();
-                    startedOnItem = true;
+                    startedOnItem = false;
                 }
 
-                if (startedOnItem)
-                    EditorCamera.Instance.Tick();
+                if (Input.IsKeyDown(Veldrid.Key.F1)) renderSystem.UseEditorCamera = !renderSystem.UseEditorCamera;
+
+                ImGui.EndChild();
+
+                ShowRenderPerformance();
             }
-            else
-            {
-                startedOnItem = false;
-            }
-
-            if (Input.IsKeyDown(Veldrid.Key.F1)) renderSystem.UseEditorCamera = !renderSystem.UseEditorCamera;
-
-            ImGui.EndChild();
-
-            ShowRenderPerformance();
-            ImGui.End();
+            End();
         }
 
         private void DisplayMenu()

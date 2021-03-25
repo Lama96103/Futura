@@ -27,7 +27,7 @@ namespace Futura.Engine.UserInterface
 
         public override void Tick()
         {
-            ImGui.Begin(txt_WindowName, ref isOpen);
+            Begin(txt_WindowName, ref isOpen);
 
             Vector2 windowSize = ImGui.GetWindowSize();
 
@@ -69,7 +69,7 @@ namespace Futura.Engine.UserInterface
             }           
             ImGui.EndChild();
 
-            ImGui.End();
+            End();
         }
     }
 }

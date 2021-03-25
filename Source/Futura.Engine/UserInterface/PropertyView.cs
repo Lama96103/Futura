@@ -287,7 +287,7 @@ namespace Futura.Engine.UserInterface
         public override void Tick()
         {
             ImGuiWindowFlags flags = 0;
-            ImGui.Begin(txt_WindowName, ref isOpen, flags);
+            Begin(txt_WindowName, ref isOpen, flags);
 
         
             if (entity == null && asset == null)
@@ -303,7 +303,7 @@ namespace Futura.Engine.UserInterface
                     DisplayAsset();
             }
 
-            ImGui.End();
+            End();
         }
 
   

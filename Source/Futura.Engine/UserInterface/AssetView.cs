@@ -25,7 +25,7 @@ namespace Futura.Engine.UserInterface
 
         public override void Tick()
         {
-            ImGui.Begin("Asset View##" + ID, ImGuiWindowFlags.MenuBar);
+            Begin("Asset View##" + ID, ImGuiWindowFlags.MenuBar);
             if (ImGui.BeginMenuBar())
             {
                 if (ImGui.MenuItem("Material"))
@@ -62,7 +62,7 @@ namespace Futura.Engine.UserInterface
             DisplayDirectory(rootFolder);
             Profiler.StopTimeMeasure(typeof(AssetView).FullName + ".DisplayDirectory()");
                  
-            ImGui.End();
+            End();
         }
 
         private void DisplayDirectory(Folder folder)
@@ -74,7 +74,7 @@ namespace Futura.Engine.UserInterface
 
                 foreach (Asset asset in folder.Assets)
                 {
-                    if (ImGui.Selectable(asset.Path.Name))
+                    if (ImGui.Selectable(asset.Path.Name, RuntimeHelper.Instance.SelectedAsset == asset, asset.IsDeleted ? ImGuiSelectableFlags.Disabled : ImGuiSelectableFlags.None))
                     {
                         RuntimeHelper.Instance.SelectedAsset = asset;
                     }

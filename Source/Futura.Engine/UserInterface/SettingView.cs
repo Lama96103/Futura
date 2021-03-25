@@ -44,7 +44,7 @@ namespace Futura.Engine.UserInterface
                 flags = ImGuiWindowFlags.UnsavedDocument;
 
             SetInitalWindowSize(350, 200);
-            ImGui.Begin(txt_WindowName, ref isOpen, flags);
+            Begin(txt_WindowName, ref isOpen, flags);
             List<object> settingCategories = settingsController.GetAll();
 
             ImGui.Columns(2);
@@ -97,7 +97,7 @@ namespace Futura.Engine.UserInterface
 
 
             ImGui.EndChild();
-            ImGui.End();
+            End();
         }
     }
 }

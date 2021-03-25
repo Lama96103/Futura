@@ -21,8 +21,9 @@ namespace Futura.Engine.Resources
     {
         public Guid Identifier { get; init; }
         public AssetType AssetType { get; init; }
-        public FileInfo Path { get; init; }
+        public FileInfo Path { get; internal set; }
         public abstract bool IsLoaded { get; }
+        public bool IsDeleted { get; internal set; } = false;
         public bool HasAssetChanged { get; set; } = false;
 
         internal Asset(Guid identifier, AssetType type, FileInfo path)
@@ -37,5 +38,6 @@ namespace Futura.Engine.Resources
 
         public abstract void Load();
         public abstract void Unload();
+
     }
 }

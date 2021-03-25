@@ -22,6 +22,10 @@ namespace Futura.Engine.Resources
 
         private Settings.AssetSettings assetSettings;
 
+        private FileSystemWatcher fileSystemWatcher;
+        private Asset lastDeletedAsset = null;
+
+
         internal void Init(DirectoryInfo rootDirectory)
         {
             this.RootDirectory = rootDirectory;
@@ -33,6 +37,15 @@ namespace Futura.Engine.Resources
 
             assetSettings = Core.Runtime.Instance.Settings.Get<Settings.AssetSettings>();
             CheckFolderForAssets(this.RootDirectory);
+
+            fileSystemWatcher = new FileSystemWatcher(RootDirectory.FullName);
+            fileSystemWatcher.EnableRaisingEvents = true;
+            fileSystemWatcher.IncludeSubdirectories = true;
+
+            fileSystemWatcher.Changed += FileSystemWatcher_Changed;
+            fileSystemWatcher.Created += FileSystemWatcher_Created;
+            fileSystemWatcher.Deleted += FileSystemWatcher_Deleted;
+            fileSystemWatcher.Renamed += FileSystemWatcher_Renamed;
         }
 
         /// <summary>
@@ -231,6 +244,114 @@ namespace Futura.Engine.Resources
             }
         }
 
+        private void FileSystemWatcher_Renamed(object sender, RenamedEventArgs e)
+        {
+            if (!CheckFileType(e.FullPath))
+            {
+                // A directory is renamed
+                RenameDirectory(new DirectoryInfo(e.OldFullPath), new DirectoryInfo(e.FullPath));
+            }
+            else
+            {
+                // A file is renamed
+                Asset asset = GetAssetByPath(e.OldFullPath);
+                asset.Path = new FileInfo(e.FullPath);
+
+                string metaFile = e.OldFullPath + MetaFileExtension;
+                File.Copy(metaFile, e.FullPath + MetaFileExtension);
+                File.Delete(metaFile);
+
+                Log.Debug($"Asset {e.OldFullPath} was renamed to {e.FullPath}");
+            }
+           
+        }
+
+        private void FileSystemWatcher_Deleted(object sender, FileSystemEventArgs e)
+        {
+            if (!CheckFileType(e.FullPath)) return;
+
+            lastDeletedAsset = GetAssetByPath(e.FullPath);
+            lastDeletedAsset.IsDeleted = true;
+            File.Delete(e.FullPath + MetaFileExtension);
+            Log.Debug($"Asset {e.FullPath} was deleted");
+        }
+
+        private void FileSystemWatcher_Created(object sender, FileSystemEventArgs e)
+        {
+            if (!CheckFileType(e.FullPath)) return;
+
+            if(lastDeletedAsset != null)
+            {
+                string lastFileName = Path.GetFileName(lastDeletedAsset.Path.FullName);
+                string newFileName = Path.GetFileName(e.FullPath);
+                if(lastFileName == newFileName)
+                {
+                    lastDeletedAsset.Path = new FileInfo(e.FullPath);
+                    lastDeletedAsset.IsDeleted = false;
+                    Save(lastDeletedAsset);
+                    Log.Debug($"Asset {e.FullPath} was moved");
+                    return;
+                }
+            }
+
+            ImportAsset(new FileInfo(e.FullPath), Guid.NewGuid());
+            Log.Debug($"Asset {e.FullPath} was created");
+        }
+
+        private void FileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            if (!CheckFileType(e.FullPath)) return;
+            Asset asset = GetAssetByPath(e.FullPath);
+            if(asset != null)
+            {
+                asset.Unload();
+                ImportAsset(new FileInfo(e.FullPath), asset.Identifier);
+                Log.Debug($"Asset {e.FullPath} was changed");
+            }
+        }
+
+        private void RenameDirectory(DirectoryInfo oldName, DirectoryInfo newName)
+        {
+            foreach(Asset a in loadedAssets.Values)
+            {
+                if (a.Path.FullName.Contains(oldName.FullName))
+                {
+                    string oldFilePath = a.Path.FullName;
+                    oldFilePath = oldFilePath.Remove(0, oldName.FullName.Length);
+                    string newFilePath = newName.FullName + oldFilePath;
+                    a.Path = new FileInfo(newFilePath);
+                }
+            }
+
+
+        }
+
+        private Asset GetAssetByPath(string path)
+        {
+            foreach (var a in loadedAssets) if (a.Value.Path.FullName == path) return a.Value;
+            return null;
+        }
+
+        private bool CheckFileType(string path)
+        {
+            string[] split = path.Split('.');
+
+            if(split.Length > 1)
+            {
+                string ext = "." + split.Last();
+
+                foreach (Importer i in importers)
+                {
+                    if (i.SupportedExtensions.Contains(ext))
+                    {
+                        return true;
+                    }
+                }
+
+                if (ext == AssetFileExtension) return true;
+            }
+            return false;
+        }
 
     }
 }

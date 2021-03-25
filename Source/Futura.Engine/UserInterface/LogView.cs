@@ -44,7 +44,7 @@ namespace Futura.Engine.UserInterface
         public override void Tick()
         {
             SetInitalWindowSize(200, 100);
-            ImGui.Begin(txt_WindowName, ref isOpen);
+            Begin(txt_WindowName, ref isOpen);
 
             if (ImGui.Checkbox("Error", ref ShowError)) { }
             ImGui.SameLine();
@@ -92,7 +92,7 @@ namespace Futura.Engine.UserInterface
 
             ImGui.EndChild();
 
-            ImGui.End();
+            End();
         }
 
         public override void OnDestroy()
