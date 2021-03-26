@@ -24,6 +24,7 @@ namespace Futura.Engine.Core
         private EcsFilter cameraFilter;
         private EcsFilter directionalLightFilter;
         private EcsFilter pointLightFilter;
+        private EcsFilter boxCollider;
 
         private CommandList diffuseCommandList;
         private CommandList uiCommandList;
@@ -45,6 +46,7 @@ namespace Futura.Engine.Core
             cameraFilter = world.CreateFilter<Transform, Camera>();
             pointLightFilter = world.CreateFilter<Transform, ECS.Components.Lights.PointLight>();
             directionalLightFilter = world.CreateFilter<Transform, ECS.Components.Lights.DirectionalLight>();
+            boxCollider = world.CreateFilter<Transform, Physics.ECS.BoxCollider>();
 
             diffuseCommandList = renderAPI.GenerateCommandList();
             uiCommandList = renderAPI.GenerateCommandList();
@@ -88,6 +90,7 @@ namespace Futura.Engine.Core
                 cameraFilter = world.CreateFilter<Transform, Camera>();
                 directionalLightFilter = world.CreateFilter<Transform, ECS.Components.Lights.DirectionalLight>();
                 pointLightFilter = world.CreateFilter<Transform, ECS.Components.Lights.PointLight>();
+                boxCollider = world.CreateFilter<Transform, Physics.ECS.BoxCollider>();
             }
 
             Profiler.StartTimeMeasure(typeof(RenderSystem).FullName + ".MainPass()");

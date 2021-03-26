@@ -1,6 +1,7 @@
 ﻿using Futura.Engine.ECS;
 using Futura.Engine.ECS.Components;
 using Futura.Engine.ECS.Components.Lights;
+using Futura.Engine.Physics.ECS;
 using Futura.Engine.Rendering;
 using Futura.Engine.Rendering.Gizmo;
 using Futura.Engine.Settings;
@@ -142,7 +143,7 @@ namespace Futura.Engine.Core
             {
                 Transform transform = reference.GetComponent<Transform>();
                 MeshFilter filter = reference.GetComponent<MeshFilter>();
-                RuntimeComponent runtime = reference.Entity.GetComponent<RuntimeComponent>();
+                RuntimeComponent runtime = reference.Entity.Get<RuntimeComponent>();
 
                 if (runtime.IsEnabled)
                 {
@@ -189,7 +190,7 @@ namespace Futura.Engine.Core
                 {
                     Transform transform = reference.GetComponent<Transform>();
                     PointLight light = reference.GetComponent<PointLight>();
-                    RuntimeComponent runtime = reference.Entity.GetComponent<RuntimeComponent>();
+                    RuntimeComponent runtime = reference.Entity.Get<RuntimeComponent>();
 
                     if (runtime.IsEnabled && runtime.IsSelected)
                     {
@@ -211,7 +212,7 @@ namespace Futura.Engine.Core
                 {
                     Transform transform = reference.GetComponent<Transform>();
                     MeshFilter filter = reference.GetComponent<MeshFilter>();
-                    RuntimeComponent runtime = reference.Entity.GetComponent<RuntimeComponent>();
+                    RuntimeComponent runtime = reference.Entity.Get<RuntimeComponent>();
 
                     if (runtime.IsEnabled && (runtime.IsSelected || !renderSettings.ShowOnlySelectedMeshBoundsGizmo))
                     {
@@ -236,7 +237,29 @@ namespace Futura.Engine.Core
                     }
                 }
             }
-            
+
+            if (renderSettings.ShowCollisionBounds)
+            {
+                foreach (var reference in boxCollider.Entities)
+                {
+                    Transform transform = reference.GetComponent<Transform>();
+                    BoxCollider collider = reference.GetComponent<BoxCollider>();
+                    RuntimeComponent runtime = reference.Entity.Get<RuntimeComponent>();
+
+                    if (runtime.IsEnabled)
+                    {
+                        ModelBuffer model = new ModelBuffer()
+                        {
+                            Transform = Transform.CalculateModelMatrix(transform.Position, transform.Rotation, collider.Size),
+                            DiffuseColor = renderSettings.CollisionBounds.RawData,
+                            IsLightingEnabled = 0.0f
+                        };
+                        commandList.UpdateBuffer(modelBuffer, 0, model);
+                        debugBox.Draw(commandList);
+                    }
+                }
+            }
+
 
             commandList.PopDebugGroup();
         }

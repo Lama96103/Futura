@@ -54,7 +54,7 @@ namespace Futura.Engine.UserInterface
         private void DisplayEntity()
         {
             // Header of the panel
-            RuntimeComponent baseComponent = entity.GetComponent<RuntimeComponent>();
+            RuntimeComponent baseComponent = entity.Get<RuntimeComponent>();
 
             string name = baseComponent.Name;
             bool enabled = baseComponent.IsEnabled;
@@ -129,7 +129,7 @@ namespace Futura.Engine.UserInterface
 
             if (ImGui.BeginPopup("ComponentSelector"))
             {
-                var components = AppDomain.CurrentDomain.GetAssemblies().SelectMany(t => t.GetTypes()).Where(t => t.IsClass && t.GetInterface(typeof(IComponent).FullName) != null);
+                var components = AppDomain.CurrentDomain.GetAssemblies().SelectMany(t => t.GetTypes()).Where(t => t.IsClass && t.GetInterface(typeof(IComponent).FullName) != null && t.IsAbstract == false);
 
 
                 int id = 0;

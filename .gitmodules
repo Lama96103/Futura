@@ -1,0 +1,3 @@
+[submodule "Source/External/bepuphysics2"]
+	path = Source/External/bepuphysics2
+	url = https://github.com/bepu/bepuphysics2.git

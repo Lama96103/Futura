@@ -81,7 +81,7 @@ namespace Futura.Engine.Rendering.Gizmo
             float deltaZ = deltaXYZ * Math.Sign(delta.Z) * speed;
 
 
-            currentSelectedEntity.GetComponent<Transform>().Translate(new Vector3(deltaX, deltaY, deltaZ) * currentEditAxis);
+            currentSelectedEntity.Get<Transform>().Translate(new Vector3(deltaX, deltaY, deltaZ) * currentEditAxis);
 
             lastPos = currentPos;
         }

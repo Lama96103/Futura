@@ -44,6 +44,7 @@ namespace Futura.Engine.Core
             Context.RegisterSubSystem<InputSystem>();
             Context.RegisterSubSystem<WorldSystem>();
             Context.RegisterSubSystem<RenderSystem>();
+            Context.RegisterSubSystem<Physics.PhysicsController>(Context.TickType.Smoothed);
 
             Context.Init();
 

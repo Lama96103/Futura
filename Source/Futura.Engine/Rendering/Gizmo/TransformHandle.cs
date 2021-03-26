@@ -20,7 +20,7 @@ namespace Futura.Engine.Rendering.Gizmo
 
         public void Tick(CommandList commandList, Entity entity, Veldrid.DeviceBuffer modelBuffer, Vector3 cameraPos, Vector3 hooverAxis)
         {
-            Transform transform = entity.GetComponent<Transform>();
+            Transform transform = entity.Get<Transform>();
 
 
             float distanceToCamera = Vector3.Distance(transform.Position, cameraPos);

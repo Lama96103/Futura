@@ -43,6 +43,7 @@ namespace Futura.Engine.Core
 
         internal void Tick(TickType tickType, double deltaTime)
         {
+            if (deltaTime <= 0) deltaTime = 0.0001f;
             foreach(SubSystem sub in subSystems)
             {
                 if (sub.TickType != tickType) continue;

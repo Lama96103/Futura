@@ -30,9 +30,9 @@ namespace Futura.Engine.Core
             set
             {
                 if (SelectedAsset != null) SelectedAsset = null;
-                if (selectedEntity != null) selectedEntity.GetComponent<RuntimeComponent>().IsSelected = false;
+                if (selectedEntity != null) selectedEntity.Get<RuntimeComponent>().IsSelected = false;
                 selectedEntity = value;
-                if (selectedEntity != null) selectedEntity.GetComponent<RuntimeComponent>().IsSelected = true;
+                if (selectedEntity != null) selectedEntity.Get<RuntimeComponent>().IsSelected = true;
                 EntitySelectionChanged?.Invoke(this, new EntitySelectionChangedEventArgs(selectedEntity));
             }
         }

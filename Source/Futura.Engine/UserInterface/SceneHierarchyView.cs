@@ -32,7 +32,7 @@ namespace Futura.Engine.UserInterface
                 if (ImGui.MenuItem("Create Entity"))
                 {
                     var entity = world.CreateEntity();
-                    entity.GetComponent<Transform>();
+                    entity.Get<Transform>();
                     RuntimeHelper.Instance.HasSceneChanged = true;
                 }
                 ImGui.EndMenuBar();
@@ -40,7 +40,7 @@ namespace Futura.Engine.UserInterface
 
             foreach (Entity entity in world.Entities)
             {
-                RuntimeComponent comp = entity.GetComponent<RuntimeComponent>();
+                RuntimeComponent comp = entity.Get<RuntimeComponent>();
 
                 if (ImGui.Selectable(comp.Name + "##" + entity.ID.ToString(), entity == RuntimeHelper.Instance.SelectedEntity))
                 {

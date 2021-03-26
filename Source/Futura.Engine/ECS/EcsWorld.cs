@@ -74,7 +74,7 @@ namespace Futura.Engine.ECS
         #endregion
 
         #region Component Handling
-        internal T GetComponent<T> (Entity entity) where T : class, IComponent
+        internal T Get<T> (Entity entity) where T : class, IComponent
         {
             if (!entity.IsValid) throw new EntityNotValidException();
             lock (@lock)
@@ -82,6 +82,26 @@ namespace Futura.Engine.ECS
                 ComponentManager<T> pool = GetPool<T>();
                 T component = pool.Get(entity);
                 return component;
+            }
+        }
+        internal T GetComponent<T>(Entity entity) where T : class, IComponent
+        {
+            if (!entity.IsValid) throw new EntityNotValidException();
+            lock (@lock)
+            {
+                ComponentManager<T> pool = GetPool<T>();
+                T component = pool.GetComponent(entity);
+                return component;
+            }
+        }
+        internal bool HasComponent<T>(Entity entity) where T : class, IComponent
+        {
+            if (!entity.IsValid) throw new EntityNotValidException();
+            lock (@lock)
+            {
+                ComponentManager<T> pool = GetPool<T>();
+                T component = pool.GetComponent(entity);
+                return component != null;
             }
         }
         internal void RemoveComponent<T> (Entity entity) where T : class, IComponent

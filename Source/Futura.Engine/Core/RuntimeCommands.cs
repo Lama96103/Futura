@@ -34,7 +34,11 @@ namespace Futura.Engine.Core
                 else
                 {
                     if (State == RuntimeState.Editor)
+                    {
                         worldSystem.Load(worldSystem.CurrentSceneFile);
+                        RuntimeHelper.Instance.SelectedEntity = null;
+                        RuntimeHelper.Instance.SelectedAsset = null;
+                    }
                 }
 
                 context.GetSubSystem<RenderSystem>().UseEditorCamera = State != RuntimeState.Playing;

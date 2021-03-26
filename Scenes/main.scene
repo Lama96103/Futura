@@ -1,6 +1,6 @@
 {
   "$type": "Futura.Engine.ECS.EcsWorld, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-  "entityIndex": 7,
+  "entityIndex": 8,
   "ComponentManagers": {
     "$type": "System.Collections.Generic.List`1[[Futura.Engine.ECS.IComponentManager, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
     "$values": [
@@ -35,9 +35,9 @@
             "$type": "Futura.Engine.ECS.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Position": {
               "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 0.0,
-              "Y": 0.0,
-              "Z": 0.0
+              "X": 51.95778,
+              "Y": 2.0,
+              "Z": -10.197734
             },
             "Rotation": {
               "$type": "System.Numerics.Quaternion, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
@@ -58,8 +58,8 @@
             "$type": "Futura.Engine.ECS.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Position": {
               "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 10.0,
-              "Y": 0.5,
+              "X": 0.0,
+              "Y": 5.398879,
               "Z": 0.0
             },
             "Rotation": {
@@ -138,6 +138,29 @@
               "Z": -0.14097475,
               "W": 0.6929113,
               "IsIdentity": false
+            },
+            "Scale": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 1.0,
+              "Y": 1.0,
+              "Z": 1.0
+            }
+          },
+          "8": {
+            "$type": "Futura.Engine.ECS.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Position": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 0.0,
+              "Y": 3.8991551,
+              "Z": 0.0
+            },
+            "Rotation": {
+              "$type": "System.Numerics.Quaternion, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 0.0,
+              "W": 1.0,
+              "IsIdentity": true
             },
             "Scale": {
               "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
@@ -254,7 +277,7 @@
           },
           "4": {
             "$type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Name": "Block",
+            "Name": "Cylinder",
             "IsEnabled": true,
             "EntityTags": 0
           },
@@ -273,6 +296,12 @@
           "7": {
             "$type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Name": "Sun",
+            "IsEnabled": true,
+            "EntityTags": 0
+          },
+          "8": {
+            "$type": "Futura.Engine.ECS.RuntimeComponent, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Name": "Sphere",
             "IsEnabled": true,
             "EntityTags": 0
           }
@@ -375,6 +404,62 @@
           }
         },
         "Type": "Futura.Engine.ECS.Components.Lights.PointLight, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "$type": "Futura.Engine.ECS.ComponentManager`1[[Futura.Engine.Physics.ECS.BoxCollider, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "componentData": {
+          "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Futura.Engine.Physics.ECS.BoxCollider, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+          "3": {
+            "$type": "Futura.Engine.Physics.ECS.BoxCollider, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Size": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 1.0,
+              "Y": 1.0,
+              "Z": 1.0
+            }
+          },
+          "4": {
+            "$type": "Futura.Engine.Physics.ECS.BoxCollider, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Size": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 1.0,
+              "Y": 1.0,
+              "Z": 1.0
+            }
+          },
+          "1": {
+            "$type": "Futura.Engine.Physics.ECS.BoxCollider, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Size": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 100.0,
+              "Y": 1.0,
+              "Z": 100.0
+            }
+          }
+        },
+        "Type": "Futura.Engine.Physics.ECS.BoxCollider, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "$type": "Futura.Engine.ECS.ComponentManager`1[[Futura.Engine.Physics.ECS.Rigidbody, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "componentData": {
+          "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Futura.Engine.Physics.ECS.Rigidbody, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+          "3": {
+            "$type": "Futura.Engine.Physics.ECS.Rigidbody, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Mass": 1.0
+          }
+        },
+        "Type": "Futura.Engine.Physics.ECS.Rigidbody, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "$type": "Futura.Engine.ECS.ComponentManager`1[[Futura.Engine.Physics.ECS.SphereCollider, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "componentData": {
+          "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Futura.Engine.Physics.ECS.SphereCollider, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+          "8": {
+            "$type": "Futura.Engine.Physics.ECS.SphereCollider, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Radius": 1.0
+          }
+        },
+        "Type": "Futura.Engine.Physics.ECS.SphereCollider, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       }
     ]
   },
@@ -404,6 +489,10 @@
       {
         "$type": "Futura.Engine.ECS.Entity, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
         "ID": 7
+      },
+      {
+        "$type": "Futura.Engine.ECS.Entity, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "ID": 8
       }
     ]
   }

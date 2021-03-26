@@ -33,9 +33,24 @@ namespace Futura.Engine.ECS
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
+        public T Get<T>() where T : class, IComponent
+        {
+            return world.Get<T>(this);
+        }
+
+        /// <summary>
+        /// Gets the component. If it doesn't exist it will return null
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public T GetComponent<T>() where T : class, IComponent
         {
             return world.GetComponent<T>(this);
+        }
+
+        public bool HasComponent<T>() where T : class, IComponent
+        {
+            return world.HasComponent<T>(this);
         }
 
         public void AddComponent(Type t)
