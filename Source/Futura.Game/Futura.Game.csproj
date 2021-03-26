@@ -24,11 +24,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Futura.Engine\Futura.Engine.csproj" />
+    <Compile Remove="Components\**" />
+    <EmbeddedResource Remove="Components\**" />
+    <None Remove="Components\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\" />
+    <ProjectReference Include="..\Futura.Engine\Futura.Engine.csproj" />
   </ItemGroup>
 
 </Project>
