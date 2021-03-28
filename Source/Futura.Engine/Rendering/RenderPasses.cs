@@ -29,6 +29,8 @@ namespace Futura.Engine.Core
         private LightingSettings lightingSettings;
         public RenderSettings renderSettings;
 
+        
+
         private void MainPass()
         {
             diffuseCommandList.Begin();
@@ -37,6 +39,12 @@ namespace Futura.Engine.Core
             renderSettings = Runtime.Instance.Settings.Get<RenderSettings>();
 
             bool isRendering = UpdateWorldBuffer(diffuseCommandList);
+
+            if (directionalLightFilter.Entities.Count() == 1)
+            {
+                ShadowPass(diffuseCommandList, directionalLightFilter.Entities.ElementAt(0));
+            }
+
 
             if (isRendering)
             {
@@ -47,6 +55,42 @@ namespace Futura.Engine.Core
 
             diffuseCommandList.End();
             renderAPI.SubmitCommands(diffuseCommandList);
+        }
+
+        private void ShadowPass(CommandList commandList, EcsFilter.EntityReference light)
+        {
+            commandList.PushDebugGroup("Pass_ShadowPass");
+
+
+            commandList.SetPipeline(directionalLightShadowmapPipeline);
+            commandList.SetFramebuffer(directionalLightShadowmapBuffer.Handle);
+            commandList.SetGraphicsResourceSet(0, worldSet);
+            commandList.SetGraphicsResourceSet(1, modelSet);
+
+            commandList.ClearDepthStencil(RenderAPI.Instance.IsDepthRangeZeroToOne ? 1 : -1, 0);
+
+
+            foreach (var reference in entityFilter.Entities)
+            {
+                Transform transform = reference.GetComponent<Transform>();
+                MeshFilter filter = reference.GetComponent<MeshFilter>();
+                RuntimeComponent runtime = reference.Entity.Get<RuntimeComponent>();
+
+                if (runtime.IsEnabled)
+                {
+                    if (filter.Mesh == null || filter.Material == null) continue;
+                    if (filter.Mesh.IsLoaded == false) continue;
+
+                    ModelBuffer model = new ModelBuffer()
+                    {
+                        Transform = transform.LocalMatrix
+                    };
+                    commandList.UpdateBuffer(modelBuffer, 0, model);
+                    filter.Mesh.Renderable.Draw(commandList);
+                }
+            }
+
+            commandList.PopDebugGroup();
         }
 
         private bool UpdateWorldBuffer(CommandList commandList)
@@ -81,7 +125,6 @@ namespace Futura.Engine.Core
 
             cameraPos = cameraTransform.Position;
 
-            commandList.UpdateBuffer(worldBuffer, 0, world);
 
             // Update DirectionLight Information
             LightingBuffer light = new LightingBuffer();
@@ -92,9 +135,18 @@ namespace Futura.Engine.Core
                 light.DirectionalLightColor = dirLight.GetComponent<DirectionalLight>().Color.ToVector3();
                 light.DirectionalLightIntensitiy = dirLight.GetComponent<DirectionalLight>().Intensity;
                 light.DirectionalLightDirection = dirLight.GetComponent<Transform>().Rotation.ToEulerAngles();
+
+                Transform lightTransform = dirLight.GetComponent<Transform>();
+                Matrix4x4 projection = Matrix4x4.CreateOrthographicOffCenter(-10.0f, 10.0f, -10.0f, 10.0f, 1.0f, 100);
+                //Vector3 lookAt = lightTransform.Position + lightTransform.Rotation.ToEulerAngles();
+                Vector3 lookAt = Vector3.Zero;
+                Matrix4x4 view = Matrix4x4.CreateLookAt(new Vector3(10, 10, 10), lookAt, Vector3.UnitY);
+                world.ProjectionViewDirectionalLight = view * projection;
             }
             light.AmbientLightIntensity = lightingSettings.AmbientLightIntensity;
 
+            
+            commandList.UpdateBuffer(worldBuffer, 0, world);
             commandList.UpdateBuffer(lightingBuffer, 0, light);
 
             /// Update PointLight Information;

@@ -36,6 +36,8 @@
   <ItemGroup>
     <None Remove="Rendering\Resources\DebugShader\DebugShader.frag.spv" />
     <None Remove="Rendering\Resources\DebugShader\DebugShader.vert.spv" />
+    <None Remove="Rendering\Resources\DepthShader\Depth.frag.spv" />
+    <None Remove="Rendering\Resources\DepthShader\Depth.vert.spv" />
     <None Remove="Rendering\Resources\Diffuse\Diffuse.frag.spv" />
     <None Remove="Rendering\Resources\Diffuse\Diffuse.vert.spv" />
     <None Remove="Rendering\Resources\ImGui\ImGui.frag.spv" />
@@ -45,6 +47,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Rendering\Resources\DebugShader\DebugShader.frag.spv" />
     <EmbeddedResource Include="Rendering\Resources\DebugShader\DebugShader.vert.spv" />
+    <EmbeddedResource Include="Rendering\Resources\DepthShader\Depth.frag.spv" />
+    <EmbeddedResource Include="Rendering\Resources\DepthShader\Depth.vert.spv" />
     <EmbeddedResource Include="Rendering\Resources\Diffuse\Diffuse.frag.spv" />
     <EmbeddedResource Include="Rendering\Resources\Diffuse\Diffuse.vert.spv" />
     <EmbeddedResource Include="Rendering\Resources\ImGui\ImGui.frag.spv" />

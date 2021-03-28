@@ -14,6 +14,7 @@ namespace Futura.Engine.Rendering
         public Matrix4x4 Projection;
         public Matrix4x4 View;
         public Matrix4x4 ProjectionView;
+        public Matrix4x4 ProjectionViewDirectionalLight;
 
         public Vector3 CameraPosition;
         public float CameraNear;

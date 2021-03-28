@@ -17,9 +17,12 @@ namespace Futura.Rendering.Resources
 
         public static readonly byte[] DebugVertex = Helper.GetEmbeddedRessource("Futura.Engine.Rendering.Resources.DebugShader.DebugShader.vert.spv");
         public static readonly byte[] DebugFragment = Helper.GetEmbeddedRessource("Futura.Engine.Rendering.Resources.DebugShader.DebugShader.frag.spv");
+
+        public static readonly byte[] DepthVertex = Helper.GetEmbeddedRessource("Futura.Engine.Rendering.Resources.DepthShader.Depth.vert.spv");
+        public static readonly byte[] DepthFragment = Helper.GetEmbeddedRessource("Futura.Engine.Rendering.Resources.DepthShader.Depth.frag.spv");
         #endregion
 
- 
+
 
         #region Built-In Texture
 

@@ -7,10 +7,6 @@ layout(location = 0) in vec3 vertexPosition;
 layout(location = 1) in vec3 vertexNormal;
 layout(location = 2) in vec2 vertexUV;
 
-layout(location = 0) out vec3 FragPos;
-layout(location = 1) out vec3 Normal;
-layout(location = 2) out vec2 UV;
-layout(location = 3) out vec4 FragPosLightSpace;
 
 out gl_PerVertex 
 {
@@ -41,9 +37,5 @@ layout(set = 1, binding = 0) uniform ModelBuffer
 
 void main() 
 {
-    Normal = mat3(transpose(inverse(modelTransform))) * vertexNormal;
-    FragPos = vec3(modelTransform * vec4(vertexPosition, 1.0));
-    gl_Position = worldProjectionView * modelTransform * vec4(vertexPosition, 1.0);
-    UV = vertexUV;
-    FragPosLightSpace = directionalLightProjectionView * vec4(FragPos, 1.0);
+    gl_Position = directionalLightProjectionView * modelTransform * vec4(vertexPosition, 1.0);
 }

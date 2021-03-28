@@ -38,11 +38,18 @@ namespace Futura.Engine.Core
         private Renderable debugSphere;
         private Renderable debugBox;
 
+
+        private Texture2D directionalLightShadowmap;
+        private Rendering.Framebuffer directionalLightShadowmapBuffer;
+        private Pipeline directionalLightShadowmapPipeline;
+
+
         private void Load()
         {
             ResourceFactory factory = renderAPI.Factory;
 
             RecreateRenderResources(1920, 1080);
+            LoadDirectionalLightShadowmap();
 
             worldBuffer = factory.CreateBuffer(new BufferDescription((uint)Unsafe.SizeOf<WorldBuffer>(), BufferUsage.UniformBuffer | BufferUsage.Dynamic));
             worldBuffer.Name = "WorldBuffer";
@@ -57,6 +64,7 @@ namespace Futura.Engine.Core
             pointLightBuffer.Name = "PointLightBuffer";
 
             Sampler pointSampler = renderAPI.GraphicAPI.PointSampler;
+            Sampler shadowmapSampler = renderAPI.GraphicAPI.PointSampler;
 
             ResourceLayout worldLayout = deviceResourceCache.GetLayout(ref deviceResourceCache.WorldLayout);
             ResourceLayout modelLayout = deviceResourceCache.GetLayout(ref deviceResourceCache.ModelLayout);
@@ -69,7 +77,10 @@ namespace Futura.Engine.Core
             ResourceSetDescription modelSetDescription = new ResourceSetDescription(modelLayout, modelBuffer);
             modelSet = deviceResourceCache.GetSet(ref modelSetDescription);
 
-            ResourceSetDescription lightingSetDescription = new ResourceSetDescription(lightingLayout, lightingBuffer, pointLightBuffer);
+            TextureView view = factory.CreateTextureView(directionalLightShadowmap.Handle);
+            view.Name = directionalLightShadowmap.Handle.Name + "_View";
+
+            ResourceSetDescription lightingSetDescription = new ResourceSetDescription(lightingLayout, lightingBuffer, pointLightBuffer, shadowmapSampler, view);
             lightingSet = deviceResourceCache.GetSet(ref lightingSetDescription);
 
             Rendering.Shader diffuseShader = new Rendering.Shader();
@@ -117,6 +128,31 @@ namespace Futura.Engine.Core
             transformGizmo.Init(factory);
 
             LoadDebugRenderables();
+            
+        }
+
+        private void LoadDirectionalLightShadowmap()
+        {
+            directionalLightShadowmap = Texture2D.Create(renderAPI.Factory, 1024, 1024, PixelFormat.D32_Float_S8_UInt, 1, TextureUsage.DepthStencil | TextureUsage.Sampled, "DirectionalLight_Shadowmap");
+            directionalLightShadowmapBuffer = new Rendering.Framebuffer(1024, 1024);
+            directionalLightShadowmapBuffer.Load(renderAPI.Factory, directionalLightShadowmap);
+
+            Rendering.Shader shader = new Rendering.Shader();
+            shader.Compile(renderAPI.Factory, Futura.Rendering.Resources.EditorAssets.DepthVertex, Futura.Rendering.Resources.EditorAssets.DepthFragment, true);
+
+            GraphicsPipelineDescription pipelineDescription = new GraphicsPipelineDescription
+            (
+                BlendStateDescription.SingleAlphaBlend,
+                DepthStencilStateDescription.DepthOnlyLessEqual,
+                new RasterizerStateDescription(FaceCullMode.Back, PolygonFillMode.Solid, FrontFace.CounterClockwise, true, false),
+                PrimitiveTopology.TriangleList,
+                new ShaderSetDescription(new VertexLayoutDescription[] { Vertex.GetLayoutDescription() }, shader.Handles),
+                new ResourceLayout[] { deviceResourceCache.GetLayout(ref deviceResourceCache.WorldLayout), deviceResourceCache.GetLayout(ref deviceResourceCache.ModelLayout) },
+                directionalLightShadowmapBuffer.Handle.OutputDescription
+            );
+
+            directionalLightShadowmapPipeline = deviceResourceCache.GetPipline(ref pipelineDescription);
+
         }
 
         private void LoadDebugRenderables()

@@ -81,8 +81,8 @@
             "$type": "Futura.Engine.ECS.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Position": {
               "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": -10.0,
-              "Y": 0.44185328,
+              "X": 0.0,
+              "Y": 1.4639385,
               "Z": 0.0
             },
             "Rotation": {

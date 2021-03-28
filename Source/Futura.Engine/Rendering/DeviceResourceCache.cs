@@ -18,7 +18,10 @@ namespace Futura.Engine.Rendering
 
         public ResourceLayoutDescription LightingLayout = new ResourceLayoutDescription(
             new ResourceLayoutElementDescription("LightingBuffer", ResourceKind.UniformBuffer, ShaderStages.Fragment),
-            new ResourceLayoutElementDescription("PointLightBuffer", ResourceKind.UniformBuffer, ShaderStages.Vertex | ShaderStages.Fragment));
+            new ResourceLayoutElementDescription("PointLightBuffer", ResourceKind.UniformBuffer, ShaderStages.Vertex | ShaderStages.Fragment),
+            new ResourceLayoutElementDescription("ShadowmapSampler", ResourceKind.Sampler, ShaderStages.Fragment),
+            new ResourceLayoutElementDescription("DirectionalShadowmap", ResourceKind.TextureReadOnly, ShaderStages.Fragment));
+
         #endregion
 
         private ResourceFactory factory;

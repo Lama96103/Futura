@@ -50,6 +50,16 @@ namespace Futura.Engine.Rendering
             Handle = factory.CreateFramebuffer(new FramebufferDescription(DepthTexture.Handle, handles));
         }
 
+        internal void Load(ResourceFactory factory, Texture2D depthTarget)
+        {
+            ColorTextures = new Texture2D[0];
+            DepthTexture = depthTarget;
+
+
+
+            Handle = factory.CreateFramebuffer(new FramebufferDescription(depthTarget.Handle));
+        }
+
         internal void Unload()
         {
             foreach (Texture2D colorTexture in ColorTextures) colorTexture.Unload();

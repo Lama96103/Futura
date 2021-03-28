@@ -28,6 +28,7 @@ struct PointLightsInfo
 layout(location = 0) in vec3 vertexPosition;
 layout(location = 1) in vec3 vertexNormal;
 layout(location = 2) in vec2 vertexUV;
+layout(location = 3) in vec4 directionalLightSpace;
 
 layout(location = 0) out vec4 FragmentColor;
 layout(location = 1) out vec4 SelectionColor;
@@ -42,6 +43,7 @@ layout(set = 0, binding = 0) uniform WorldBuffer
     mat4 worldProjection;
     mat4 worldView;
     mat4 worldProjectionView;
+	mat4 directionalLightProjectionView;
 
     vec3 worldCameraPosition;
 	float worldCameraNear;
@@ -72,9 +74,9 @@ layout(set = 2, binding = 1) uniform PointLightBuffer
 {
 	PointLightsInfo pointLightsInfo;
 };
+layout(set = 2, binding = 2) uniform sampler ShadowmapSampler;
+layout(set = 2, binding = 3) uniform texture2D DirectionalShadowmap;
 // -------------------------------- Uniforms END
-
-
 
 
 
@@ -89,6 +91,22 @@ vec3 CalculateDirectionalLight(vec3 normal, vec3 lightDir)
 vec3 CalculateAmbientLight()
 {
 	return directionalLightColor * ambientLightIntensity;
+}
+
+float ShadowCalculation(vec4 fragPosLightSpace)
+{
+	 // perform perspective divide
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(sampler2D(DirectionalShadowmap, ShadowmapSampler), projCoords.xy).r; 
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+	// check whether current frag pos is in shadow
+    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+
+    return shadow;
 }
 
 
@@ -114,7 +132,12 @@ void main()
 			pointDiffuse += (intensity * vec4(pli.Color, 1)) * pli.Intensity;
 		}
 
-		FragmentColor = (vec4((ambient + directional), 1.0) + pointDiffuse) * modelDiffuseColor;
+		float shadow = ShadowCalculation(directionalLightSpace);
+
+		vec3 lightingIntensitiy = ambient;
+		lightingIntensitiy = lightingIntensitiy + (1.0 - shadow) * vec3(1.0);
+
+		FragmentColor = (vec4(lightingIntensitiy, 1.0) + pointDiffuse) * modelDiffuseColor;
 	}
 	else
 	{
