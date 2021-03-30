@@ -302,7 +302,7 @@ namespace Futura.Engine.Core
                     {
                         ModelBuffer model = new ModelBuffer()
                         {
-                            Transform = Transform.CalculateModelMatrix(transform.Position, transform.Rotation, collider.Size),
+                            Transform = Transform.CalculateModelMatrix(transform.Position + collider.Offset, transform.Rotation, collider.Size),
                             DiffuseColor = renderSettings.CollisionBounds.RawData,
                             IsLightingEnabled = 0.0f
                         };

@@ -1,4 +1,6 @@
-﻿using Futura.Engine.UserInterface;
+﻿using Futura.Engine.Rendering;
+using Futura.Engine.Settings;
+using Futura.Engine.UserInterface;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -61,6 +63,11 @@ namespace Futura.Engine.Core
             // Init singleton systems
             Resources.ResourceManager.Instance.Init(AssetDir);
 
+
+            EditorSettings editorSettings = Settings.Get<EditorSettings>();
+            EditorCamera.Instance.Transform.Position = editorSettings.LastEditorCameraPosition;
+            EditorCamera.Instance.Transform.Rotation = editorSettings.LastEditorCameraRotation;
+            EditorCamera.Instance.Settings = editorSettings;
             Profiler.EndFrame();
         }
 
@@ -78,6 +85,15 @@ namespace Futura.Engine.Core
 
             Context.Tick(Context.TickType.Variable, timeSys.DeltaTime);
             Context.Tick(Context.TickType.Smoothed, timeSys.DeltaTimeSmoothed);
+
+            if (Window.Instance.Exists)
+            {
+                EditorSettings editorSettings = Settings.Get<EditorSettings>();
+                editorSettings.LastEditorCameraPosition = EditorCamera.Instance.Transform.Position;
+                editorSettings.LastEditorCameraRotation = EditorCamera.Instance.Transform.Rotation;
+                Settings.Save(editorSettings);
+            }
+
             Profiler.EndFrame();
         }
 

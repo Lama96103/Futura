@@ -12,4 +12,9 @@ namespace Futura.Engine.ECS
     {
         public bool Display();
     }
+
+    public interface IComponentChangeListener
+    {
+        public void OnChanged();
+    }
 }

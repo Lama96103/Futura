@@ -105,7 +105,10 @@ namespace Futura.Engine.UserInterface
                                 if (change)
                                 {
                                     RuntimeHelper.Instance.HasSceneChanged = true;
-                                    if (component.GetType() == typeof(Transform)) ((Transform)component).UpdateTransform();
+                                    if(componentType.GetInterface(nameof(IComponentChangeListener)) != null)
+                                    {
+                                        ((IComponentChangeListener)component).OnChanged();
+                                    }
                                 }
                             }
                         }

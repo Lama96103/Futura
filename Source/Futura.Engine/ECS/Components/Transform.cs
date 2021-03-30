@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Futura.Engine.ECS.Components
 {
-    public class Transform : IComponent
+    public class Transform : IComponent, IComponentChangeListener
     {
         [SerializeField] [Name("Position")]
         private Vector3 localPosition = Vector3.Zero;
@@ -101,6 +101,11 @@ namespace Futura.Engine.ECS.Components
         public static Matrix4x4 CalculateModelMatrix(Vector3 position, Quaternion rotation, Vector3 scale)
         {
             return Matrix4x4.CreateScale(scale) * Matrix4x4.CreateFromQuaternion(rotation) * Matrix4x4.CreateTranslation(position);
+        }
+
+        public void OnChanged()
+        {
+            UpdateTransform();
         }
         #endregion
     }

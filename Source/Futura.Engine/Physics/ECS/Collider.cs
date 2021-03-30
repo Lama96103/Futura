@@ -12,14 +12,16 @@ using System.Threading.Tasks;
 
 namespace Futura.Engine.Physics.ECS
 {
-    abstract class Collider : IComponent
+    abstract class Collider : IComponent, IComponentChangeListener
     {
-        [JsonIgnore] public BodyReference Reference;
+        public Vector3 Offset = Vector3.Zero;
+        [JsonIgnore] [Ignore] public BodyReference Reference;
 
+        private bool hasChanged = true;
 
         internal void Tick(Simulation simulation, Transform transform, Rigidbody rigidbody)
         {
-            if (HasChanged())
+            if (hasChanged)
             {
                 if (Reference.Exists && Reference.Kinematic == (rigidbody == null))
                 {
@@ -37,7 +39,7 @@ namespace Futura.Engine.Physics.ECS
 
                     var collidableDescription = new CollidableDescription(index, 0.1f);
 
-                    var pose = new RigidPose(transform.Position, transform.Rotation);
+                    var pose = new RigidPose(transform.Position + Offset, transform.Rotation);
 
                     BodyHandle handle;
 
@@ -50,7 +52,7 @@ namespace Futura.Engine.Physics.ECS
 
                 }
 
-                ResetChange();
+                hasChanged = false;
             }
 
             if (rigidbody != null)
@@ -67,36 +69,27 @@ namespace Futura.Engine.Physics.ECS
             }
         }
 
-        protected abstract bool HasChanged();
-        protected abstract void ResetChange();
         protected abstract void Resize();
 
         protected abstract TypedIndex CreateCollisionShape(Simulation simulation, float mass, out BodyInertia inertia);
+
+        public void OnChanged()
+        {
+            hasChanged = true;
+        }
     }
 
     class BoxCollider : Collider
     {
         public Vector3 Size = Vector3.One;
-
         
-        [JsonIgnore] public Box CollisionBox;
-        [JsonIgnore] public Vector3 LastSize = -Vector3.One;
+        [JsonIgnore][Ignore] public Box CollisionBox;
 
         protected override TypedIndex CreateCollisionShape(Simulation simulation, float mass, out BodyInertia inertia)
         {
             CollisionBox = new Box(Size.X * 2, Size.Y * 2, Size.Z * 2);
             CollisionBox.ComputeInertia(mass, out inertia);
             return simulation.Shapes.Add(CollisionBox);
-        }
-
-        protected override bool HasChanged()
-        {
-            return Size != LastSize;
-        }
-
-        protected override void ResetChange()
-        {
-            LastSize = Size;
         }
 
         protected override void Resize()
@@ -111,18 +104,7 @@ namespace Futura.Engine.Physics.ECS
     {
         public float Radius = 1.0f;
 
-        [JsonIgnore] public Sphere CollisionSphere;
-        [JsonIgnore] public float LastRadius = -1;
-
-        protected override bool HasChanged()
-        {
-            return LastRadius != Radius;
-        }
-
-        protected override void ResetChange()
-        {
-            LastRadius = Radius;
-        }
+        [JsonIgnore] [Ignore] public Sphere CollisionSphere;
 
         protected override void Resize()
         {

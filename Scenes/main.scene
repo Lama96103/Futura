@@ -35,9 +35,9 @@
             "$type": "Futura.Engine.ECS.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Position": {
               "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 51.95778,
-              "Y": 2.0,
-              "Z": -10.197734
+              "X": -5.042,
+              "Y": 15.0,
+              "Z": -19.198
             },
             "Rotation": {
               "$type": "System.Numerics.Quaternion, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
@@ -59,7 +59,7 @@
             "Position": {
               "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
               "X": 0.0,
-              "Y": 5.398879,
+              "Y": 54.082,
               "Z": 0.0
             },
             "Rotation": {
@@ -81,8 +81,8 @@
             "$type": "Futura.Engine.ECS.Components.Transform, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Position": {
               "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-              "X": 0.0,
-              "Y": 1.4639385,
+              "X": -1.3521968,
+              "Y": 9.941238,
               "Z": 0.0
             },
             "Rotation": {
@@ -327,9 +327,9 @@
           },
           "3": {
             "$type": "Futura.Engine.ECS.Components.MeshGenerator, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "X": 0.5,
-            "Y": 0.5,
-            "Z": 0.5,
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0,
             "Radius": 1.0,
             "Slices": 20,
             "Stacks": 20,
@@ -416,6 +416,12 @@
               "X": 1.0,
               "Y": 1.0,
               "Z": 1.0
+            },
+            "Offset": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 0.0
             }
           },
           "4": {
@@ -423,8 +429,14 @@
             "Size": {
               "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
               "X": 1.0,
-              "Y": 1.0,
+              "Y": 0.5,
               "Z": 1.0
+            },
+            "Offset": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 0.0
             }
           },
           "1": {
@@ -434,6 +446,12 @@
               "X": 100.0,
               "Y": 1.0,
               "Z": 100.0
+            },
+            "Offset": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 0.0,
+              "Y": -1.0,
+              "Z": 0.0
             }
           }
         },
@@ -456,7 +474,13 @@
           "$type": "System.Collections.Generic.Dictionary`2[[System.Int32, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Futura.Engine.Physics.ECS.SphereCollider, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
           "8": {
             "$type": "Futura.Engine.Physics.ECS.SphereCollider, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Radius": 1.0
+            "Radius": 1.0,
+            "Offset": {
+              "$type": "System.Numerics.Vector3, System.Private.CoreLib, Version=5.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+              "X": 0.0,
+              "Y": 0.0,
+              "Z": 0.0
+            }
           }
         },
         "Type": "Futura.Engine.Physics.ECS.SphereCollider, Futura.Engine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"

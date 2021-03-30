@@ -12,6 +12,8 @@ namespace Futura.Engine.Rendering
 {
     public class EditorCamera : Singleton<EditorCamera>
     {
+        public Settings.EditorSettings Settings { get; set; }
+
         public Transform Transform { get; set; } 
             = new Transform()
             {
@@ -21,22 +23,17 @@ namespace Futura.Engine.Rendering
 
         public Camera Camera { get; set; } = new Camera();
 
-
-        private float speed = 8f;
-        private float sensitivity = 32f;
-
         private Vector3 cameraRotation = new Vector3();
 
         public void Tick()
         {
-
             ProcessTranslation();
             ProcessRotation();
         }
 
         private void ProcessTranslation()
         {
-            float veloctiy = speed * Time.DeltaSeconds;
+            float veloctiy = Settings.EditorCameraSpeed * Time.DeltaSeconds;
 
             if (ImGui.IsKeyDown((int)Key.W))
             {
@@ -72,8 +69,8 @@ namespace Futura.Engine.Rendering
         {
             Vector2 offset = Input.MouseOffset;
 
-            cameraRotation.Y -= offset.X * sensitivity * Time.DeltaSeconds;
-            cameraRotation.X += offset.Y * sensitivity * Time.DeltaSeconds;
+            cameraRotation.Y -= offset.X * Settings.EditorCameraMouseSensitivity * Time.DeltaSeconds;
+            cameraRotation.X += offset.Y * Settings.EditorCameraMouseSensitivity * Time.DeltaSeconds;
 
             // make sure that when pitch is out of bounds, screen doesn't get flipped
             //if (constrainPitch)

@@ -158,6 +158,7 @@ namespace Futura.Engine.UserInterface
                 {
                     if (ImGui.Checkbox("Light", ref renderSystem.renderSettings.ShowLightGizmo)) Runtime.Instance.Settings.Save(renderSystem.renderSettings);
                     if (ImGui.Checkbox("Bounding Box", ref renderSystem.renderSettings.ShowMeshBoundsGizmo)) Runtime.Instance.Settings.Save(renderSystem.renderSettings);
+                    if (ImGui.Checkbox("Collider", ref renderSystem.renderSettings.ShowCollisionBounds)) Runtime.Instance.Settings.Save(renderSystem.renderSettings);
                     ImGui.EndMenu();
                 }
 

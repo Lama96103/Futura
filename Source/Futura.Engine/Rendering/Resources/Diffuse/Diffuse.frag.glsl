@@ -133,9 +133,9 @@ void main()
 		}
 
 		float shadow = ShadowCalculation(directionalLightSpace);
-
+		shadow = 0;
 		vec3 lightingIntensitiy = ambient;
-		lightingIntensitiy = lightingIntensitiy + (1.0 - shadow) * vec3(1.0);
+		lightingIntensitiy = lightingIntensitiy + (1.0 - shadow) * directional;
 
 		FragmentColor = (vec4(lightingIntensitiy, 1.0) + pointDiffuse) * modelDiffuseColor;
 	}
