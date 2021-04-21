@@ -66,7 +66,7 @@ namespace Futura.Engine.Core
 
         public enum TickType
         {
-            Variable, Smoothed
+            Variable, Fixed
         }
     }
 }

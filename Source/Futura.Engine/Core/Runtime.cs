@@ -27,6 +27,8 @@ namespace Futura.Engine.Core
 
         public RuntimeState State { get; private set; } = RuntimeState.Editor;
 
+        private double fixedTimeState = 0;
+
         public Runtime()
         {
             Context = new Context();
@@ -46,7 +48,7 @@ namespace Futura.Engine.Core
             Context.RegisterSubSystem<InputSystem>();
             Context.RegisterSubSystem<WorldSystem>();
             Context.RegisterSubSystem<RenderSystem>();
-            Context.RegisterSubSystem<Physics.PhysicsController>(Context.TickType.Smoothed);
+            Context.RegisterSubSystem<Physics.PhysicsController>(Context.TickType.Fixed);
 
             Context.Init();
 
@@ -70,7 +72,7 @@ namespace Futura.Engine.Core
             EditorCamera.Instance.Settings = editorSettings;
             Profiler.EndFrame();
         }
-
+        private Task physicsTask = null;
         public void Tick()
         {
             Profiler.StartFrame();
@@ -82,9 +84,17 @@ namespace Futura.Engine.Core
                 runtimeCommands.Clear();
             }
 
+            
+            fixedTimeState += timeSys.DeltaTime;
+            if(fixedTimeState >= Time.FixedDeltaTime)
+            {
+                physicsTask = ThreadController.CreateTask(() => Context.Tick(Context.TickType.Fixed, Time.FixedDeltaTime), "Physics_Task");
+                fixedTimeState -= Time.FixedDeltaTime;
+            }
 
             Context.Tick(Context.TickType.Variable, timeSys.DeltaTime);
-            Context.Tick(Context.TickType.Smoothed, timeSys.DeltaTimeSmoothed);
+
+            if (physicsTask != null) physicsTask.Wait();
 
             if (Window.Instance.Exists)
             {

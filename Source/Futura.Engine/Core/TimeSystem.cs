@@ -114,6 +114,8 @@ namespace Futura
     {
         private static TimeSystem timeSys;
 
+        public static double FixedDeltaTime = 1000.0 / 60.0;
+
         internal static void Init(TimeSystem timeSys)
         {
             Time.timeSys = timeSys;
